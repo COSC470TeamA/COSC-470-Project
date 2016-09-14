@@ -19,3 +19,6 @@ OS:
 VC:
     Git/Github?
 https://github.com/COSC470TeamA/COSC-470-Project
+
+CI:
+    Maven or Gradle -- Steve has experience w/ Maven, Chris has passing familiarity with Gradle
