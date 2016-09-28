@@ -1,4 +1,4 @@
-Steps of writing problem statements
+Team A Problem Statement
 
 (1)Describe the background context so that the problem (and solution) is easier to understand for the reader.  
 If the background is clear (to all the targeted reader), you can jump right into the problem.
@@ -7,79 +7,73 @@ Start by describing how things (or should) work.  Maybe a brief description on W
 Client has a vision for a game and requests a team from OKC to deliver. 
 Acting Client: Chris Mazur
 
-  I want an online/offline isometric action/adventure game with:
+Business desire is to monetize player involvement in the game through:
+In-game purchases, such as increased character slots, shared character stashes, cosmetics, & boosts.
+Supporter packs (custom item, level, boss, lore, or skill creation).
+Private server subscription.
+Licensing.
+Streaming/Let’s plays.
 
-        resource management, 
+Utilize a distribution vehicle (Steam, apple/android game centers, stand-alone).
+
+Gather user statistics to improve product & increase user retention.
+
+Gameplay Desire is: online/offline isometric action/adventure game with:
+
+        resource management:
             multiple non-buyable resources that each feel essential
             offline resource trading with artificial supply/demand
             online resource trading with other players (living economy)
             
-        competitive rankings, 
+        competitive rankings:
             Seasonal & all-time ladders, races
             some way of scoring levels, bases, armies, etc.
             online/offline play options
             cheat prevention for online play
             pvp
             
-        prominent non-combat elements, 
+        prominent non-combat elements:
             puzzles
             adventure & exploration
             platform challenges
             social/diplomacy
             settlement/business management
             
-        novel or interesting thematics & mechanics,
+        novel or interesting thematics & mechanics:
             hub & spoke nonlinear level progression
             freeform base & fort creation & activation
             
-        Advancement in many forms,
+        Advancement in many forms:
             skill trees with impactful choices & synergies
-            upgradable items, bases, allies, enemies, maps...
+            upgradable items, bases, allies, enemies, and maps
             multiple tiers of advancement
             
-  The serverside services should include:
-            Cloud Save & load
-            Network Matchmaking
-            Integration with i.e. apple gamecenter, google play
+  The server-side services should include:
+            Cloud save & load
+            Network matchmaking
+            Integration with i.e. Apple Gamecenter, Google Play
             Clear communication logistics for reporting & suggestions
             
-  The desire is to monetize player involvement in the game through:
-    in-game purchases, such as increased character slots, shared character 
-
-
 (2)Explain your problem:
-It is Important that you can articulate the problem (being addressed) to the reader in a simple, 
-clear, and straightforward fashion.
- 
-  The scope of the game is large; A-Team does not have a solid velocity and cannot yet provide an 
-  educated guess as to how long it will take to implement all requested features with client approval.
-  
-  The features requested may have stylistic choices associated with them that have yet to be communicated or decided upon.
-  Not all features may be necessary; more features may be added.
- 
+It is Important that you can articulate the problem (being addressed) to the reader in a simple, clear, and straightforward fashion.
 
-(3)Why is it a big deal?  Is the problem that you are discussing preventing your customer (user, system, process..etc) 
-from moving forward (effectively), or making more money, or destroying the company, (costs ($$ or resource) ? )?
+Build a web based multi user gaming application with database integration for user statistic analysis. Network and database security is a specific concern in this project due to numerous examples of incorrect implementation causing user loss. (PSN, Blizzard, apple store…)
 
-  If A-Team is unable to provide 
-  
-  The success or failure of the A-Team may determine their grading in certain college-level courses. Furthermore, the project itself
-  may become significantly profitable if followed through to completion.
+(3)Why is it a big deal?  Is the problem that you are discussing preventing your customer (user, system, process..etc) from moving forward (effectively), or making more money, or destroying the company, (costs ($$ or resource) ? )?
+
+The success of the project may determine A-TEAM’s grading in certain college-level courses. Furthermore, the project itself may become significantly profitable if followed through to completion.
 
 (4)Back up your assertions:
- Need to support your claims with data and evidence. Who else is having the same problem and what are they 
- do to address this problem
+ Need to support your claims with data and evidence. Who else is having the same problem and what are they do to address this problem
 
+Multi-user applications with complex network implementations have always had 
 (5)Propose a solution and benefits
 Should be clear and concise. Keep to the high level concept and leave the specification and implementation
 details for later.  
 
-
-
-
-
 (6)Conclusion and summary
 Creating a High Concept can be surprisingly difficult. It should be as short and clear as possible. One way to make the process easier is to start by answering a set of questions that can help you focus on the core issues. The questions that follow may be helpful but, of course, they are general. If you have ideas about your specific problem, do not hesitate to add questions of your own. · 
+
 List of questions that help to address the items above:
 When does the problem occur? 
 What assumptions are we making?   
@@ -90,3 +84,5 @@ What is happening that should not happen?
 What is not happening that should be? 
 What is working well and is not a problem? 
 What is the risk that we are facing?
+
+
