@@ -1,0 +1,88 @@
+Team A Problem Statement
+
+(1)Describe the background context so that the problem (and solution) is easier to understand for the reader.  
+If the background is clear (to all the targeted reader), you can jump right into the problem.
+Start by describing how things (or should) work.  Maybe a brief description on WHAT this “THING” is.
+
+Client has a vision for a game and requests a team from OKC to deliver. 
+Acting Client: Chris Mazur
+
+Business desire is to monetize player involvement in the game through:
+In-game purchases, such as increased character slots, shared character stashes, cosmetics, & boosts.
+Supporter packs (custom item, level, boss, lore, or skill creation).
+Private server subscription.
+Licensing.
+Streaming/Let’s plays.
+
+Utilize a distribution vehicle (Steam, apple/android game centers, stand-alone).
+
+Gather user statistics to improve product & increase user retention.
+
+Gameplay Desire is: online/offline isometric action/adventure game with:
+
+        resource management:
+            multiple non-buyable resources that each feel essential
+            offline resource trading with artificial supply/demand
+            online resource trading with other players (living economy)
+            
+        competitive rankings:
+            Seasonal & all-time ladders, races
+            some way of scoring levels, bases, armies, etc.
+            online/offline play options
+            cheat prevention for online play
+            pvp
+            
+        prominent non-combat elements:
+            puzzles
+            adventure & exploration
+            platform challenges
+            social/diplomacy
+            settlement/business management
+            
+        novel or interesting thematics & mechanics:
+            hub & spoke nonlinear level progression
+            freeform base & fort creation & activation
+            
+        Advancement in many forms:
+            skill trees with impactful choices & synergies
+            upgradable items, bases, allies, enemies, and maps
+            multiple tiers of advancement
+            
+  The server-side services should include:
+            Cloud save & load
+            Network matchmaking
+            Integration with i.e. Apple Gamecenter, Google Play
+            Clear communication logistics for reporting & suggestions
+            
+(2)Explain your problem:
+It is Important that you can articulate the problem (being addressed) to the reader in a simple, clear, and straightforward fashion.
+
+Build a web based multi user gaming application with database integration for user statistic analysis. Network and database security is a specific concern in this project due to numerous examples of incorrect implementation causing user loss. (PSN, Blizzard, apple store…)
+
+(3)Why is it a big deal?  Is the problem that you are discussing preventing your customer (user, system, process..etc) from moving forward (effectively), or making more money, or destroying the company, (costs ($$ or resource) ? )?
+
+The success of the project may determine A-TEAM’s grading in certain college-level courses. Furthermore, the project itself may become significantly profitable if followed through to completion.
+
+(4)Back up your assertions:
+ Need to support your claims with data and evidence. Who else is having the same problem and what are they do to address this problem
+
+Multi-user applications with complex network implementations have always had security vulnerabilities. 
+(5)Propose a solution and benefits
+Should be clear and concise. Keep to the high level concept and leave the specification and implementation
+details for later.  
+
+(6)Conclusion and summary
+Creating a High Concept can be surprisingly difficult. It should be as short and clear as possible. One way to make the process easier is to start by answering a set of questions that can help you focus on the core issues. The questions that follow may be helpful but, of course, they are general. If you have ideas about your specific problem, do not hesitate to add questions of your own. · 
+
+List of questions that help to address the items above:
+When does the problem occur? 
+What assumptions are we making?   
+Is this problem part of or reflective of a larger problem? 
+Can this problem be broken into two or more smaller problems? 
+How would others (be specific) look at this problem? 
+What is happening that should not happen? 
+What is not happening that should be? 
+What is working well and is not a problem? 
+What is the risk that we are facing?
+
+
