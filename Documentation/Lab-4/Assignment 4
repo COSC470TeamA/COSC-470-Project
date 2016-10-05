@@ -1,0 +1,61 @@
+Assignment 4  Product Backlog Items preparation and user stories discoveries (part one)
+Objectives:
+	The purposes of this lab/assignment:
+(1)	Team review of Project Problem Statement and generate a common version. Everyone on the same team much thoroughly understands the project problem statement.
+(2)	Team organization change – finalize your team organization and roles assignment (read team roles in COSC 4070/471 project document).. (no dice rolling on decisions) 
+(3)	Preparation of building User Story Map to generate a product backlog items list.
+
+Note: there are two parts for this lab. If your team cannot complete this lab, you can complete the rest next week. 
+Procedure:
+1.	Generate an agenda (tasks with time-box) for this lab based on this lab procedure plus other tasks (eg meeting customer/client, presentation etc.) (Team Lead with team input)
+a.	Need to be done for every lab.
+2.	Review the problem statements and create one (common) version to be used by everyone on the team.  Pass your version of problem statement to other team members to review and comment.  Identify the key W’s (What, why, who, when, where), current strategy, competitors, facts, proposed solution and benefits.
+3.	Prepare a table of Team Lead tasks from the COSC470Project.doc with who is doing what
+4.	User Stories discovery and mapping: ***
+A.	Team formation (Your team members)
+a.	After reviewing the project problem statement, every team member needs to be able to (in a few words) describe the nature of this project and his /her areas of interest.  If the problem statement is not clear, go back and review item 2 above again.
+B.	Gathering major user tasks of the project in SILENCE—“Big thing people do”  (Brain Storming section)
+a.	These are high level user stories (tasks) that forms the “walking skeleton” of the map. 
+b.	Each person takes the same colored post-it and writes down one user task per post-it
+c.	Once everyone has finished, read it aloud place them on the table in front of the group
+d.	Remove the duplicate ones
+C.	Group the post-its in silence. (Team lead to watch).  Move things that are similar to each other closer to each other and otherwise farther apart.
+a.	It is faster to do it silently. Team Lead  needs to monitor the traffic and action.
+b.	You can create new user story as you discovered more during “sorting”
+D.	Using another color of post-it, name each group and stick (post) it on the top of the group. (User Activities => backbone)  This part does not need to be silent.
+E.	Arrange the groups from left to right in the order a user would typically complete the tasks
+a.	Your map should look like this
+
+A1       A2    A3          (user activities = backbone)
+T1 T2 T3 T4 T5 T6 T7 T8 T9 (user tasks = skeleton with order)
+
+F.	As a team, walk the skeleton to make sure you have not missed any big (major) user tasks or activities.  You can use happy path, user scenarios, personas, or a real client to be sure that majority of the key (known) items are accounted for.
+G.	From this map (Project Framework Map), start to add more detailed user stories below each user task before planning your release map from this map.
+a.	Use the silent brainstorming technique to generate the initial set of stories for each task and expand it with user scenarios, and personas. 
+b.	With this set of user stories, draw a release line in the map as a reference to priority the stories from top to bottom. This should be done with PO / client
+c.	Don’t be too courageous for the 1st and 2nd releases,  draw the line high and focus on the “Must” have item for maximum feedbacks and validation.
+H.	Take all the user stories in the 1st release and do some serious user stories vertical slicing.
+i.	User stories slicing:
+b.	http://blog.agilistic.nl/8-useful-strategies-for-splitting-large-user-stories-and-a-cheatsheet/
+
+Deliverables of Assignment4 (Everyone)
+Generate a report for each of the steps in the procedure.
+(1)	Lab agenda: Which items are yours and describe your results.
+(2)	Common version of project problem statement.
+a.	Comments on the items with high uncertainties and how would you propose to handle it?
+(3)	Table of team lead tasks and which ones are assigned to you
+(4)	Report results of each of the steps. You can use camera pictures to illustrate
+a.	Target to complete step 4.E in this lab
+-	 
+
+
+NOTE:
+1)	Story mapping is a product backlog (requirements) discovery exercise. Avoid long lengthy discussion and avoid spending time on less relevant details or topics
+2)	Rearrange and tidy up frequently before it grows too big and hard to manage
+3)	Avoid touching the sticky part of the post-it too much so it I would not fall off easily during your working session.
+References:
+https://www.thoughtworks.com/insights/blog/story-mapping-visual-way-building-product-backlog
+https://www.scrumalliance.org/community/articles/2013/august/creating-an-agile-roadmap-using-story-mapping
+**** http://winnipegagilist.blogspot.ca/2012/03/how-to-create-user-story-map.html
+http://jpattonassociates.com/the-new-backlog/
+
