@@ -1,0 +1,145 @@
+commit 856d60fc45c5f869d3f61dfd26a42b540a29b7ba
+Merge: dd92d8b 2f17896
+Author: Steve Vezeau <Windovvsill@users.noreply.github.com>
+Date:   Wed Sep 28 09:57:23 2016 -0700
+
+    Merge pull request #1 from COSC470TeamA/sv_gitdemo
+
+    Sv gitdemo
+
+commit dd92d8b4ef36e6e21400bfd7d64457cdd3017de4
+:...skipping...
+commit b9a1b7d3436a1639a429881d9fdeefcbed494727
+Merge: af95135 856d60f
+Author: jebm <brewiebe@gmail.com>
+Date:   Wed Sep 28 09:57:53 2016 -0700
+
+    Merge branch 'master' of https://github.com/COSC470TeamA/COSC-470-Project
+
+commit af9513552b8fcc87ce719227a84b697053c39bc6
+Author: jebm <brewiebe@gmail.com>
+Date:   Wed Sep 28 09:57:39 2016 -0700
+
+    added dashboard screenshot to scrum tutorial
+
+commit 856d60fc45c5f869d3f61dfd26a42b540a29b7ba
+Merge: dd92d8b 2f17896
+Author: Steve Vezeau <Windovvsill@users.noreply.github.com>
+Date:   Wed Sep 28 09:57:23 2016 -0700
+
+    Merge pull request #1 from COSC470TeamA/sv_gitdemo
+
+    Sv gitdemo
+
+commit dd92d8b4ef36e6e21400bfd7d64457cdd3017de4
+Merge: a3ce175 6964be6
+Author: jebm <brewiebe@gmail.com>
+Date:   Wed Sep 28 09:51:37 2016 -0700
+
+    Merge branch 'master' of https://github.com/COSC470TeamA/COSC-470-Project
+
+commit 2f17896dc6d116e8a3621072d37ac7b1c39714e3
+Merge: 75235fe 6964be6
+Author: Windovvsill <svezer@live.ca>
+Date:   Wed Sep 28 09:51:22 2016 -0700
+
+    Merge branch 'master' of https://github.com/COSC470TeamA/COSC-470-Project
+
+commit a3ce1758bf277ff8c68be0435757e366f1c21c86
+Author: jebm <brewiebe@gmail.com>
+Date:   Wed Sep 28 09:51:21 2016 -0700
+
+    Added Advanced Scrum Tutorial Doc
+
+commit 75235fee86933119ae40d85ef2d4dfbcc0c4ef88
+Author: Windovvsill <svezer@live.ca>
+Date:   Wed Sep 28 09:50:38 2016 -0700
+
+    Demo stuff
+
+commit 6964be67fc880837bb73309ad84ef67daf0e2a6d
+Author: fordesta <fordesta@users.noreply.github.com>
+Date:   Wed Sep 28 09:50:30 2016 -0700
+
+    Update Problem Statement
+
+commit 8fe70f0433f659ea7ad2434ff7683d6ea7061a09
+Author: christopheramazur <christopheramazur@gmail.com>
+Date:   Wed Sep 28 09:46:25 2016 -0700
+
+    Wallboard screenshot
+
+commit a10cc4273a0b874981e8d4d953b67f590d967d90
+Author: jebm <brewiebe@gmail.com>
+Date:   Wed Sep 28 09:36:42 2016 -0700
+
+    removed file
+
+commit 43a8debf811b9d247feec705ff4150a980257964
+Merge: 2b0f7e8 b1bc8a5
+Author: jebm <brewiebe@gmail.com>
+Date:   Wed Sep 28 09:35:47 2016 -0700
+
+    Merge branch 'master' of https://github.com/COSC470TeamA/COSC-470-Project
+
+commit 2b0f7e8e61b47d702a6ad46489120e42b74494fe
+Author: jebm <brewiebe@gmail.com>
+Date:   Wed Sep 28 09:34:56 2016 -0700
+
+    Added Burndown Chart & Report
+
+commit b1bc8a531f9aed8679c177b59c8c20a6b35e7aae
+Author: fordesta <fordesta@users.noreply.github.com>
+Date:   Wed Sep 28 09:33:42 2016 -0700
+
+    Update Contact List
+
+commit 02bfc5076874929ae5d4e5d9a5faf24d4337251d
+Author: fordesta <fordesta@users.noreply.github.com>
+Date:   Wed Sep 28 09:32:36 2016 -0700
+
+    Create Editing Files Test
+
+commit 0149a2374b00d0c9b11659380ce1aeef164d0c1a
+Author: christopheramazur <christopheramazur@gmail.com>
+Date:   Wed Sep 28 09:19:53 2016 -0700
+
+    Updated with Assignment 2 as priority 1
+
+commit 0c3e1d702070f3bb647339bb40e1649903c9c99b
+Merge: cf65cfe ad6385d
+Author: jebm <brewiebe@gmail.com>
+Date:   Wed Sep 28 09:10:02 2016 -0700
+
+    Merge branch 'master' of https://github.com/COSC470TeamA/COSC-470-Project
+
+commit cf65cfe29f40ca1ba07463c16124c50f878ef0d7
+Author: jebm <brewiebe@gmail.com>
+Date:   Wed Sep 28 09:08:19 2016 -0700
+
+    Removed File
+
+commit ad6385d6e7a565a1b248950c67441bd768f4984f
+Author: christopheramazur <christopheramazur@gmail.com>
+Date:   Wed Sep 28 09:06:16 2016 -0700
+
+    Demo Framework
+
+    Basic structure of push/pull bs
+
+commit 499a24c2393d184a513754b1f16540af3220fdd9
+Author: christopheramazur <christopheramazur@gmail.com>
+Date:   Wed Sep 28 08:54:36 2016 -0700
+
+    Lab 2 Assignment
+
+:
+
+    Create Editing Files Test
+
+commit 0149a2374b00d0c9b11659380ce1aeef164d0c1a
+Author: christopheramazur <christopheramazur@gmail.com>
+Date:   Wed Sep 28 09:19:53 2016 -0700
+
+    Updated with Assignment 2 as priority 1
+
