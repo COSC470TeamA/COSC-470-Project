@@ -11,5 +11,20 @@ Begin Sprint 1
   -Tasks
   
 Consider and Assign a Client to the Project
-  -Ugh why
-  -Maybe Deb?
+
+Broke down two main reason for s1: map and actor.
+
+Map is tiles and doodads. Doodads are impassable tiles. 
+
+Actor is abstract. Player is an actor. Actor and tile have position.
+Actors may change position by gaining a vector from a mouse click.
+Vector and therefore actor subject to pathfinding 
+
+Map is an interface for phaser panel/container. 
+
+Gamestate considered but irrelevant to immediate requirements.
+
+Map generation must have no bubbles be an arbitrary size. Tiles arbitrary pixelsize.
+Actor must be camera bound and respond in arbitrary small time frame 100ms
+
+Style guide for game considered. Whiteboard art? 
