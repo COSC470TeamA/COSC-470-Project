@@ -10,4 +10,40 @@ Project Summary: (or project vision)
     
 
 Problem statements:
-  (see Steps of writing problem statements doc)
+  Team A Problem Statement
+Receipt Recognition, Insertion, Relation, Budgeting
+Tentative Client - Dr. James Yu
+
+Introduction
+
+Almost all consumers have trouble with keeping track of where they spend their money. You come to the end of the month and have no idea where your paychecks went. Your bank statements and credit card can tell you where you spent your money, but not always on what. Cash withdrawals and large purchases of many items make it very difficult to pinpoint everything you are spending money on. Keeping all your receipts or keeping a ledger of your spending is time consuming and often falls to the wayside in light of other more pressing tasks.  
+
+The Main Problem
+
+Consumers being unable to accurately identify where and what they spend all their money is the problem.
+
+There are no free or open-source apps that provide budgeting and spending tracking using receipt photos.
+
+Currently, automatic budgeting software is able to track spending via online banking statements. However, it is unable to automatically track and categorize the individual items in each purchase.  Instead, users have to organize the items manually. 
+
+Because it is common for everyday spending to be at a store with many categories of merchandise available, it is difficult to automatically define consistent categories for line items on a bank or credit card statement.
+
+Why is This a Problem?
+
+It is important because without knowing where you are with your spending you cannot make adjustments to your habits. 
+
+The problem is being addressed piecemeal - users downloading Mint are also grabbing Expensify accounts, or using Foreceipt and other financial apps. All of these apps force users to keep manual records, or are used in conjunction with other products. 
+
+These systems and products keep track of the user’s finances and expenses either through tracking their spending from their bank accounts/credit cards or photos of receipts - they don’t, however, perform the photo recognition on the client side (Expensify, SmartScan), and often they do not allow for convenient import or export of information for use elsewhere. 
+ 
+    Solution and Benefits
+
+Our solution is an expense tracking application that processes images of receipts to itemizes transactions and categorize user’s spending habits. Actual spending habits can then be compared to desired budget and give the user an accurate representation of where they are over/under spending. The product will be available to the public, specifically targeting who desires to accurately keep track of their expenses, and distributed via Play Store and Apple App Store.
+
+By recording the costs of items from the user’s receipts, categorizing each item bought, and storing the data for later use, the user can easily keep track of their spending habits. Making the user aware of where they are spending their money and advising them where they are overspending (based on budget entered into application) allows them to adjust their spending. The application should also store the images of receipts (either cloud or on user’s device) to give them detailed records of transactions. 
+
+
+    Conclusion and Summary
+
+Or project is going to address the issue of people being unable to recall where and when they spent their money. We are assuming that no other program can provide the functionality we intend to add to our own and no other team in our class is working towards addressing the same problem. We believe we have the knowledge, resources and time to make this project a reality within the timeframe of this semester. By recording and collating data taken from the user’s receipts and making them easily accessible we will give the user the ability to keep track of their spending trends at the touch of a button. 
+
