@@ -1,1 +1,27 @@
+Results
 
+  Requirement gathering and specifications:
+  
+    i.	Product backlog (of the entire project) (Table of product backlog)
+    
+    ii.	Functional requirement / Specification:
+      (What is functional requirement?  be sure to read the section above on project documentation flow during development)
+      Your GUI design and flow of operation development (from sprint 0 to sprint x (last) can be captured here.
+      Categorize all the user stories from Sprint 0 to X (final)
+      You can include User Interface requirement specifications in this section. 
+      Some companies keep it in a separate section from non-functional and functional.
+      
+    iii.	Non Functional requirement / specification 
+      1.	Categorize all the user stories from Sprint 0 to X (final)
+      2.	Architecture / components / layers
+        a.	DO NOT just show table, diagrams, UML (activities, class, sequence..), DFD, figures without a description.
+      3.	Development environments.
+      4.	Builds (procedure of integrating and building the final product.
+      5.	Installation (requirement, preparation, and steps)
+      6.	Maintenance
+        a.	Source codes  (with description of orders and arrangements)
+        
+    iv.	Specific Requirements
+      1.	External Interface
+      2.	Hardware interface
+      3.	Communication interface.
