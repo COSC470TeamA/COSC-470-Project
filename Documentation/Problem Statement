@@ -1,88 +1,31 @@
 Team A Problem Statement
+Receipt Recognition, Insertion, Relation, Budgeting
+Tentative Client - Dr. James Yu
 
-(1)Describe the background context so that the problem (and solution) is easier to understand for the reader.  
-If the background is clear (to all the targeted reader), you can jump right into the problem.
-Start by describing how things (or should) work.  Maybe a brief description on WHAT this “THING” is.
+Introduction
 
-Client has a vision for a game and requests a team from OKC to deliver. 
-Acting Client: Chris Mazur
+Almost all consumers have trouble with keeping track of where they spend their money. You come to the end of the month and have no idea where your paychecks went. Your bank statements and credit card can tell you where you spent your money, but not always on what. Cash withdrawals and large purchases of many items make it very difficult to pinpoint everything you are spending money on. Keeping all your receipts or keeping a ledger of your spending is time consuming and often falls to the wayside in light of other more pressing tasks.  
 
-Business desire is to monetize player involvement in the game through:
-In-game purchases, such as increased character slots, shared character stashes, cosmetics, & boosts.
-Supporter packs (custom item, level, boss, lore, or skill creation).
-Private server subscription.
-Licensing.
-Streaming/Let’s plays.
+The Main Problem
 
-Utilize a distribution vehicle (Steam, apple/android game centers, stand-alone).
+Consumers being unable to accurately identify where and what they spend all their money is the problem. There are currently no free or open-source apps that provide budgeting and spending tracking using receipt photos. There are a variety of automatic budgeting software available to  that track spending via online banking statements. However, they are  unable to track and categorize the individual items in each purchase.  Instead, users have to organize the items manually.  Because it is common for everyday spending to be at a store with many categories of merchandise available, it is difficult to automatically define consistent categories for line items on a bank or credit card statement.
 
-Gather user statistics to improve product & increase user retention.
+Why is This a Problem?
 
-Gameplay Desire is: online/offline isometric action/adventure game with:
+It is important because without knowing what you are spending money on you cannot make adjustments to your habits. 
 
-        resource management:
-            multiple non-buyable resources that each feel essential
-            offline resource trading with artificial supply/demand
-            online resource trading with other players (living economy)
-            
-        competitive rankings:
-            Seasonal & all-time ladders, races
-            some way of scoring levels, bases, armies, etc.
-            online/offline play options
-            cheat prevention for online play
-            pvp
-            
-        prominent non-combat elements:
-            puzzles
-            adventure & exploration
-            platform challenges
-            social/diplomacy
-            settlement/business management
-            
-        novel or interesting thematics & mechanics:
-            hub & spoke nonlinear level progression
-            freeform base & fort creation & activation
-            
-        Advancement in many forms:
-            skill trees with impactful choices & synergies
-            upgradable items, bases, allies, enemies, and maps
-            multiple tiers of advancement
-            
-  The server-side services should include:
-            Cloud save & load
-            Network matchmaking
-            Integration with i.e. Apple Gamecenter, Google Play
-            Clear communication logistics for reporting & suggestions
-            
-(2)Explain your problem:
-It is Important that you can articulate the problem (being addressed) to the reader in a simple, clear, and straightforward fashion.
+The problem is being addressed piecemeal - users downloading Mint are also grabbing Expensify accounts, or using Foreceipt and other financial apps. All of these apps force users to keep manual records, or need to be used in conjunction with other products. 
 
-Build a web based multi user gaming application with database integration for user statistic analysis. Network and database security is a specific concern in this project due to numerous examples of incorrect implementation causing user loss. (PSN, Blizzard, apple store…)
+These systems and products keep track of the user’s finances and expenses either through tracking their spending from their bank accounts/credit cards or photos of receipts. They don’t perform the photo recognition on the client side or itemize data from transactions. Often they also do not allow for convenient import or export of information for use elsewhere. 
+ 
+    Solution and Benefits
 
-(3)Why is it a big deal?  Is the problem that you are discussing preventing your customer (user, system, process..etc) from moving forward (effectively), or making more money, or destroying the company, (costs ($$ or resource) ? )?
+Our solution is an expense tracking application that processes images of receipts to itemize transactions and categorize user’s spending habits. Actual spending habits can then be compared to desired budget and give the user an accurate representation of where they are over/under spending. The product will be available to the public, specifically targeting who desires to accurately keep track of their expenses, and distributed via Play Store and Apple App Store.
 
-The success of the project may determine A-TEAM’s grading in certain college-level courses. Furthermore, the project itself may become significantly profitable if followed through to completion.
+By recording the costs of items from the user’s receipts, categorizing each item bought, and storing the data for later use, the user can easily keep track of their spending habits. Making the user aware of where they are spending their money and advising them where they are overspending (based on budget entered into application) allows them to adjust their spending. The application should also store the images of receipts (either cloud or on user’s device) to give them detailed records of transactions. 
 
-(4)Back up your assertions:
- Need to support your claims with data and evidence. Who else is having the same problem and what are they do to address this problem
 
-Multi-user applications with complex network implementations have always had 
-(5)Propose a solution and benefits
-Should be clear and concise. Keep to the high level concept and leave the specification and implementation
-details for later.  
+    Conclusion and Summary
 
-(6)Conclusion and summary
-Creating a High Concept can be surprisingly difficult. It should be as short and clear as possible. One way to make the process easier is to start by answering a set of questions that can help you focus on the core issues. The questions that follow may be helpful but, of course, they are general. If you have ideas about your specific problem, do not hesitate to add questions of your own. · 
-
-List of questions that help to address the items above:
-When does the problem occur? 
-What assumptions are we making?   
-Is this problem part of or reflective of a larger problem? 
-Can this problem be broken into two or more smaller problems? 
-How would others (be specific) look at this problem? 
-What is happening that should not happen? 
-What is not happening that should be? 
-What is working well and is not a problem? 
-What is the risk that we are facing?
-
+Or project is going to address the issue of people being unable to recall where and when they spent their money. We are assuming that no other program can provide the functionality we intend to add to our own and no other team in our class is working towards addressing the same problem. We believe we have the knowledge, resources and time to make this project a reality within the timeframe of this semester. By recording and collating data taken from the user’s receipts and making them easily accessible we will give the user the ability to keep track of their spending trends at the touch of a button. 
 
