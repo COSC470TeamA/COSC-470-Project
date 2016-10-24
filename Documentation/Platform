@@ -1,0 +1,30 @@
+Buckle down on our platform for this:
+
+Database:
+    SQLDeveloper - Team is comfortable using it & free
+
+IDE: 
+    IDEA 2016.2 (Will update when .3 comes out) - https://www.jetbrains.com/idea/
+
+App Language:
+    JDK 8u111
+    Node.js v4.6.1 LTS
+    
+Serverside:
+    PHPStorm 2016.2.2
+
+OS:
+    Testing:
+        Ubuntu 16.04.1 LTS
+        
+    Server:
+        Ubuntu Server 16.04.1 LTS
+
+VC:
+    https://github.com/COSC470TeamA/COSC-470-Project
+
+CI:
+    Apache Maven 3.3.9
+
+
+Chris Mazur: Will distribute an Ubuntu image with the above if we need it?
