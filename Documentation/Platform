@@ -24,7 +24,7 @@ VC:
     https://github.com/COSC470TeamA/COSC-470-Project
 
 CI:
-    Apache Maven 3.3.9
+    Gradle Android Integration
 
 
 Chris Mazur: Will distribute an Ubuntu image with the above if we need it?
