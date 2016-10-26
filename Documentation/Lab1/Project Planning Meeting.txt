@@ -1,0 +1,45 @@
+Meeting 3:30PM on 20, Sept, 2016
+
+We began the meeting by confirming our project selection (Self-Sponsored Game) and 
+by defining our objectives and desires for the game, discussing relevant topics:
+
+Client has a vision for a game and requests a team from OKC to deliver. 
+Acting Client: Chris Mazur
+
+  I want an online/offline isometric action/adventure game with:
+
+        resource management, 
+            multiple non-buyable resources that each feel essential
+            offline resource trading with artificial supply/demand
+            online resource trading with other players (living economy)
+            
+        competitive rankings, 
+            Seasonal & all-time ladders, races
+            some way of scoring levels, bases, armies, etc.
+            online/offline play options
+            cheat prevention for online play
+            pvp
+            
+        prominent non-combat elements, 
+            puzzles
+            adventure & exploration
+            platform challenges
+            social/diplomacy
+            settlement/business management
+            
+        novel or interesting thematics & mechanics
+            hub & spoke nonlinear level progression
+            freeform base & fort creation & activation
+            
+        Advancement in many forms
+            skill trees with impactful choices & synergies
+            upgradable items, bases, allies, enemies, maps...
+            multiple tiers of advancement
+            
+  The serverside services should include:
+            Cloud Save & load
+            Network Matchmaking
+            Integration with i.e. apple gamecenter, google play
+            
+  Clear communication logistics for reporting & suggestions
+  ...
