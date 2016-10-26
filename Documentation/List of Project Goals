@@ -1,0 +1,18 @@
+Project Goals
+
+-Use optical character recognition to convert photos into useful data.
+-Store data in categories automatically
+--User Defined and Predefined Categories
+-Categorize Items Through
+--Automatic SKU or item checking through web hooks.
+--Attempt to search for unknown items and insert them inappropriately.
+---With API Like Words
+---Other user’s categorization 
+---Asking user to categorize item 
+----Drag and drop into category
+-Ability to create categories (or use predefined) and set spending goals per category 
+-Display purchase data to user and contrast with their budget goals
+--Charts
+--Tables
+--Exportable Files (CSV, PDF, docx, HTML, txt, cave art, smoke signal, Ouija board, SNES cartridge, Spaghetti O’s writing) 
+-Multiple user accounts with the ability to create views or comparisons between them
