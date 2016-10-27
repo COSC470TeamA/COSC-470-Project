@@ -14,13 +14,12 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.Toast;
 
 public class TopReportActivity extends Activity {
 
-    List<String> groupList;
-    List<String> childList;
-    Map<String, List<String>> itemCategory;
+    List<String> categoryNames;
+    List<Item> childList;
+    Map<String, List<Item>> allCategories;
     ExpandableListView expListView;
 
     @Override
@@ -34,7 +33,7 @@ public class TopReportActivity extends Activity {
 
         expListView = (ExpandableListView) findViewById(R.id.expandableListView);
         final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
-                this, groupList, itemCategory);
+                this, categoryNames, allCategories);
         expListView.setAdapter(expListAdapter);
 
 
@@ -44,36 +43,48 @@ public class TopReportActivity extends Activity {
                                         int groupPosition, int childPosition, long id) {
                 final String selected = (String) expListAdapter.getChild(
                         groupPosition, childPosition);
-                Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
-                        .show();
+//                Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
+//                        .show();
 
                 return true;
             }
         });
     }
 
+    /**
+     * TEST DATA
+     *
+     * Create the category names.
+     */
     private void createGroupList() {
-        groupList = new ArrayList<String>();
-        groupList.add("Gas");
-        groupList.add("Clothes");
-        groupList.add("Food");
-        groupList.add("Electronics");
-        groupList.add("Booze");
+        categoryNames = new ArrayList<String>();
+        categoryNames.add("Gas");
+        categoryNames.add("Clothes");
+        categoryNames.add("Food");
+        categoryNames.add("Electronics");
+        categoryNames.add("Booze");
     }
 
+    /**
+     * TEST DATA
+     *
+     * Create item lists and attach them to category names.
+     */
     private void createCollection() {
         // preparing collection(child)
-        String[] gasItems = { "Gas", "Gas",
-                "Gas" };
-        String[] clothingItems = { "Pants", "Golf Pants", "Skirt" };
-        String[] foodItems = { "Bread", "Milk",
-                "Cheese", "Coffee" };
-        String[] electronicItems = { "Headphones", "Keyboard" };
-        String[] boozeItems = { "Beer", "Moonshine", "Cognac" };
+        ItemBuilder itemBuilder = new ItemBuilder();
 
-        itemCategory = new LinkedHashMap<String, List<String>>();
+        ArrayList<Item> gasItems = itemBuilder.build("Gas", "20.50", "Gas", "35.75", "Gas", "18.99");
+        ArrayList<Item> clothingItems = itemBuilder.build("Pants", "14.50", "Golf Pants", "45.29", "Hat", "9.99");
+        ArrayList<Item> foodItems = itemBuilder.build("Bread", "20.50", "Milk", "35.75", "Cheese", "18.99");
+        ArrayList<Item> electronicItems = itemBuilder.build("Headphones", "20.50", "Keyboard", "35.75");
+        ArrayList<Item> boozeItems = itemBuilder.build("Beer", "20.50", "Moonshine", "35.75", "Cognac", "18.99");
 
-        for (String cat : groupList) {
+
+        allCategories = new LinkedHashMap<String, List<Item>>();
+
+        for (String cat : categoryNames) {
+            // Put the list of items in the childList
             if (cat.equals("Gas")) {
                 loadChild(gasItems);
             } else if (cat.equals("Clothes"))
@@ -85,15 +96,30 @@ public class TopReportActivity extends Activity {
             else if (cat.equals("Booze"))
                 loadChild(boozeItems);
 
-
-            itemCategory.put(cat, childList);
+                // Attach the category name to the item list
+                // and store it in allCategories
+                allCategories.put(cat, childList);
+            }
         }
-    }
+
 
     private void loadChild(String[] items) {
-        childList = new ArrayList<String>();
+        childList = new ArrayList<Item>();
         for (String item : items)
+            childList.add(new Item(item));
+    }
+
+    /** Populates the list of children (items)
+     * from an array of items.
+     * @param items
+     */
+    private void loadChild(Item[] items) {
+        childList = new ArrayList<Item>();
+        for (Item item : items)
             childList.add(item);
+    }
+    private void loadChild(ArrayList<Item> items) {
+        childList = items;
     }
 
     private void setGroupIndicatorToRight() {

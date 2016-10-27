@@ -2,6 +2,7 @@ package com.christopheramazurgmail.rtracker.adapters;
         import java.util.List;
         import java.util.Map;
 
+        import com.christopheramazurgmail.rtracker.Item;
         import com.christopheramazurgmail.rtracker.R;
 
         import android.app.Activity;
@@ -16,18 +17,18 @@ package com.christopheramazurgmail.rtracker.adapters;
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Activity context;
-    private Map<String, List<String>> itemCollections;
+    private Map<String, List<Item>> allCategories;
     private List<String> items;
 
     public ExpandableListAdapter(Activity context, List<String> items,
-                                 Map<String, List<String>> itemCollections) {
+                                 Map<String, List<Item>> allCategories) {
         this.context = context;
-        this.itemCollections = itemCollections;
+        this.allCategories = allCategories;
         this.items = items;
     }
 
     public Object getChild(int groupPosition, int childPosition) {
-        return itemCollections.get(items.get(groupPosition)).get(childPosition);
+        return allCategories.get(items.get(groupPosition)).get(childPosition);
     }
 
     public long getChildId(int groupPosition, int childPosition) {
@@ -37,21 +38,27 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        final String child = (String) getChild(groupPosition, childPosition);
+        Item childObject = (Item) getChild(groupPosition, childPosition);
+        String childDesc = childObject.getDesc();
+        String childPrice = childObject.getPrice();
+//        final String child = (String) getChild(groupPosition, childPosition);
         LayoutInflater inflater = context.getLayoutInflater();
 
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.report_item_group, null);
+            convertView = inflater.inflate(R.layout.report_item, null);
         }
 
-        TextView item = (TextView) convertView.findViewById(R.id.category);
+        TextView item = (TextView) convertView.findViewById(R.id.item);
+        TextView priceText = (TextView) convertView.findViewById(R.id.priceText);
 
-        item.setText(child);
+        item.setText(childDesc);
+        priceText.setText(childPrice);
+
         return convertView;
     }
 
     public int getChildrenCount(int groupPosition) {
-        return itemCollections.get(items.get(groupPosition)).size();
+        return allCategories.get(items.get(groupPosition)).size();
     }
 
     public Object getGroup(int groupPosition) {
