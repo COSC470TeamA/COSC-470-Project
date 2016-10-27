@@ -14,6 +14,9 @@ package com.christopheramazurgmail.rtracker.adapters;
         import android.widget.BaseExpandableListAdapter;
         import android.widget.TextView;
 
+/**
+ * Created by haunter on 26/10/16.
+ */
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Activity context;

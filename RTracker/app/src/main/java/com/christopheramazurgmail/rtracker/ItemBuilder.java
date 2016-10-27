@@ -10,8 +10,9 @@ public class ItemBuilder {
     /**
      * Creates an arbitrary number of Item objects and returns them in an Array List
      * in the order they are input.
-     * @param attr The list of description, price pairs
-     * @return
+     * @param attr The list of description, price pairs. The price must be in number
+     *             format and will be cast to a double.
+     * @return The new list of Item objects.
      */
     public ArrayList<Item> build(String... attr) {
         // Don't divide by zero!
