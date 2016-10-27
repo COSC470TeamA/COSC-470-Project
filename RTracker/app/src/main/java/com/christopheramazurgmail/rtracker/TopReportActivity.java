@@ -17,6 +17,9 @@ import android.widget.ExpandableListView.OnChildClickListener;
 
 /**
  * Created by haunter on 26/10/16.
+ * Top Report Activity is the top-most view of information about the categories.
+ * Item Categories are the parent collapsible views in the List View.
+ * Items are the child view in the List View.
  */
 public class TopReportActivity extends Activity {
 
