@@ -14,10 +14,11 @@ public class ItemBuilder {
      *             format and will be cast to a double.
      * @return The new list of Item objects.
      */
-    public ArrayList<Item> build(String... attr) {
+
+    public ItemGroup build(String... attr) {
         // Don't divide by zero!
-        if (attr.length == 0) return new ArrayList<>();
-        ArrayList<Item> list = new ArrayList<>(attr.length / 2);
+        if (attr.length == 0) return new ItemGroup();
+        ItemGroup list = new ItemGroup();
         if (attr.length % 2 == 0) {
             for (int i = 0; i < attr.length; i += 2) {
                 try {
@@ -31,3 +32,4 @@ public class ItemBuilder {
         return list;
     }
 }
+

@@ -1,6 +1,5 @@
 package com.christopheramazurgmail.rtracker;
 
-import java.util.ArrayList;
 
 /**
  * Created by haunter on 26/10/16.
@@ -18,9 +17,6 @@ public class Item {
         this.price = 0;
     }
 
-
-
-
     public String getDesc() {
         return desc;
     }
@@ -32,6 +28,7 @@ public class Item {
     public String getPrice() {
         return String.format("%.2f", price);
     }
+    public double getPriceD() { return price; }
 
     public void setPrice(double price) {
         this.price = price;

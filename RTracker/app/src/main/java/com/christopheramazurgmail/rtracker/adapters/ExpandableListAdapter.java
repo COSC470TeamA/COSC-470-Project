@@ -3,6 +3,7 @@ package com.christopheramazurgmail.rtracker.adapters;
         import java.util.Map;
 
         import com.christopheramazurgmail.rtracker.Item;
+        import com.christopheramazurgmail.rtracker.ItemGroup;
         import com.christopheramazurgmail.rtracker.R;
 
         import android.app.Activity;
@@ -20,11 +21,11 @@ package com.christopheramazurgmail.rtracker.adapters;
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Activity context;
-    private Map<String, List<Item>> allCategories;
+    private Map<String, ItemGroup> allCategories;
     private List<String> items;
 
     public ExpandableListAdapter(Activity context, List<String> items,
-                                 Map<String, List<Item>> allCategories) {
+                                 Map<String, ItemGroup> allCategories) {
         this.context = context;
         this.allCategories = allCategories;
         this.items = items;
@@ -88,6 +89,15 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView item = (TextView) convertView.findViewById(R.id.category);
         item.setTypeface(null, Typeface.BOLD);
         item.setText(itemName);
+
+        List<Item> cat = allCategories.get(itemName);
+        double runningTotal = 0; // @TODO make categories know about items instead of these stupid hacks
+        for (Item indItem : cat) {
+            runningTotal += indItem.getPriceD();
+        }
+        TextView totalPriceText = (TextView) convertView.findViewById(R.id.totalPriceText);
+        totalPriceText.setTypeface(null, Typeface.BOLD);
+        totalPriceText.setText(String.format("%.2f", runningTotal));
         return convertView;
     }
 

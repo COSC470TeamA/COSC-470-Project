@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.Toast;
 
 /**
  * Created by haunter on 26/10/16.
@@ -24,8 +25,8 @@ import android.widget.ExpandableListView.OnChildClickListener;
 public class TopReportActivity extends Activity {
 
     List<String> categoryNames;
-    List<Item> childList;
-    Map<String, List<Item>> allCategories;
+    ItemGroup childList;
+    Map<String, ItemGroup> allCategories;
     ExpandableListView expListView;
 
     @Override
@@ -47,8 +48,8 @@ public class TopReportActivity extends Activity {
 
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                final String selected = (String) expListAdapter.getChild(
-                        groupPosition, childPosition);
+//                final String selected = (String) expListAdapter.getChild(
+//                        groupPosition, childPosition);
 //                Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
 //                        .show();
 
@@ -80,20 +81,21 @@ public class TopReportActivity extends Activity {
         // preparing collection(child)
         ItemBuilder itemBuilder = new ItemBuilder();
 
-        ArrayList<Item> gasItems = itemBuilder.build("Gas", "20.50", "Gas", "35.75", "Gas", "18.99");
-        ArrayList<Item> clothingItems = itemBuilder.build("Pants", "14.50", "Golf Pants", "45.29", "Hat", "9.99");
-        ArrayList<Item> foodItems = itemBuilder.build("Bread", "20.50", "Milk", "35.75", "Cheese", "18.99");
-        ArrayList<Item> electronicItems = itemBuilder.build("Headphones", "20.50", "Keyboard", "35.75");
-        ArrayList<Item> boozeItems = itemBuilder.build("Beer", "20.50", "Moonshine", "35.75", "Cognac", "18.99");
+        ItemGroup gasItems = itemBuilder.build("Gas", "20.50", "Gas", "35.75", "Gas", "18.99");
+        ItemGroup clothingItems = itemBuilder.build("Pants", "14.50", "Golf Pants", "45.29", "Hat", "9.99");
+        ItemGroup foodItems = itemBuilder.build("Bread", "20.50", "Milk", "35.75", "Cheese", "18.99");
+        ItemGroup electronicItems = itemBuilder.build("Headphones", "20.50", "Keyboard", "35.75");
+        ItemGroup boozeItems = itemBuilder.build("Beer", "20.50", "Moonshine", "35.75", "Cognac", "18.99");
 
 
-        allCategories = new LinkedHashMap<String, List<Item>>();
+        allCategories = new LinkedHashMap<String, ItemGroup>();
 
+        // @TODO This switch is not necessary.
         for (String cat : categoryNames) {
             // Put the list of items in the childList
-            if (cat.equals("Gas")) {
+            if (cat.equals("Gas"))
                 loadChild(gasItems);
-            } else if (cat.equals("Clothes"))
+             else if (cat.equals("Clothes"))
                 loadChild(clothingItems);
             else if (cat.equals("Food"))
                 loadChild(foodItems);
@@ -110,7 +112,7 @@ public class TopReportActivity extends Activity {
 
 
     private void loadChild(String[] items) {
-        childList = new ArrayList<Item>();
+        childList = new ItemGroup();
         for (String item : items)
             childList.add(new Item(item));
     }
@@ -119,12 +121,7 @@ public class TopReportActivity extends Activity {
      * from an array of items.
      * @param items
      */
-    private void loadChild(Item[] items) {
-        childList = new ArrayList<Item>();
-        for (Item item : items)
-            childList.add(item);
-    }
-    private void loadChild(ArrayList<Item> items) {
+    private void loadChild(ItemGroup items) {
         childList = items;
     }
 
