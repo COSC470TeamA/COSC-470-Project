@@ -8,6 +8,7 @@ public class Item {
     private String desc;
     private double price;
 
+    public Item() {}
     public Item(String desc, double price) {
         this.desc = desc;
         this.price = price;

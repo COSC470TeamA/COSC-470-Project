@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class ItemGroup extends ArrayList{
 
-    List<Item> items;
+    List<Item> items = new ArrayList<>();
 
     public ItemGroup() {}
     public ItemGroup(List<Item> item) {
@@ -22,6 +22,9 @@ public class ItemGroup extends ArrayList{
         return items;
     }
 
+    public void add(Item item) {
+        items.add(item);
+    }
     public void setItems(List<Item> items) {
         this.items = items;
     }

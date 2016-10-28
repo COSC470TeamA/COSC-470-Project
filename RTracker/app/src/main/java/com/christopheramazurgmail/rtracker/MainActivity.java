@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //init image
-        image = BitmapFactory.decodeResource(getResources(), R.drawable.testimage);
+        image = BitmapFactory.decodeResource(getResources(), R.drawable.testimage2);
 
         //initialize Tesseract API
         String language = "eng";
@@ -70,11 +70,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void processImage(View view){
-        String OCRresult = null;
+        String OCRresult;
         mTess.setImage(image);
         OCRresult = mTess.getUTF8Text();
         TextView OCRTextView = (TextView) findViewById(R.id.main_text);
-        OCRTextView.setText(OCRresult);
+//        OCRTextView.setText(OCRresult);
+//        OCRresult = "STORE\naa 3.22\nbb 4.44\n12.00";
+        ReceiptBridge bridge = new ReceiptBridge();
+        Receipt receipt = bridge.makeReceipt(OCRresult);
+        OCRTextView.setText(receipt.toString());
     }
 
     private void copyFiles() {
