@@ -1,1 +1,11 @@
 //TODO
+
+//CATAGORIES (sould place this in seperate file)
+
+-Total (double)
+-SaleDate (date)
+-DealerName (varchar)
+-TrackerID (num)
+
+//Tracker ID is a unique identifying number assigned to each entry in the table and can be used to keep track of receipts that do
+//not provide a name to the retailer that provided them. It should increment by one with each new entry.
