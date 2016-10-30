@@ -17,5 +17,5 @@
         android:id="@+id/main_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No content for the main screen to show yet! Except this wicked sweet text." />
+        android:text="This text to be replaced by OCR Output." />
 </RelativeLayout>
