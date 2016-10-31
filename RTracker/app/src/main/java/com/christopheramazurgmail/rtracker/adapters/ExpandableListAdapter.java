@@ -45,7 +45,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         Item childObject = (Item) getChild(groupPosition, childPosition);
         String childDesc = childObject.getDesc();
         String childPrice = childObject.getPrice();
-//        final String child = (String) getChild(groupPosition, childPosition);
         LayoutInflater inflater = context.getLayoutInflater();
 
         if (convertView == null) {
@@ -98,6 +97,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView totalPriceText = (TextView) convertView.findViewById(R.id.totalPriceText);
         totalPriceText.setTypeface(null, Typeface.BOLD);
         totalPriceText.setText(String.format("%.2f", runningTotal));
+//        System.out.println(runningTotal);
         return convertView;
     }
 
