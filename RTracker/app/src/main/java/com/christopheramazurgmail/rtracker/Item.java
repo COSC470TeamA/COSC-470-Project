@@ -8,6 +8,7 @@ public class Item {
     private String desc;
     private double price;
 
+    public Item() {}
     public Item(String desc, double price) {
         this.desc = desc;
         this.price = price;
@@ -32,5 +33,13 @@ public class Item {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "desc='" + desc + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

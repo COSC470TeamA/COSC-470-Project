@@ -36,7 +36,7 @@ public class OCRWrapper {
 
     //constructor - accepts context & 3-letter language ID (e.g. eng, rus, chi)
     public OCRWrapper(Context context, String language) {
-        image           = BitmapFactory.decodeResource(context.getResources(), R.drawable.testimage);
+        image           = BitmapFactory.decodeResource(context.getResources(), R.drawable.testimage2);
         OCR             = new TessBaseAPI();
         datapath        = context.getFilesDir() + "/tesseract/";
 
@@ -46,9 +46,8 @@ public class OCRWrapper {
             f.mkdirs();
         }
 
-        OCR.init(datapath, language);
         checkLanguageDataFile(new File(datapath + "tessdata/"), context);
-
+        OCR.init(datapath, language);
 }
 
     //Give the image to OCR and return the results!
