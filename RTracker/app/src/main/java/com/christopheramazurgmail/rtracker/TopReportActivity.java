@@ -48,8 +48,8 @@ public class TopReportActivity extends Activity {
 
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-//                final String selected = (String) expListAdapter.getChild(
-//                        groupPosition, childPosition);
+                final String selected = (String) expListAdapter.getChild(
+                        groupPosition, childPosition);
 //                Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
 //                        .show();
 
@@ -64,7 +64,7 @@ public class TopReportActivity extends Activity {
      * Create the category names.
      */
     private void createGroupList() {
-        categoryNames = new ArrayList<String>();
+        categoryNames = new ArrayList<>();
         categoryNames.add("Gas");
         categoryNames.add("Clothes");
         categoryNames.add("Food");
@@ -110,18 +110,12 @@ public class TopReportActivity extends Activity {
             }
         }
 
-
-    private void loadChild(String[] items) {
-        childList = new ItemGroup();
-        for (String item : items)
-            childList.add(new Item(item));
-    }
-
     /** Populates the list of children (items)
      * from an array of items.
      * @param items
      */
     private void loadChild(ItemGroup items) {
+
         childList = items;
     }
 

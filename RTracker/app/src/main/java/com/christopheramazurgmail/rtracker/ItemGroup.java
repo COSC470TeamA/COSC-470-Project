@@ -22,6 +22,15 @@ public class ItemGroup extends ArrayList{
         return items;
     }
 
+    @Override
+    public String toString() {
+        String r = "ItemGroup{" + "items=";
+        for (Item i : items) {
+            r += i.toString() + ",";
+        }
+        return r += "}\n";
+    }
+
     public void add(Item item) {
         items.add(item);
     }
