@@ -39,6 +39,13 @@ public class OCRWrapper {
         image           = BitmapFactory.decodeResource(context.getResources(), R.drawable.testimage);
         OCR             = new TessBaseAPI();
         datapath        = context.getFilesDir() + "/tesseract/";
+
+        //check for filepath; create if necessary
+        File f = new File(datapath);
+        if(!f.exists() && !f.isDirectory()) {
+            f.mkdirs();
+        }
+
         OCR.init(datapath, language);
         checkLanguageDataFile(new File(datapath + "tessdata/"), context);
 
