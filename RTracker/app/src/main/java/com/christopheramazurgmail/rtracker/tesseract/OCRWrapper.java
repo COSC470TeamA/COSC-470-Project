@@ -40,16 +40,14 @@ public class OCRWrapper {
         OCR             = new TessBaseAPI();
         datapath        = context.getFilesDir() + "/tesseract/";
 
+        //check for filepath; create if necessary
         File f = new File(datapath);
         if(!f.exists() && !f.isDirectory()) {
-        // If the tesseract directory doesn't exist, make it
             f.mkdirs();
         }
 
         checkLanguageDataFile(new File(datapath + "tessdata/"), context);
         OCR.init(datapath, language);
-
-
 }
 
     //Give the image to OCR and return the results!
