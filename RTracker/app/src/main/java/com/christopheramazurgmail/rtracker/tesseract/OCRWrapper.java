@@ -46,9 +46,8 @@ public class OCRWrapper {
             f.mkdirs();
         }
 
-        OCR.init(datapath, language);
         checkLanguageDataFile(new File(datapath + "tessdata/"), context);
-
+        OCR.init(datapath, language);
 }
 
     //Give the image to OCR and return the results!
