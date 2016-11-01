@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+
+    <include layout="@layout/content_ocr" />
+
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center|bottom"
+        android:layout_weight = "15">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/selectImageButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:src="@drawable/upload_image_light"
+            android:layout_row="0"
+            android:layout_column="0"/>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/processImageButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:src="@drawable/run_ocr_image"
+            android:layout_row="0"
+            android:layout_column="3" />
+
+    </GridLayout>
+
+
+</LinearLayout>

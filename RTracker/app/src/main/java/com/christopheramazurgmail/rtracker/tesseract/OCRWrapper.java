@@ -13,8 +13,6 @@ package com.christopheramazurgmail.rtracker.tesseract;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import com.christopheramazurgmail.rtracker.R;
 import com.googlecode.tesseract.android.TessBaseAPI;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,23 +26,13 @@ import java.io.OutputStream;
 
 public class OCRWrapper {
 
-
-
-    private Bitmap image;
     private TessBaseAPI OCR;
     private String datapath = "";
 
     //constructor - accepts context & 3-letter language ID (e.g. eng, rus, chi)
     public OCRWrapper(Context context, String language) {
-        image           = BitmapFactory.decodeResource(context.getResources(), R.drawable.testimage2);
         OCR             = new TessBaseAPI();
         datapath        = context.getFilesDir() + "/tesseract/";
-
-        //check for filepath; create if necessary
-        File f = new File(datapath);
-        if(!f.exists() && !f.isDirectory()) {
-            f.mkdirs();
-        }
 
         checkLanguageDataFile(new File(datapath + "tessdata/"), context);
         OCR.init(datapath, language);
@@ -52,7 +40,7 @@ public class OCRWrapper {
 
     //Give the image to OCR and return the results!
     //TODO: Check if multiple calls to processImage result in conflicts
-    public String processImage(){
+    public String processImage(Bitmap image){
         String OCRResult;
         OCR.setImage(image);
         OCRResult = OCR.getUTF8Text();

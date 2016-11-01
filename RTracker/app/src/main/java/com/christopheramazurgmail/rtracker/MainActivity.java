@@ -1,25 +1,18 @@
 package com.christopheramazurgmail.rtracker;
 
-import com.christopheramazurgmail.rtracker.tesseract.OCRWrapper;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.TextView;
 import android.content.Intent;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView OCRTextView;
-    Button OCRButton;
-    OCRWrapper OCR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,32 +21,34 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Object Initialization
-
-        //Assign OCRTextView to main_text
-        final TextView OCRTextView = (TextView) findViewById(R.id.main_text);
-
-        /*
-        initialize OCR Object with context and language.
-        TODO: Replace Context with image handlers e.g. "load image" or "from photo"
-        For now it just checks the local filepath for everything important.
-        */
-        OCR = new OCRWrapper(this, "eng");
-        final CategorizationEngine categorizationEngine = new CategorizationEngine(this);
-
-        //Assign image process prompt to button click
-        OCRButton = (Button) findViewById(R.id.startOCRButton);
-        OCRButton.setOnClickListener(new View.OnClickListener() {
+        //OCR activity
+        FloatingActionButton OCRB = (FloatingActionButton)   findViewById(R.id.OCRFAB);
+        OCRB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String ocrResult = OCR.processImage();
-                ReceiptBridge bridge = new ReceiptBridge();
-                Receipt receipt = bridge.makeReceipt(ocrResult);
-                receipt = categorizationEngine.categorizeReceipt(receipt);
-                OCRTextView.setText(receipt.toString());
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+                Intent intent = new Intent(getApplicationContext(), OCRActivity.class);
+                startActivity(intent);
             }
         });
 
+        //Take Photo activity
+        FloatingActionButton takePhotoButton = (FloatingActionButton)   findViewById(R.id.takePhotoFAB);
+        takePhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+                Intent intent = new Intent(getApplicationContext(), TakePhotoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //Report Activity
         FloatingActionButton fab = (FloatingActionButton)   findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     @Override
