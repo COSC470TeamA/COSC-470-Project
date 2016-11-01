@@ -106,23 +106,35 @@ public class OCRActivity extends Activity {
     }
     int currImg = 0;
 public void handleImageViewClick(ImageView imageView) {
-    OCRTextOutputField.setText("");
+    //Steve's Suggestion:
+    //Todo: create a method that calls processImage and sets the output field
+
+    //Chris's Implementation: Dirty, dirty code.
+    OCRTextOutputField.setText(OCR.processImage(image));
     switch  (currImg) {
         case 0:
             imageView.setImageResource(R.drawable.test_1);
             image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
+            OCRTextOutputField.setText("");
+            OCRTextOutputField.setText(OCR.processImage(image));
             break;
         case 1:
             imageView.setImageResource(R.drawable.test_2);
             image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
+            OCRTextOutputField.setText("");
+            OCRTextOutputField.setText(OCR.processImage(image));
             break;
         case 2:
             imageView.setImageResource(R.drawable.test_3);
             image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
+            OCRTextOutputField.setText("");
+            OCRTextOutputField.setText(OCR.processImage(image));
             break;
         case 3:
             imageView.setImageResource(R.drawable.default_image);
             image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
+            OCRTextOutputField.setText("");
+            OCRTextOutputField.setText(OCR.processImage(image));
             currImg = -1; // Go back to the start of the switch next time
             break;
     }
