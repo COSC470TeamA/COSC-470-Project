@@ -36,7 +36,11 @@ public class Receipt {
             if (itemsList != null)
             for (Item item : itemsList) {
                 out += item.getDesc() + " ";
-                out += item.getPrice() + "\n";
+                out += item.getPrice() + " ";
+                if (item.getCat() != null) {
+                    out += "- " + item.getCat() + " ";
+                }
+                out += "\n";
             }
         }
         return out;

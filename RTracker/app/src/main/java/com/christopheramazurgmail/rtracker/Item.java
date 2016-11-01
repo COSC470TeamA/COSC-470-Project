@@ -7,11 +7,13 @@ package com.christopheramazurgmail.rtracker;
 public class Item {
     private String desc;
     private double price;
+    private String cat;
 
     public Item() {}
     public Item(String desc, double price) {
         this.desc = desc;
         this.price = price;
+        this.cat = null;
     }
     public Item(String desc) {
         this.desc = desc;
@@ -41,5 +43,13 @@ public class Item {
                 "desc='" + desc + '\'' +
                 ", price=" + price +
                 '}';
+    }
+
+    public String getCat() {
+        return cat;
+    }
+
+    public void setCat(String cat) {
+        this.cat = cat;
     }
 }

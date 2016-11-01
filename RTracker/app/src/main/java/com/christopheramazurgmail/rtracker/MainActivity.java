@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-     //Object Initialization
+        //Object Initialization
 
         //Assign OCRTextView to main_text
         final TextView OCRTextView = (TextView) findViewById(R.id.main_text);
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         For now it just checks the local filepath for everything important.
         */
         OCR = new OCRWrapper(this, "eng");
+        final CategorizationEngine categorizationEngine = new CategorizationEngine(this);
 
         //Assign image process prompt to button click
         OCRButton = (Button) findViewById(R.id.startOCRButton);
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 String ocrResult = OCR.processImage();
                 ReceiptBridge bridge = new ReceiptBridge();
                 Receipt receipt = bridge.makeReceipt(ocrResult);
-
+                receipt = categorizationEngine.categorizeReceipt(receipt);
                 OCRTextView.setText(receipt.toString());
             }
         });
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
     @Override
