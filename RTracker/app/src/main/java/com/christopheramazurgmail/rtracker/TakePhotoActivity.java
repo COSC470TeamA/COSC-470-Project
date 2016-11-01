@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.christopheramazurgmail.rtracker.tesseract.OCRWrapper;
 
 import java.io.File;
