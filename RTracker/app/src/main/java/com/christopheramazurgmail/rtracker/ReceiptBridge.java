@@ -24,11 +24,12 @@ public class ReceiptBridge {
             String[] lineWords = lines[i].split(" ");
             // Assuming all words make up the item name, and the last word is the price
             // Build the new item
-            Item thisLineItem = new Item();
-            thisLineItem.setDesc(lineWords[0]);
-            thisLineItem.setPrice(toPrice(lineWords[1]));
-
-            rec.add(thisLineItem);
+            if (!lineWords[0].equals("")) {
+                Item thisLineItem = new Item();
+                thisLineItem.setDesc(lineWords[0]);
+                thisLineItem.setPrice(toPrice(lineWords[1]));
+                rec.add(thisLineItem);
+            }
         }
         return rec;
     }
