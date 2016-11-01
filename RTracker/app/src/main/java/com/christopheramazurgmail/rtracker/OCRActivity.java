@@ -1,28 +1,17 @@
 package com.christopheramazurgmail.rtracker;
 
 import com.christopheramazurgmail.rtracker.tesseract.OCRWrapper;
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import java.io.FileDescriptor;
-import java.io.IOException;
-
-import static com.christopheramazurgmail.rtracker.R.drawable.default_image;
-import static com.christopheramazurgmail.rtracker.R.drawable.test_1;
 
 /**
  * Created by Chris Mazur on 26/10/31.
@@ -37,11 +26,7 @@ public class OCRActivity extends Activity {
     TextView OCRTextOutputField;
     ImageView imageToProcess;
     CategorizationEngine categorizationEngine;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+
         /*
         initialize OCR Object with context and language.
         TODO: Replace Context with image handlers e.g. "load image" or "from photo"

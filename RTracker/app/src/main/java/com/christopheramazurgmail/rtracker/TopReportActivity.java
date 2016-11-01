@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.christopheramazurgmail.rtracker.adapters.ExpandableListAdapter;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -14,7 +13,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.Toast;
 
 /**
  * Created by haunter on 26/10/16.
