@@ -82,7 +82,7 @@ public class OCRActivity extends Activity {
 
                 String ocrResult = OCR.processImage(image);
                 OCRTextOutputField.setText(ocrResult);
-/*                ReceiptBridge bridge = new ReceiptBridge();
+                /*ReceiptBridge bridge = new ReceiptBridge();
                 Receipt receipt = bridge.makeReceipt(ocrResult);
                 receipt = categorizationEngine.categorizeReceipt(receipt);
                 OCRTextOutputField.setText(receipt.toString());*/
@@ -95,19 +95,30 @@ public void handleImageViewClick(ImageView imageView) {
     //Todo: create a method that calls processImage and sets the output field
 
     //Chris's Implementation: Dirty, dirty code.
+
+    ReceiptBridge bridge = new ReceiptBridge();
     OCRTextOutputField.setText(OCR.processImage(image));
     switch  (currImg) {
         case 0:
             imageView.setImageResource(R.drawable.test_1);
             image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
             OCRTextOutputField.setText("");
-            OCRTextOutputField.setText(OCR.processImage(image));
+            Receipt receipt1 = bridge.makeReceipt(OCR.processImage(image));
+            receipt1 = categorizationEngine.categorizeReceipt(receipt1);
+            OCRTextOutputField.setText(receipt1.toString());
+            if (categorizationEngine.getUncategorizedItems().size() > 0) {
+                Intent intent = new Intent(getApplicationContext(), SelectCategoryActivity.class);
+                intent.putExtra("CategorizationEngine", categorizationEngine);
+                startActivity(intent);
+            }
             break;
         case 1:
             imageView.setImageResource(R.drawable.test_2);
             image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
             OCRTextOutputField.setText("");
-            OCRTextOutputField.setText(OCR.processImage(image));
+            Receipt receipt2 = bridge.makeReceipt(OCR.processImage(image));
+            receipt2 = categorizationEngine.categorizeReceipt(receipt2);
+            OCRTextOutputField.setText(receipt2.toString());
             break;
         case 2:
             imageView.setImageResource(R.drawable.test_3);
