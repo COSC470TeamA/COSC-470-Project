@@ -1,4 +1,5 @@
 package com.christopheramazurgmail.rtracker.adapters;
+        import java.util.ArrayList;
         import java.util.List;
         import java.util.Map;
 
@@ -32,6 +33,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     public Object getChild(int groupPosition, int childPosition) {
+        // Category names get group position
+        String categoryName = items.get(groupPosition);
+        ItemGroup category = allCategories.get(categoryName);
+        category.get(childPosition);
         return allCategories.get(items.get(groupPosition)).get(childPosition);
     }
 
@@ -61,7 +66,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     public int getChildrenCount(int groupPosition) {
-        return allCategories.get(items.get(groupPosition)).size();
+        String categoryName = items.get(groupPosition);
+
+        ItemGroup category = allCategories.get(categoryName);
+
+        int categorySize = category.size();
+
+        return categorySize;
     }
 
     public Object getGroup(int groupPosition) {
@@ -89,15 +100,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         item.setTypeface(null, Typeface.BOLD);
         item.setText(itemName);
 
-        List<Item> cat = allCategories.get(itemName);
+        ItemGroup cat = allCategories.get(itemName);
+        List<Item> category = cat.getItems();
         double runningTotal = 0; // @TODO make categories know about items instead of these stupid hacks
-        for (Item indItem : cat) {
+
+        for (Item indItem : category) {
             runningTotal += indItem.getPriceD();
         }
         TextView totalPriceText = (TextView) convertView.findViewById(R.id.totalPriceText);
         totalPriceText.setTypeface(null, Typeface.BOLD);
         totalPriceText.setText(String.format("%.2f", runningTotal));
-//        System.out.println(runningTotal);
         return convertView;
     }
 
