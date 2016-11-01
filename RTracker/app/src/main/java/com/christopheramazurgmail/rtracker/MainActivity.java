@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         //OCR activity
         FloatingActionButton OCRB = (FloatingActionButton)   findViewById(R.id.OCRFAB);
         OCRB.setOnClickListener(new View.OnClickListener() {
@@ -35,12 +34,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         //Take Photo activity
         FloatingActionButton takePhotoButton = (FloatingActionButton)   findViewById(R.id.takePhotoFAB);
         takePhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
@@ -48,9 +47,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
 
         //Report Activity
         FloatingActionButton fab = (FloatingActionButton)   findViewById(R.id.fab);

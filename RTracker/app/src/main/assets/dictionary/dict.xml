@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Categories>
+    <Category name="Gas">
+        <Items>
+            <Item name="Gas"></Item>
+        </Items>
+    </Category>
+    <Category name="Clothes">
+        <Items>
+            <Item name="Pants"></Item>
+            <Item name="Golf Pants"></Item>
+            <Item name="Hat"></Item>
+        </Items>
+    </Category>
+    <Category name="Food">
+        <Items>
+            <Item name="Bread"></Item>
+            <Item name="Milk"></Item>
+            <Item name="Cheese"></Item>
+            <Item name="Grapes"></Item>
+        </Items>
+    </Category>
+    <Category name="Electronics">
+        <Items>
+            <Item name="Headphones"></Item>
+            <Item name="Keyboard"></Item>
+        </Items>
+    </Category>
+    <Category name="Booze">
+        <Items>
+            <Item name="Beer"></Item>
+            <Item name="Wine"></Item>
+        </Items>
+    </Category>
+</Categories>

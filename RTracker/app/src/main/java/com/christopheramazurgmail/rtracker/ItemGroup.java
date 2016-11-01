@@ -10,10 +10,11 @@ import java.util.List;
  */
 public class ItemGroup extends ArrayList{
 
-    List<Item> items = new ArrayList<>();
+    ArrayList<Item> items = new ArrayList<>();
 
-    public ItemGroup() {}
-    public ItemGroup(List<Item> item) {
+    public ItemGroup() {
+    }
+    public ItemGroup(ArrayList<Item> item) {
         this.items = item;
     }
 
@@ -30,11 +31,20 @@ public class ItemGroup extends ArrayList{
         }
         return r += "}\n";
     }
+    @Override
+    public int size() {
+        return items.size();
+    }
+    @Override
+    public Item get(int position) {
+        return items.get(position);
+    }
+
 
     public void add(Item item) {
         items.add(item);
     }
-    public void setItems(List<Item> items) {
+    public void setItems(ArrayList<Item> items) {
         this.items = items;
     }
 

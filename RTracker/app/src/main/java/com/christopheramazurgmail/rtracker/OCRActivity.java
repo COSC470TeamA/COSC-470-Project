@@ -1,32 +1,31 @@
 package com.christopheramazurgmail.rtracker;
 
 import com.christopheramazurgmail.rtracker.tesseract.OCRWrapper;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
+import java.io.FileDescriptor;
 import java.io.IOException;
 
-import static com.christopheramazurgmail.rtracker.R.id.OCRTextOutputField;
+import static com.christopheramazurgmail.rtracker.R.drawable.test_1;
 
 /**
  * Created by Chris Mazur on 26/10/31.
  * Provides a view for selecting and processing stored images
- *
- *
  */
 public class OCRActivity extends Activity {
 
@@ -36,6 +35,12 @@ public class OCRActivity extends Activity {
     Bitmap image;
     TextView OCRTextOutputField;
     ImageView imageToProcess;
+    CategorizationEngine categorizationEngine;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
         /*
         initialize OCR Object with context and language.
         TODO: Replace Context with image handlers e.g. "load image" or "from photo"
@@ -47,6 +52,8 @@ public class OCRActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ocr);
         OCR = new OCRWrapper(this, "eng");
+        categorizationEngine = new CategorizationEngine(this);
+
 
         //set up the view objects
         //TODO: remove this later
@@ -55,6 +62,7 @@ public class OCRActivity extends Activity {
         selectImageButton = (FloatingActionButton) findViewById(R.id.selectImageButton);
         processImageButton = (FloatingActionButton) findViewById(R.id.processImageButton);
         image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
+
         //Give user image selection on button click
         selectImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +74,7 @@ public class OCRActivity extends Activity {
                 try {
                     //start the intended activity; if result pass 1 to onActivityResult
                     startActivityForResult(intent, 1);
-                } catch (android.content.ActivityNotFoundException ex) {
+                } catch (ActivityNotFoundException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -78,14 +86,15 @@ public class OCRActivity extends Activity {
         processImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String ocrResult = OCR.processImage(image);
                 OCRTextOutputField.setText(ocrResult);
-                //ReceiptBridge bridge = new ReceiptBridge();
-                //Receipt receipt = bridge.makeReceipt(ocrResult);
-                //OCRTextOutputField.setText(receipt.toString());
+/*                ReceiptBridge bridge = new ReceiptBridge();
+                Receipt receipt = bridge.makeReceipt(ocrResult);
+                receipt = categorizationEngine.categorizeReceipt(receipt);
+                OCRTextOutputField.setText(receipt.toString());*/
             }
         });
-
     }
 
     @Override
@@ -97,13 +106,22 @@ public class OCRActivity extends Activity {
                 // The user picked an image
                 // The Intent data Uri identifies which image was selected.
                 Uri imageUri = data.getData();
-                try {
-                    imageToProcess.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri));
-                    image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                imageToProcess.setImageURI(imageUri);
+                image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
             }
         }
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
     }
 }
