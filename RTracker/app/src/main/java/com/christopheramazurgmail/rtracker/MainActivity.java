@@ -51,8 +51,20 @@ public class MainActivity extends AppCompatActivity {
                 Receipt receipt = bridge.makeReceipt(ocrResult);
                 receipt = categorizationEngine.categorizeReceipt(receipt);
                 OCRTextView.setText(receipt.toString());
+
+                //not able to find categories for some items
+                if (categorizationEngine.getUncategorizedItems().size() > 0) {
+                    //bring up choose a category activity
+                    //Intent intent = new Intent(getApplicationContext(), SelectCategoryActivity.class);
+                    //intent.putExtra("categorizationEngine", categorizationEngine);
+                    //startActivity(intent);
+                }
+
+                OCRTextView.setText(receipt.toString());
             }
         });
+
+
 
         FloatingActionButton fab = (FloatingActionButton)   findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

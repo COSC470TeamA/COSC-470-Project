@@ -13,4 +13,45 @@
     tools:context="com.christopheramazurgmail.rtracker.SelectCategoryActivity"
     tools:showIn="@layout/activity_select_category">
 
+    <TextView
+        android:text="Item:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemLabel" />
+
+    <TextView
+        android:text=""
+        android:layout_below="@+id/itemLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemDesc" />
+
+    <TextView
+        android:text="Choose a Category: "
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/itemDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerLabel" />
+
+    <Spinner
+        android:id="@+id/categorySpinner"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/itemDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown" />
+
+    <Button
+        android:text="Save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:id="@+id/saveButton"
+        android:layout_below="@+id/categorySpinner"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="11dp"
+        android:layout_marginEnd="11dp" />
 </RelativeLayout>

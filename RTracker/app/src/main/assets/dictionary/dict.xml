@@ -17,7 +17,6 @@
             <Item name="Bread"></Item>
             <Item name="Milk"></Item>
             <Item name="Cheese"></Item>
-            <Item name="Grapes"></Item>
         </Items>
     </Category>
     <Category name="Electronics">
