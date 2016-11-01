@@ -21,6 +21,7 @@ import android.widget.TextView;
 import java.io.FileDescriptor;
 import java.io.IOException;
 
+import static com.christopheramazurgmail.rtracker.R.drawable.default_image;
 import static com.christopheramazurgmail.rtracker.R.drawable.test_1;
 
 /**
@@ -58,6 +59,13 @@ public class OCRActivity extends Activity {
         //set up the view objects
         //TODO: remove this later
         imageToProcess = (ImageView) findViewById(R.id.OCRImageInput);
+        imageToProcess.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                handleImageViewClick(imageToProcess);
+            }
+        });
         OCRTextOutputField = (TextView) findViewById(R.id.OCRTextOutputField);
         selectImageButton = (FloatingActionButton) findViewById(R.id.selectImageButton);
         processImageButton = (FloatingActionButton) findViewById(R.id.processImageButton);
@@ -96,7 +104,30 @@ public class OCRActivity extends Activity {
             }
         });
     }
-
+    int currImg = 0;
+public void handleImageViewClick(ImageView imageView) {
+    OCRTextOutputField.setText("");
+    switch  (currImg) {
+        case 0:
+            imageView.setImageResource(R.drawable.test_1);
+            image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
+            break;
+        case 1:
+            imageView.setImageResource(R.drawable.test_2);
+            image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
+            break;
+        case 2:
+            imageView.setImageResource(R.drawable.test_3);
+            image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
+            break;
+        case 3:
+            imageView.setImageResource(R.drawable.default_image);
+            image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
+            currImg = -1; // Go back to the start of the switch next time
+            break;
+    }
+    currImg++;
+}
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
