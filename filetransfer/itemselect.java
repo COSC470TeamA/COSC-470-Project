@@ -1,3 +1,7 @@
+//This method selects a list of items pre-defined in a text file and then compares them to the input
+//If an item from the list matches the input then the input is returned as a valid search term
+//Otherwise the system notes that the item does not exist
+
 public String itemSelect(search String){
     String res = "Item not found";
     File file = new File("items.txt");
