@@ -1,10 +1,12 @@
 package com.christopheramazurgmail.rtracker;
 
 
+import java.io.Serializable;
+
 /**
  * Created by haunter on 26/10/16.
  */
-public class Item {
+public class Item implements Serializable{
     private String desc;
     private double price;
     private String cat;

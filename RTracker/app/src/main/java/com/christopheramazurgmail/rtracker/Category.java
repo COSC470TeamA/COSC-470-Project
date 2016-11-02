@@ -1,12 +1,13 @@
 package com.christopheramazurgmail.rtracker;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  * Created by brewi on 2016-10-31.
  */
 
-public class Category {
+public class Category implements Serializable {
     private LinkedList<Item> itemList;
     private String name;
 
@@ -27,7 +28,7 @@ public class Category {
     }
 
 
-    public class Item {
+    public class Item implements Serializable {
         private String name;
 
         public Item(String name) {

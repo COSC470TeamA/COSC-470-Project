@@ -10,6 +10,7 @@
             <Item name="Pants"></Item>
             <Item name="Golf Pants"></Item>
             <Item name="Hat"></Item>
+            <Item name="Shirt"></Item>
         </Items>
     </Category>
     <Category name="Food">
@@ -17,7 +18,7 @@
             <Item name="Bread"></Item>
             <Item name="Milk"></Item>
             <Item name="Cheese"></Item>
-            <Item name="Grapes"></Item>
+            <Item name="Spaghetti"></Item>
         </Items>
     </Category>
     <Category name="Electronics">
