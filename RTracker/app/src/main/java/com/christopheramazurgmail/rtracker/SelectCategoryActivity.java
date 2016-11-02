@@ -26,6 +26,7 @@ public class SelectCategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select_category);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Select Category");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
