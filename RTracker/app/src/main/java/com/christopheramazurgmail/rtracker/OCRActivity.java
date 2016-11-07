@@ -107,8 +107,8 @@ public void handleImageViewClick(ImageView imageView) {
             receipt1 = categorizationEngine.categorizeReceipt(receipt1);
             OCRTextOutputField.setText(receipt1.toString());
             if (categorizationEngine.getUncategorizedItems().size() > 0) {
-                Intent intent = new Intent(getApplicationContext(), SelectCategoryActivity.class);
-                intent.putExtra("CategorizationEngine", categorizationEngine);
+                Intent intent = new Intent(getApplicationContext(), ReceiptFactory.class);
+                //intent.putExtra("CategorizationEngine", categorizationEngine);
                 startActivity(intent);
             }
             break;
