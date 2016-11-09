@@ -24,12 +24,6 @@
         android:text="Image to be processed: " />
 
     <ImageView
-<<<<<<< HEAD
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:src="@drawable/default_image"
-=======
->>>>>>> refs/remotes/origin/master
         android:id="@+id/OCRImageInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
