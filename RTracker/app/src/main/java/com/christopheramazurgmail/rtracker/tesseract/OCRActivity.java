@@ -4,6 +4,7 @@ import com.christopheramazurgmail.rtracker.CategorizationEngine;
 import com.christopheramazurgmail.rtracker.R;
 import com.christopheramazurgmail.rtracker.Receipt;
 import com.christopheramazurgmail.rtracker.ReceiptBridge;
+import com.christopheramazurgmail.rtracker.ReceiptFactory;
 import com.christopheramazurgmail.rtracker.SelectCategoryActivity;
 
 import android.app.Activity;
@@ -36,6 +37,7 @@ public class OCRActivity extends Activity {
     TextView OCRTextOutputField;
     ImageView imageToProcess;
     CategorizationEngine categorizationEngine;
+    ReceiptFactory receiptFactory = new ReceiptFactory();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,14 +84,8 @@ public class OCRActivity extends Activity {
         processImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String ocrResult = OCR.processImage(image);
                 OCRTextOutputField.setText(ocrResult);
-                //re-implement later
-                /*ReceiptBridge bridge = new ReceiptBridge();
-                Receipt receipt = bridge.makeReceipt(ocrResult);
-                receipt = categorizationEngine.categorizeReceipt(receipt);
-                OCRTextOutputField.setText(receipt.toString());*/
             }
         });
     }
@@ -121,51 +117,37 @@ public class OCRActivity extends Activity {
     int currImg = 0;
 
     public void handleImageViewClick(ImageView imageView) {
-        //Steve's Suggestion:
-        //Todo: create a method that calls processImage and sets the output field
+        int[] testImageArray = {R.drawable.test_1, R.drawable.test_2};
 
-        //Chris's Implementation: Dirty, dirty code.
-
-        ReceiptBridge bridge = new ReceiptBridge();
         OCRTextOutputField.setText(OCR.processImage(image));
-        switch (currImg) {
-            case 0:
-                imageView.setImageResource(R.drawable.test_1);
-                image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
-                OCRTextOutputField.setText("");
-                Receipt receipt1 = bridge.makeReceipt(OCR.processImage(image));
-                receipt1 = categorizationEngine.categorizeReceipt(receipt1);
-                OCRTextOutputField.setText(receipt1.toString());
-                if (categorizationEngine.getUncategorizedItems().size() > 0) {
-                    Intent intent = new Intent(getApplicationContext(), SelectCategoryActivity.class);
-                    intent.putExtra("CategorizationEngine", categorizationEngine);
-                    startActivity(intent);
-                }
-                break;
-            case 1:
-                imageView.setImageResource(R.drawable.test_2);
-                image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
-                OCRTextOutputField.setText("");
-                Receipt receipt2 = bridge.makeReceipt(OCR.processImage(image));
-                receipt2 = categorizationEngine.categorizeReceipt(receipt2);
-                OCRTextOutputField.setText(receipt2.toString());
-                break;
-            case 2:
-                imageView.setImageResource(R.drawable.test_3);
-                image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
-                OCRTextOutputField.setText("");
-                OCRTextOutputField.setText(OCR.processImage(image));
-                break;
-            case 3:
-                imageView.setImageResource(R.drawable.default_image);
-                image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
-                OCRTextOutputField.setText("");
-                OCRTextOutputField.setText(OCR.processImage(image));
-                currImg = -1; // Go back to the start of the switch next time
-                break;
+
+        if (currImg == testImageArray.length) {
+            currImg = 0;
         }
+
+        Receipt receipt = processImage(testImageArray[currImg], imageView);
         currImg++;
+
+        OCRTextOutputField.setText(receipt.toString());
     }
 
+    private Receipt processImage(int imageID, ImageView imageView) {
+        ReceiptBridge bridge = new ReceiptBridge();
+        imageView.setImageResource(imageID);
+        image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
 
+        //make receipt object
+        Receipt receipt = bridge.makeReceipt(OCR.processImage(image));
+
+        //categorize receipt
+        receipt = categorizationEngine.categorizeReceipt(receipt);
+
+        //set output
+        OCRTextOutputField.setText(receipt.toString());
+
+        //display receipt in factory
+        receiptFactory.start(this, receipt, categorizationEngine);
+
+        return receipt;
+    }
 }
