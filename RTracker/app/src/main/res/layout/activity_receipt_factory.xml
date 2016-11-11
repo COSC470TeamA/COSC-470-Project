@@ -34,4 +34,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/total_price"/>
+
+    <Button
+    android:text="Save"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="14dp"
+    android:id="@+id/save_button"
+    android:layout_marginEnd="11dp" />
 </LinearLayout>

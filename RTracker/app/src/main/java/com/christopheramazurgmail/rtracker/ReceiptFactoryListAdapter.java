@@ -5,6 +5,7 @@ import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.Spinner;
@@ -34,6 +35,7 @@ public class ReceiptFactoryListAdapter extends ArrayAdapter<Item> {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        final int item = i;
         ViewHolder holder;
 
         if(view == null) {
@@ -71,6 +73,18 @@ public class ReceiptFactoryListAdapter extends ArrayAdapter<Item> {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, arraySpinner);
         holder.itemSpinner.setAdapter(adapter);
         holder.itemSpinner.setSelection(categoryIndex);
+
+        holder.itemSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                getItem(item).setCat(adapterView.getItemAtPosition(i).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         return view;
     }
