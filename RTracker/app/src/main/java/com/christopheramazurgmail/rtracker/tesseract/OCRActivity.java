@@ -1,11 +1,5 @@
 package com.christopheramazurgmail.rtracker.tesseract;
 
-import com.christopheramazurgmail.rtracker.CategorizationEngine;
-import com.christopheramazurgmail.rtracker.R;
-import com.christopheramazurgmail.rtracker.Receipt;
-import com.christopheramazurgmail.rtracker.ReceiptBridge;
-import com.christopheramazurgmail.rtracker.SelectCategoryActivity;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -18,7 +12,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ScrollView;
+
+import com.christopheramazurgmail.rtracker.CategorizationEngine;
+import com.christopheramazurgmail.rtracker.R;
+import com.christopheramazurgmail.rtracker.Receipt;
+import com.christopheramazurgmail.rtracker.ReceiptBridge;
+import com.christopheramazurgmail.rtracker.SelectCategoryActivity;
 
 import java.io.InputStream;
 
@@ -54,6 +53,7 @@ public class OCRActivity extends Activity {
                 handleImageViewClick(imageToProcess);
             }
         });
+
         OCRTextOutputField = (TextView) findViewById(R.id.OCRTextOutputField);
         selectImageButton = (FloatingActionButton) findViewById(R.id.selectImageButton);
         processImageButton = (FloatingActionButton) findViewById(R.id.processImageButton);
@@ -68,7 +68,7 @@ public class OCRActivity extends Activity {
                 intent.setType("*/*");      //any files for now
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 try {
-                    //start the intended activity; if result pass 1 to onActivityResult
+                    //start the get_content action; if result pass 1 to onActivityResult
                     startActivityForResult(intent, 1);
                 } catch (ActivityNotFoundException ex) {
                     ex.printStackTrace();
@@ -131,7 +131,7 @@ public class OCRActivity extends Activity {
         switch (currImg) {
             case 0:
                 imageView.setImageResource(R.drawable.test_1);
-                image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
+                image = BitmapFactory.decodeResource(getResources(), R.drawable.test_1);
                 OCRTextOutputField.setText("");
                 Receipt receipt1 = bridge.makeReceipt(OCR.processImage(image));
                 receipt1 = categorizationEngine.categorizeReceipt(receipt1);
