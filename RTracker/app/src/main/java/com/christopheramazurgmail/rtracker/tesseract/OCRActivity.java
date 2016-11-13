@@ -8,6 +8,7 @@ import com.christopheramazurgmail.rtracker.SelectCategoryActivity;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -116,9 +117,21 @@ public class OCRActivity extends Activity {
             }
         }
     }
+public void putImageInCarousel(int drawable) {
+    Uri imageUri = drawableToUri(drawable);
+    InputStream imageStream;
+    try {
+        imageStream = getContentResolver().openInputStream(imageUri);
+        image = BitmapFactory.decodeStream(imageStream);
+        imageToProcess.setImageBitmap(image);
+        imageStream.close();
 
+    } catch (java.io.IOException e) {
+        e.printStackTrace();
+    }
+}
 
-    int currImg = 0;
+    int currImg = -6;
 
     public void handleImageViewClick(ImageView imageView) {
         //Steve's Suggestion:
@@ -127,8 +140,26 @@ public class OCRActivity extends Activity {
         //Chris's Implementation: Dirty, dirty code.
 
         ReceiptBridge bridge = new ReceiptBridge();
-        OCRTextOutputField.setText(OCR.processImage(image));
+        //OCRTextOutputField.setText(OCR.processImage(image));
         switch (currImg) {
+            case -6:
+                putImageInCarousel(R.drawable.s1);
+                break;
+            case -5:
+                putImageInCarousel(R.drawable.s2);
+                break;
+            case -4:
+                putImageInCarousel(R.drawable.s3);
+                break;
+            case -3:
+                putImageInCarousel(R.drawable.s4);
+                break;
+            case -2:
+                putImageInCarousel(R.drawable.s5);
+                break;
+            case -1:
+                putImageInCarousel(R.drawable.s6);
+                break;
             case 0:
                 imageView.setImageResource(R.drawable.test_1);
                 image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
@@ -161,11 +192,24 @@ public class OCRActivity extends Activity {
                 image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
                 OCRTextOutputField.setText("");
                 OCRTextOutputField.setText(OCR.processImage(image));
-                currImg = -1; // Go back to the start of the switch next time
+                currImg = -7; // Go back to the start of the switch next time
                 break;
         }
         currImg++;
     }
 
+    /**
+     * Looks up the URI of an Android drawable.
+     *
+     * @param drawable
+     * @return
+     */
+    public Uri drawableToUri(int drawable) {
+    Uri imageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
+            "://" + getResources().getResourcePackageName(drawable)
+            + '/' + getResources().getResourceTypeName(drawable)
+            + '/' + getResources().getResourceEntryName(drawable) );
 
+    return imageUri;
+}
 }
