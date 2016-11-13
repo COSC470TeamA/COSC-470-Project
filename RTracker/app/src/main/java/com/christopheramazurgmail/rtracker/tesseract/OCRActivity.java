@@ -1,5 +1,15 @@
 package com.christopheramazurgmail.rtracker.tesseract;
 
+<<<<<<< HEAD
+=======
+import com.christopheramazurgmail.rtracker.CategorizationEngine;
+import com.christopheramazurgmail.rtracker.R;
+import com.christopheramazurgmail.rtracker.Receipt;
+import com.christopheramazurgmail.rtracker.ReceiptBridge;
+import com.christopheramazurgmail.rtracker.ReceiptFactory;
+import com.christopheramazurgmail.rtracker.SelectCategoryActivity;
+
+>>>>>>> refs/remotes/origin/master
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -36,6 +46,7 @@ public class OCRActivity extends Activity {
     TextView OCRTextOutputField;
     ImageView imageToProcess;
     CategorizationEngine categorizationEngine;
+    ReceiptFactory receiptFactory = new ReceiptFactory();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,14 +108,8 @@ public class OCRActivity extends Activity {
         processImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String ocrResult = OCR.processImage(image);
                 OCRTextOutputField.setText(ocrResult);
-                //re-implement later
-                /*ReceiptBridge bridge = new ReceiptBridge();
-                Receipt receipt = bridge.makeReceipt(ocrResult);
-                receipt = categorizationEngine.categorizeReceipt(receipt);
-                OCRTextOutputField.setText(receipt.toString());*/
             }
         });
     }
@@ -161,13 +166,10 @@ public class OCRActivity extends Activity {
     int currImg = 0;
 
     public void handleImageViewClick(ImageView imageView) {
-        //Steve's Suggestion:
-        //Todo: create a method that calls processImage and sets the output field
+        int[] testImageArray = {R.drawable.test_1, R.drawable.test_2};
 
-        //Chris's Implementation: Dirty, dirty code.
-
-        ReceiptBridge bridge = new ReceiptBridge();
         OCRTextOutputField.setText(OCR.processImage(image));
+<<<<<<< HEAD
         switch (currImg) {
             case 0:
                 imageView.setImageResource(R.drawable.test_1);
@@ -203,11 +205,41 @@ public class OCRActivity extends Activity {
                 OCRTextOutputField.setText(OCR.processImage(image));
                 currImg = -1; // Go back to the start of the switch next time
                 break;
+=======
+
+        if (currImg == testImageArray.length) {
+            currImg = 0;
+>>>>>>> refs/remotes/origin/master
         }
+
+        Receipt receipt = processImage(testImageArray[currImg], imageView);
         currImg++;
+
+        OCRTextOutputField.setText(receipt.toString());
     }
 
+    private Receipt processImage(int imageID, ImageView imageView) {
+        ReceiptBridge bridge = new ReceiptBridge();
+        imageView.setImageResource(imageID);
+        image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
 
+        //make receipt object
+        Receipt receipt = bridge.makeReceipt(OCR.processImage(image));
 
+        //categorize receipt
+        receipt = categorizationEngine.categorizeReceipt(receipt);
+
+<<<<<<< HEAD
+
+=======
+        //set output
+        OCRTextOutputField.setText(receipt.toString());
+
+        //display receipt in factory
+        receiptFactory.start(this, receipt, categorizationEngine);
+
+        return receipt;
+    }
+>>>>>>> refs/remotes/origin/master
 }
 
