@@ -2,25 +2,15 @@ package com.christopheramazurgmail.rtracker;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.view.LayoutInflaterCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewStub;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ReceiptFactory extends AppCompatActivity {
     private CategorizationEngine categorizationEngine;

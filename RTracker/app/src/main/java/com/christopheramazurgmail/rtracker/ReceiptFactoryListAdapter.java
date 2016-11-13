@@ -1,18 +1,14 @@
 package com.christopheramazurgmail.rtracker;
 
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
