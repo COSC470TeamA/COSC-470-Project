@@ -50,6 +50,7 @@ public class OCRActivity extends Activity {
         Bundle extras = getIntent().getExtras();
 
             //Case: Context from Take Photo Activity
+        if (extras != null) {
             if (extras.containsKey("ImageURI")) {
                 System.out.println("Has Image URI");
                 try {
@@ -60,7 +61,7 @@ public class OCRActivity extends Activity {
 
                 pictureFromCamera();
             }
-
+        }
             image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
 
         //set up the view objects
