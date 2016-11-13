@@ -1,15 +1,5 @@
 package com.christopheramazurgmail.rtracker.tesseract;
 
-<<<<<<< HEAD
-=======
-import com.christopheramazurgmail.rtracker.CategorizationEngine;
-import com.christopheramazurgmail.rtracker.R;
-import com.christopheramazurgmail.rtracker.Receipt;
-import com.christopheramazurgmail.rtracker.ReceiptBridge;
-import com.christopheramazurgmail.rtracker.ReceiptFactory;
-import com.christopheramazurgmail.rtracker.SelectCategoryActivity;
-
->>>>>>> refs/remotes/origin/master
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -28,9 +18,10 @@ import com.christopheramazurgmail.rtracker.CategorizationEngine;
 import com.christopheramazurgmail.rtracker.R;
 import com.christopheramazurgmail.rtracker.Receipt;
 import com.christopheramazurgmail.rtracker.ReceiptBridge;
-import com.christopheramazurgmail.rtracker.SelectCategoryActivity;
+import com.christopheramazurgmail.rtracker.ReceiptFactory;
 
 import java.io.InputStream;
+
 
 /**
  * Created by Chris Mazur on 26/10/31.
@@ -47,6 +38,7 @@ public class OCRActivity extends Activity {
     ImageView imageToProcess;
     CategorizationEngine categorizationEngine;
     ReceiptFactory receiptFactory = new ReceiptFactory();
+    int currImg = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,60 +148,19 @@ public class OCRActivity extends Activity {
         imageToProcess.setImageBitmap(image);
     }
 
-
     private Bitmap rotateImage(Bitmap toRotate){
         Matrix matrix = new Matrix();
         matrix.postRotate(90);
         return Bitmap.createBitmap(toRotate, 0, 0, toRotate.getWidth(), toRotate.getHeight(), matrix, true);
     }
 
-    int currImg = 0;
-
     public void handleImageViewClick(ImageView imageView) {
         int[] testImageArray = {R.drawable.test_1, R.drawable.test_2};
 
         OCRTextOutputField.setText(OCR.processImage(image));
-<<<<<<< HEAD
-        switch (currImg) {
-            case 0:
-                imageView.setImageResource(R.drawable.test_1);
-                image = BitmapFactory.decodeResource(getResources(), R.drawable.test_1);
-                OCRTextOutputField.setText("");
-                Receipt receipt1 = bridge.makeReceipt(OCR.processImage(image));
-                receipt1 = categorizationEngine.categorizeReceipt(receipt1);
-                OCRTextOutputField.setText(receipt1.toString());
-                if (categorizationEngine.getUncategorizedItems().size() > 0) {
-                    Intent intent = new Intent(getApplicationContext(), SelectCategoryActivity.class);
-                    intent.putExtra("CategorizationEngine", categorizationEngine);
-                    startActivity(intent);
-                }
-                break;
-            case 1:
-                imageView.setImageResource(R.drawable.test_2);
-                image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
-                OCRTextOutputField.setText("");
-                Receipt receipt2 = bridge.makeReceipt(OCR.processImage(image));
-                receipt2 = categorizationEngine.categorizeReceipt(receipt2);
-                OCRTextOutputField.setText(receipt2.toString());
-                break;
-            case 2:
-                imageView.setImageResource(R.drawable.test_3);
-                image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
-                OCRTextOutputField.setText("");
-                OCRTextOutputField.setText(OCR.processImage(image));
-                break;
-            case 3:
-                imageView.setImageResource(R.drawable.default_image);
-                image = ((BitmapDrawable) imageToProcess.getDrawable()).getBitmap();
-                OCRTextOutputField.setText("");
-                OCRTextOutputField.setText(OCR.processImage(image));
-                currImg = -1; // Go back to the start of the switch next time
-                break;
-=======
 
         if (currImg == testImageArray.length) {
             currImg = 0;
->>>>>>> refs/remotes/origin/master
         }
 
         Receipt receipt = processImage(testImageArray[currImg], imageView);
@@ -229,9 +180,6 @@ public class OCRActivity extends Activity {
         //categorize receipt
         receipt = categorizationEngine.categorizeReceipt(receipt);
 
-<<<<<<< HEAD
-
-=======
         //set output
         OCRTextOutputField.setText(receipt.toString());
 
@@ -240,6 +188,5 @@ public class OCRActivity extends Activity {
 
         return receipt;
     }
->>>>>>> refs/remotes/origin/master
 }
 
