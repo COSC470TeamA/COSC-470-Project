@@ -19,6 +19,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
-    tools:context="com.christopheramazurgmail.rtracker.takephoto.TakePhotoActivity">
-
-    <include layout="@layout/content_top_report"/>
+    tools:context="com.christopheramazurgmail.rtracker.takephoto.CameraActivity">
+    </FrameLayout>

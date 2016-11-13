@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.christopheramazurgmail.rtracker">
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-feature android:name="android.hardware.camera"/>
     <uses-feature android:name="android.hardware.camera.autofocus"/>
@@ -42,11 +43,13 @@
         </activity>
 
         <activity
-            android:name=".takephoto.CameraActivity" android:label="@string/app_name">
-    </activity>
+            android:name=".takephoto.CameraActivity"
+            android:label="CameraActivity">
+        </activity>
 
         <activity
-            android:name=".takephoto.TakePhotoActivity" android:label="@string/app_name">
+            android:name=".takephoto.TakePhotoActivity"
+            android:label="TakePhotoActivity">
         </activity>
 
         <provider
@@ -54,9 +57,6 @@
             android:authorities="com.christopheramazurgmail.rtracker"
             android:exported="false"
             android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
         </provider>
 
     </application>
