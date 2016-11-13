@@ -11,9 +11,6 @@ import android.widget.ImageButton;
 import com.christopheramazurgmail.rtracker.R;
 import com.christopheramazurgmail.rtracker.tesseract.OCRActivity;
 
-/**
- * Created by Chris Mazur on 11/9/2016.
- */
 
 public class TakePhotoActivity extends Activity {
 
