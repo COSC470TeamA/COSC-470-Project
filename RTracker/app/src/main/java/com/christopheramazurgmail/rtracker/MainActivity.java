@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 
-import com.christopheramazurgmail.rtracker.takephoto.CameraActivity;
+import com.christopheramazurgmail.rtracker.takephoto.TakePhotoActivity;
 import com.christopheramazurgmail.rtracker.tesseract.OCRActivity;
 
 
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
+                Intent intent = new Intent(getApplicationContext(), TakePhotoActivity.class);
                 startActivity(intent);
             }
         });
