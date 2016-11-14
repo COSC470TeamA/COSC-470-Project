@@ -175,11 +175,24 @@ public class CategorizationEngine implements Serializable{
         }
     }
 
-    public void addToDictionary(Item first, String categoryName) throws IOException {
+    public void addToDictionary(Item first, String categoryName) {
         for (Category category : this.categories) {
             if(category.getName().equals(categoryName)){
-                category.addItemToList(first.getDesc());
+                //if pair does not exist add
+                if(!pairExists(category.getItemList(), first.getDesc())){
+                    //TODO search all other pairings for this item and delete before adding new
+                    category.addItemToList(first.getDesc());
+                }
             }
         }
+    }
+
+    private boolean pairExists(LinkedList<Category.Item> itemList, String desc) {
+        for (Category.Item item : itemList) {
+            if (item.getName().equals(desc)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
