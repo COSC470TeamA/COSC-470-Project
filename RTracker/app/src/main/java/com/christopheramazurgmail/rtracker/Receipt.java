@@ -1,13 +1,14 @@
 package com.christopheramazurgmail.rtracker;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by haunter on 27/10/16.
  */
-public class Receipt {
+public class Receipt implements Serializable{
     String store;
-    ItemGroup items;
+    public ItemGroup items;
 
     public Receipt() {
         items = new ItemGroup();

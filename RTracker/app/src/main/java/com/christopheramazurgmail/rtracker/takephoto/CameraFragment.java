@@ -424,7 +424,7 @@ public class CameraFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.content_autofittextureview, container, false);
+        return inflater.inflate(R.layout.content_auto_fit_texture_view, container, false);
     }
 
     @Override
