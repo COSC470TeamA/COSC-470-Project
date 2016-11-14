@@ -7,10 +7,21 @@
     </Category>
     <Category name="Clothes">
         <Items>
+            <Item name="Accessory"></Item>
+            <Item name="Active"></Item>
+            <Item name="Coat"></Item>
+            <Item name="Jacket"></Item>
+            <Item name="Sweatshirt"></Item>
+            <Item name="Jeans"></Item>
             <Item name="Pants"></Item>
-            <Item name="Golf Pants"></Item>
-            <Item name="Hat"></Item>
             <Item name="Shirt"></Item>
+            <Item name="Shorts"></Item>
+            <Item name="Socks"></Item>
+            <Item name="Swim"></Item>
+            <Item name="Underwear"></Item>
+            <Item name="Bag"></Item>
+            <Item name="Shows"></Item>
+            <Item name="Boots"></Item>
         </Items>
     </Category>
     <Category name="Food">
@@ -25,8 +36,52 @@
         <Items>
             <Item name="Headphones"></Item>
             <Item name="Keyboard"></Item>
+            <Item name="TV"></Item>
+            <Item name="Video"></Item>
+            <Item name="Home Audio"></Item>
+            <Item name="Theatre"></Item>
+            <Item name="Camera"></Item>
+            <Item name="Photo"></Item>
+            <Item name="Cell Phone"></Item>
+            <Item name="Bluetooth"></Item>
+            <Item name="Speakers"></Item>
+            <Item name="Car Electronic"></Item>
+            <Item name="Wearable Technology"></Item>
+            <Item name="Musical Instrument"></Item>
+            <Item name="Home Automation"></Item>
+            <Item name="Laptop"></Item>
+            <Item name="Tablet"></Item>
+            <Item name="Desktop"></Item>
+            <Item name="Monitor"></Item>
+            <Item name="Hard Drive"></Item>
+            <Item name="Storage"></Item>
+            <Item name="Memory"></Item>
+            <Item name="PC"></Item>
+            <Item name="Networking"></Item>
+            <Item name="PC Gaming"></Item>
         </Items>
     </Category>
+
+    <Category name="Golf">
+        <Items>
+            <Item name="Driver"></Item>
+            <Item name="Iron"></Item>
+            <Item name="Fairway Wood"></Item>
+            <Item name="Putter"></Item>
+            <Item name="Carry bag"></Item>
+            <Item name="Cart Bag"></Item>
+            <Item name="Push Cart"></Item>
+            <Item name="Ball"></Item>
+            <Item name="Practice Ball"></Item>
+            <Item name="Tees"></Item>
+            <Item name="Ball Markers"></Item>
+            <Item name="Umbrella"></Item>
+            <Item name="Range Finder"></Item>
+            <Item name="Musical Instrument"></Item>
+            <Item name="Hitting mat"></Item>
+        </Items>
+    </Category>
+
     <Category name="Booze">
         <Items>
             <Item name="Beer"></Item>

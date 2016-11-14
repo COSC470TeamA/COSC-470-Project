@@ -1,6 +1,7 @@
 package com.christopheramazurgmail.rtracker.tesseract;
 
 import com.christopheramazurgmail.rtracker.CategorizationEngine;
+import com.christopheramazurgmail.rtracker.Dictionary;
 import com.christopheramazurgmail.rtracker.R;
 import com.christopheramazurgmail.rtracker.Receipt;
 import com.christopheramazurgmail.rtracker.ReceiptBridge;
@@ -216,8 +217,9 @@ public class OCRActivity extends Activity {
 
 
         System.out.println(OCRTextOutputField.getText());
-        return null;
-        //return receipt;
+
+
+        return receipt;
     }
 
     public void processImage() {
