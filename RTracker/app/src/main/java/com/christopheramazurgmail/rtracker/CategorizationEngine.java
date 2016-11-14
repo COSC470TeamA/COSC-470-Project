@@ -102,7 +102,7 @@ public class CategorizationEngine implements Serializable{
             {
                 if(dict.getName().equals("Category")) {
 
-                    Category category = new Category(dict.getAttributeValue(null, "name"));
+                    Category category = new Category(dict.getAttributeValue(null, "name"));System.out.println(dict.getAttributeValue(null, "name"));
 
                     //go through each of sub elements until Category end tag
                     Boolean foundEndTag = false;
@@ -143,6 +143,12 @@ public class CategorizationEngine implements Serializable{
             File datafile = new File(datafilepath);
 
             if (!datafile.exists()) {
+                copyDictionaryFile(context);
+            }
+            else {
+                // TODO The datafile has to be unpacked from Assets and copied into a useful directory
+                // TODO but it should be replaced only once, on install.
+                datafile.delete();
                 copyDictionaryFile(context);
             }
         }
