@@ -1,6 +1,5 @@
 package com.christopheramazurgmail.rtracker;
 
-
 import java.io.Serializable;
 
 /**
