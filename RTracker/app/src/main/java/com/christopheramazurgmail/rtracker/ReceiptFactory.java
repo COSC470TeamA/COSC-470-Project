@@ -11,12 +11,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import static com.christopheramazurgmail.rtracker.R.id.item;
 
 public class ReceiptFactory extends AppCompatActivity {
     private CategorizationEngine categorizationEngine;
@@ -53,7 +50,7 @@ public class ReceiptFactory extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
-                    resetAllCategories((ArrayList<Item>) getIntent().getSerializableExtra("Items"));
+                    resetAllCategories((ArrayList<Item>)getIntent().getSerializableExtra("Items"));
                 } else {
                     setAllCategories(adapterView.getItemAtPosition(i).toString());
                 }
@@ -66,7 +63,7 @@ public class ReceiptFactory extends AppCompatActivity {
         });
 
         //populate items
-        initializeItems((ArrayList<Item>) getIntent().getSerializableExtra("Items"));
+        initializeItems((ArrayList<Item>)getIntent().getSerializableExtra("Items"));
 
         //populate total
         TextView totalPriceView = (TextView) findViewById(R.id.total_price);
@@ -84,16 +81,7 @@ public class ReceiptFactory extends AppCompatActivity {
     }
 
     private void resetAllCategories(ArrayList<Item> itemsList){
-        ListView listView = (ListView) findViewById(R.id.item_list);
-
-        ArrayList<Item> modifiedItems = new ArrayList<>();
-        for(int i=0;i<listView.getCount();i++){
-            Item item = (Item) listView.getItemAtPosition(i);
-            item.setCat(null);
-            modifiedItems.add(item);
-        }
-
-        initializeItems(modifiedItems);
+        initializeItems(itemsList);
     }
 
     private void setAllCategories(String category) {
@@ -101,7 +89,9 @@ public class ReceiptFactory extends AppCompatActivity {
 
         ArrayList<Item> modifiedItems = new ArrayList<>();
         for(int i=0;i<listView.getCount();i++){
-            Item item = (Item) listView.getItemAtPosition(i);
+            Item item = new Item();
+            item.setDesc(((Item) listView.getItemAtPosition(i)).getDesc());
+            item.setPrice(((Item) listView.getItemAtPosition(i)).getPriceD());
             item.setCat(category);
             modifiedItems.add(item);
         }
