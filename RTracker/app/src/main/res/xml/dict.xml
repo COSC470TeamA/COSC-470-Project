@@ -20,7 +20,7 @@
             <Item name="Swim"></Item>
             <Item name="Underwear"></Item>
             <Item name="Bag"></Item>
-            <Item name="Shows"></Item>
+            <Item name="Shorts"></Item>
             <Item name="Boots"></Item>
         </Items>
     </Category>
@@ -30,7 +30,6 @@
             <Item name="Milk"></Item>
             <Item name="Cheese"></Item>
             <Item name="Spaghetti"></Item>
-            <Item name="Granola/Yogurt Parfait"></Item>
         </Items>
     </Category>
     <Category name="Electronics">
@@ -62,6 +61,7 @@
             <Item name="PC Gaming"></Item>
         </Items>
     </Category>
+
     <Category name="Golf">
         <Items>
             <Item name="Driver"></Item>
@@ -81,6 +81,7 @@
             <Item name="Hitting mat"></Item>
         </Items>
     </Category>
+
     <Category name="Booze">
         <Items>
             <Item name="Beer"></Item>

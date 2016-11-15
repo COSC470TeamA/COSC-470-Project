@@ -2,6 +2,7 @@ package com.christopheramazurgmail.rtracker.tesseract;
 
 
 import com.christopheramazurgmail.rtracker.CategorizationEngine;
+import com.christopheramazurgmail.rtracker.Dictionary;
 import com.christopheramazurgmail.rtracker.R;
 import com.christopheramazurgmail.rtracker.Receipt;
 import com.christopheramazurgmail.rtracker.ReceiptBridge;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 
 
 import java.io.InputStream;
+import java.util.Iterator;
 
 
 /**
