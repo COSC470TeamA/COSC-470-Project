@@ -18,7 +18,6 @@ import java.util.List;
 
 public class ReceiptFactoryListAdapter extends ArrayAdapter<Item> {
     private LinkedList<Category> categories;
-    private LayoutInflater inflater;
 
     public ReceiptFactoryListAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
@@ -46,29 +45,22 @@ public class ReceiptFactoryListAdapter extends ArrayAdapter<Item> {
             holder = (ViewHolder) view.getTag();
         }
 
-        holder.itemDesc.setText(getItem(i).getDesc());
-        holder.itemPrice.setText("$" + getItem(i).getPrice());
+        String[] arraySpinner = ReceiptFactory.populateSpinner(categories, "None");
 
-        //create array with one extra element to provide default none option for category
-        String[] arraySpinner = new String[categories.size() + 1];
+        if (getItem(i).getDesc() != null) {
+            holder.itemDesc.setText(getItem(i).getDesc());
+        }
 
-        arraySpinner[0] = "None";
-        //set default selected category of none
-        int categoryIndex = 0;
-
-        int index = 1;
-        for (Category category : categories) {
-            arraySpinner[index] = category.getName();
-            if (category.getName().equals(getItem(i).getCat())){
-                //if category matches item category set
-                categoryIndex = index;
-            }
-            index++;
+        if(getItem(i).getPrice() != null) {
+            holder.itemPrice.setText("$" + getItem(i).getPrice());
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, arraySpinner);
         holder.itemSpinner.setAdapter(adapter);
-        holder.itemSpinner.setSelection(categoryIndex);
+
+        int index = setSelectedCategory(getItem(i).getCat(), arraySpinner);
+
+        holder.itemSpinner.setSelection(index);
 
         holder.itemSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -83,6 +75,25 @@ public class ReceiptFactoryListAdapter extends ArrayAdapter<Item> {
         });
 
         return view;
+    }
+
+    private int setSelectedCategory(String cat, String[] arraySpinner) {
+        //set default selected category of none
+        if (cat == null) {
+            return  0;
+        }
+
+        int selectedIndex = 0;
+
+        int index = 0;
+        for (String category : arraySpinner) {
+            if (cat.equals(category)) {
+                selectedIndex = index;
+            }
+            index++;
+        }
+
+        return  selectedIndex;
     }
 
     static class ViewHolder {
