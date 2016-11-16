@@ -1,5 +1,6 @@
 package com.christopheramazurgmail.rtracker;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -51,7 +52,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_ITEM_CREATE
             = "create table " + TABLE_ITEM + "( " + COLUMN_ID
-            + " integer primary key, " + COLUMN_NAME
+            + " integer primary key autoincrement, " + COLUMN_NAME
             + " text not null" + COLUMN_PRICE + "integer);";
 
     private static final String TABLE_ITEM_CAT_CREATE
@@ -80,8 +81,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_USER_CREATE
             = "create table " + TABLE_USER + "( " + COLUMN_USER_ID
-            + " integer primary key, " + COLUMN_DB_ID
-            + " integer primary key, " + COLUMN_USER_NAME
+            + " integer primary key autoincrement, " + COLUMN_DB_ID
+            + " integer primary key autoincrement, " + COLUMN_USER_NAME
             + " text);";
 
     private static final String TABLE_STORE_CREATE
@@ -124,4 +125,23 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void createItem(Item item){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ITEM_NAME, item.getDesc());
+        db.insert(TABLE_ITEM, null, values);
+    }
+
+    public void createUser(String name){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_NAME, name);
+        db.insert(TABLE_USER, null, values);
+    }
+
+    public void closeDB() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        if (db != null && db.isOpen())
+            db.close();
+    }
 }
