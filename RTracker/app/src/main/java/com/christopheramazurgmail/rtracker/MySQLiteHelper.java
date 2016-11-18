@@ -1,11 +1,15 @@
 package com.christopheramazurgmail.rtracker;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.Cursor;
 import android.util.Log;
 
 public class MySQLiteHelper extends SQLiteOpenHelper {
+
+    private static final String LOG = MySQLiteHelper.class.getName();
 
     public static final String TABLE_COMMENTS = "comments";
     public static final String TABLE_CAT = "cat";
@@ -51,43 +55,44 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_ITEM_CREATE
             = "create table " + TABLE_ITEM + "( " + COLUMN_ID
-            + " integer primary key, " + COLUMN_NAME
-            + " text not null" + COLUMN_PRICE + "integer);";
+            + " integer primary key autoincrement, " + COLUMN_NAME
+            + " text not null, " + COLUMN_PRICE + "integer);";
 
     private static final String TABLE_ITEM_CAT_CREATE
             = "create table " + TABLE_ITEM_CAT + "( " + COLUMN_ITEM_ID
-            + " integer primary key, " + COLUMN_CAT_ID + "integer primary key);";
+            + " integer, " + COLUMN_CAT_ID + "integer, primary key ("
+            + COLUMN_ITEM_ID + ", " + COLUMN_CAT_ID +"));";
 
     private static final String TABLE_LIBRARY_CREATE
             = "create table " + TABLE_LIBRARY + "( " + COLUMN_CAT_NAME
-            + " text primary key, " + COLUMN_ITEM_NAME
-            + " text primary key);";
+            + " text, " + COLUMN_ITEM_NAME
+            + " text, primary key(" + COLUMN_CAT_NAME + ", " + COLUMN_ITEM_NAME + "));";
 
     private static final String TABLE_ITEM_RECEIPT_CREATE
             = "create table " + TABLE_ITEM_RECEIPT + "( " + COLUMN_ITEM_ID
-            + " integer primary key, " + COLUMN_R_ID
-            + " text primary key);";
+            + " integer, " + COLUMN_R_ID
+            + " text, primary key(" + COLUMN_ITEM_ID + ", " + COLUMN_R_ID + "));";
 
     private static final String TABLE_RECEIPT_STORE_CREATE
             = "create table " + TABLE_RECEIPT_STORE + "( " + COLUMN_R_ID
-            + " text primary key, " + COLUMN_STORE_ID
-            + " text primary key);";
+            + " text, " + COLUMN_STORE_ID
+            + " text, primary key (" + COLUMN_R_ID + ", " + COLUMN_STORE_ID +"));";
 
     private static final String TABLE_RECEIPT_CREATE
             = "create table " + TABLE_RECEIPT + "( " + COLUMN_ID
-            + " text primary key, " + COLUMN_DATE
-            + " text primary key);";
+            + " text, " + COLUMN_DATE
+            + " text, primary key(" + COLUMN_ID + ", " + COLUMN_DATE + "));";
 
     private static final String TABLE_USER_CREATE
             = "create table " + TABLE_USER + "( " + COLUMN_USER_ID
-            + " integer primary key, " + COLUMN_DB_ID
-            + " integer primary key, " + COLUMN_USER_NAME
+            + " integer primary key autoincrement, " + COLUMN_DB_ID
+            + " integer, " + COLUMN_USER_NAME
             + " text);";
 
     private static final String TABLE_STORE_CREATE
             = "create table " + TABLE_STORE + "( " + COLUMN_STORE_ID
-            + " text primary key, " + COLUMN_STORE_NAME
-            + " text primary key);";
+            + " text, " + COLUMN_STORE_NAME
+            + " text, primary key (" + COLUMN_STORE_ID + ", " + COLUMN_STORE_NAME + "));";
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -96,14 +101,23 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database) {
 
+        System.out.println("Creating table cat");
         database.execSQL(TABLE_CAT_CREATE);
+        System.out.println("Creating table item");
         database.execSQL(TABLE_ITEM_CREATE);
-        database.execSQL(TABLE_ITEM_CAT_CREATE);
+        System.out.println("Creating table item_cat");
+        //database.execSQL(TABLE_ITEM_CAT_CREATE);
+        System.out.println("Creating table library");
         database.execSQL(TABLE_LIBRARY_CREATE);
+        System.out.println("Creating table item_receipt");
         database.execSQL(TABLE_ITEM_RECEIPT_CREATE);
+        System.out.println("Creating table receipt_store");
         database.execSQL(TABLE_RECEIPT_STORE_CREATE);
+        System.out.println("Creating table receipt");
         database.execSQL(TABLE_RECEIPT_CREATE);
+        System.out.println("Creating table user");
         database.execSQL(TABLE_USER_CREATE);
+        System.out.println("Creating table store");
         database.execSQL(TABLE_STORE_CREATE);
     }
 
@@ -124,4 +138,46 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void createItem(Item item){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ITEM_NAME, item.getDesc());
+        db.insert(TABLE_ITEM, null, values);
+    }
+
+    public void createUser(String name, int data){
+        System.out.println("Creating a new user");
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = "SELECT MAX(" + COLUMN_USER_ID + ") as user_id FROM " + TABLE_USER;
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        if (c != null)
+            c.moveToFirst();
+        int testSet = c.getInt(c.getColumnIndex(COLUMN_USER_ID));
+        testSet = testSet + 1;
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_ID, testSet);
+        values.put(COLUMN_DB_ID, data);
+        values.put(COLUMN_USER_NAME, name);
+        db.insert(TABLE_USER, null, values);
+        System.out.println("Retreiving from database user id: " + getUser(testSet));
+    }
+
+    public int getUser(int u_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_USER + " WHERE "
+                + COLUMN_USER_ID + " = " + u_id;
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        if (c != null)
+            c.moveToFirst();
+        int testGet = c.getInt(c.getColumnIndex(COLUMN_USER_ID));
+        return testGet;
+    }
+
+    public void closeDB() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        if (db != null && db.isOpen())
+            db.close();
+    }
 }

@@ -16,11 +16,16 @@ import com.christopheramazurgmail.rtracker.tesseract.OCRActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    MySQLiteHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        db = new MySQLiteHelper(getApplicationContext());
+        String name = "test";
+        int dat = 1;
+        db.createUser(name, dat);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -63,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        db.closeDB();
     }
 
     @Override
