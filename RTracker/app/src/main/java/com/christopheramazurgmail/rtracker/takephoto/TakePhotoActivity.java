@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.camera.CropImageIntentBuilder;
 import com.christopheramazurgmail.rtracker.R;
 import com.christopheramazurgmail.rtracker.tesseract.OCRActivity;
 
@@ -60,9 +61,18 @@ public class TakePhotoActivity extends Activity {
         cropPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(cameraIntent, CAMERA_CROP_REQUEST);
+
+                if (imagePreview.getVisibility() == View.VISIBLE) {
+                    Uri croppedImage = imageUri;
+                    CropImageIntentBuilder cropImage = new CropImageIntentBuilder(200, 200, croppedImage);
+                    cropImage.setOutlineColor(0xFF03A9F4);
+                    cropImage.setSourceImage(croppedImage);
+                    startActivityForResult(cropImage.getIntent(getApplicationContext()), CAMERA_CROP_REQUEST);
+                }
+
+                else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "No Image!", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             }
         });
@@ -71,13 +81,16 @@ public class TakePhotoActivity extends Activity {
         OCRActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (imagePreview.getVisibility() == imagePreview.VISIBLE) {
+
+                if (imagePreview.getVisibility() == View.VISIBLE) {
+
                     Intent OCRIntent = new Intent(getApplicationContext(), OCRActivity.class);
                     OCRIntent.putExtra("ImageURI", imageUri);
                     startActivity(OCRIntent);
                 }
 
                 else {
+
                     Toast toast = Toast.makeText(getApplicationContext(), "No Image!", Toast.LENGTH_SHORT);
                     toast.show();
                 }
@@ -101,6 +114,7 @@ public class TakePhotoActivity extends Activity {
             }
 
             else if (requestCode == CAMERA_CROP_REQUEST){
+                imagePreview.setImageURI(imageUri);
                 //do a crop
             }
         }
