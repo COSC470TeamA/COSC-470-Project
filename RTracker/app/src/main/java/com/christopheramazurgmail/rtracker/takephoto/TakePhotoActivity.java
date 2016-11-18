@@ -7,63 +7,116 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.android.camera.CropImageIntentBuilder;
 import com.christopheramazurgmail.rtracker.R;
 import com.christopheramazurgmail.rtracker.tesseract.OCRActivity;
 
 
 public class TakePhotoActivity extends Activity {
 
+    Button OCRActivity;
     Button takePicture;
     ImageButton cropPicture;
+    ImageView imagePreview;
     int CAMERA_PIC_REQUEST = 1;
-    int NEW_PICTURE_TRUE = 1;
+    int CAMERA_CROP_REQUEST = 2;
+    //int CAMERA_QUICK_PIC_REQUEST = 3; - for taking a quick picture with no confirmation stuff
     Uri imageUri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_photo);
 
-        takePicture = (Button) findViewById(R.id.picture);
-        cropPicture = (ImageButton) findViewById(R.id.crop_image);
+        OCRActivity     = (Button)      findViewById(R.id.OCRActivity);
+        takePicture     = (Button)      findViewById(R.id.picture);
+        cropPicture     = (ImageButton) findViewById(R.id.crop_image);
+        imagePreview    = (ImageView)   findViewById(R.id.previewImage);
+        imagePreview.setVisibility(View.INVISIBLE);
 
-        final Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-
-        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+        //Begin the activity in take-picture mode
+        //if (settings.startinpicturemodesetting) {}
+        if (savedInstanceState == null) {
+            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+            }
         }
 
-        if (NEW_PICTURE_TRUE == -1){
-            Intent intent = new Intent(getApplicationContext(), OCRActivity.class);
-            startActivity(intent);
-        }
-
+        //Button for taking pictures
         takePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 if (cameraIntent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
                 }
             }
         });
+        //Button for cropping
+        cropPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (imagePreview.getVisibility() == View.VISIBLE) {
+                    Uri croppedImage = imageUri;
+                    CropImageIntentBuilder cropImage = new CropImageIntentBuilder(200, 200, croppedImage);
+                    cropImage.setOutlineColor(0xFF03A9F4);
+                    cropImage.setSourceImage(croppedImage);
+                    startActivityForResult(cropImage.getIntent(getApplicationContext()), CAMERA_CROP_REQUEST);
+                }
+
+                else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "No Image!", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+        });
+
+        //Button for launching OCR
+        OCRActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (imagePreview.getVisibility() == View.VISIBLE) {
+
+                    Intent OCRIntent = new Intent(getApplicationContext(), OCRActivity.class);
+                    OCRIntent.putExtra("ImageURI", imageUri);
+                    startActivity(OCRIntent);
+                }
+
+                else {
+
+                    Toast toast = Toast.makeText(getApplicationContext(), "No Image!", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+        });
+
     }
 
 
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (resultCode == RESULT_OK) {
 
             if (requestCode == CAMERA_PIC_REQUEST) {
+                //Todo: Encapsulate
                 imageUri = data.getData();
-                Intent OCRIntent = new Intent(this, OCRActivity.class);
-                OCRIntent.putExtra("ImageURI", imageUri);
-                startActivity(OCRIntent);
-                }
-            else {
-                NEW_PICTURE_TRUE = 0;
+                imagePreview.setImageURI(imageUri);
+                if (imagePreview.getVisibility() == View.INVISIBLE)
+                    imagePreview.setVisibility(View.VISIBLE);
 
             }
 
+            else if (requestCode == CAMERA_CROP_REQUEST){
+                imagePreview.setImageURI(imageUri);
+                //do a crop
+            }
         }
     }
 

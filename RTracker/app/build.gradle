@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'maven'
 
 android {
     compileSdkVersion 24
@@ -19,8 +20,17 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+
+    maven {
+        url 'http://lorenzo.villani.me/android-cropimage/'
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'me.villani.lorenzo.android:android-cropimage:1.1.+'
     compile 'com.rmtheis:tess-two:6.0.4'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
