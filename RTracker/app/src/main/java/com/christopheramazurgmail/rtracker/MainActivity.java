@@ -27,7 +27,12 @@ public class MainActivity extends AppCompatActivity {
         int dat = 1;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String currentDateandTime = sdf.format(new Date());
-        db.insertReceipt("red456", currentDateandTime);
+
+        //The method below is a simple test for inserting a receipt to the database.
+        //As both these fields are primary keys, an insert will fail unless
+        //new values are specified beforehand.
+        //db.insertReceipt("red456", currentDateandTime);
+
         //db.createUser(name, dat);
         System.out.println("Retreiving from database user id: " + db.getUser(7));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
