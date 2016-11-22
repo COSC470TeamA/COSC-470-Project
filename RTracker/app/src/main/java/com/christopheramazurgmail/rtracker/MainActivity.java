@@ -10,6 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,7 +25,11 @@ public class MainActivity extends AppCompatActivity {
         db = new MySQLiteHelper(getApplicationContext());
         String name = "test";
         int dat = 1;
-        db.createUser(name, dat);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String currentDateandTime = sdf.format(new Date());
+        db.insertReceipt("red456", currentDateandTime);
+        //db.createUser(name, dat);
+        System.out.println("Retreiving from database user id: " + db.getUser(7));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

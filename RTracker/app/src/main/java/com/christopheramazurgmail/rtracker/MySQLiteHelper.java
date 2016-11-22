@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
     private static final String LOG = MySQLiteHelper.class.getName();
@@ -173,6 +176,28 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             c.moveToFirst();
         int testGet = c.getInt(c.getColumnIndex(COLUMN_USER_ID));
         return testGet;
+    }
+
+    public List<String> getAllReceiptID() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> receipts = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_RECEIPT;
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        while (c.moveToNext()) {
+            String testGet = c.getString(c.getColumnIndex(COLUMN_USER_ID));
+            receipts.add(testGet);
+        }
+        return receipts;
+    }
+
+    public void insertReceipt(String r_id, String r_date){
+        System.out.println("Creating a new receipt");
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ID, r_id);
+        values.put(COLUMN_DATE, r_date);
+        db.insert(TABLE_RECEIPT, null, values);
     }
 
     public void closeDB() {
