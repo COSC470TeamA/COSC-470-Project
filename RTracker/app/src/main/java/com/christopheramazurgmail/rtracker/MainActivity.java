@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
         db = new MySQLiteHelper(getApplicationContext());
         String name = "test";
         int dat = 1;
-        db.createUser(name, dat);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
