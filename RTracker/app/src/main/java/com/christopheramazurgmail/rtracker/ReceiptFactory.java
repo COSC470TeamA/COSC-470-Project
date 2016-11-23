@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.christopheramazurgmail.rtracker.adapters.ReceiptFactoryListAdapter;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 

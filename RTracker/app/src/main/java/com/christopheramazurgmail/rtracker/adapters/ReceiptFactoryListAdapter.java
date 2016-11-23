@@ -1,4 +1,4 @@
-package com.christopheramazurgmail.rtracker;
+package com.christopheramazurgmail.rtracker.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.christopheramazurgmail.rtracker.Category;
+import com.christopheramazurgmail.rtracker.Item;
+import com.christopheramazurgmail.rtracker.R;
+import com.christopheramazurgmail.rtracker.ReceiptFactory;
 
 import java.util.LinkedList;
 import java.util.List;
