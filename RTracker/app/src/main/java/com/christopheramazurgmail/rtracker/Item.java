@@ -1,6 +1,5 @@
 package com.christopheramazurgmail.rtracker;
 
-
 import java.io.Serializable;
 
 /**
@@ -44,6 +43,7 @@ public class Item implements Serializable{
         return "Item{" +
                 "desc='" + desc + '\'' +
                 ", price=" + price +
+                ", car=" + cat +
                 '}';
     }
 

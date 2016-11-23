@@ -102,7 +102,7 @@ public class CategorizationEngine implements Serializable{
             {
                 if(dict.getName().equals("Category")) {
 
-                    Category category = new Category(dict.getAttributeValue(null, "name"));
+                    Category category = new Category(dict.getAttributeValue(null, "name"));System.out.println(dict.getAttributeValue(null, "name"));
 
                     //go through each of sub elements until Category end tag
                     Boolean foundEndTag = false;
@@ -145,6 +145,12 @@ public class CategorizationEngine implements Serializable{
             if (!datafile.exists()) {
                 copyDictionaryFile(context);
             }
+            else {
+                // TODO The datafile has to be unpacked from Assets and copied into a useful directory
+                // TODO but it should be replaced only once, on install.
+                datafile.delete();
+                copyDictionaryFile(context);
+            }
         }
     }
 
@@ -175,11 +181,24 @@ public class CategorizationEngine implements Serializable{
         }
     }
 
-    public void addToDictionary(Item first, String categoryName) throws IOException {
+    public void addToDictionary(Item first, String categoryName) {
         for (Category category : this.categories) {
             if(category.getName().equals(categoryName)){
-                category.addItemToList(first.getDesc());
+                //if pair does not exist add
+                if(!pairExists(category.getItemList(), first.getDesc())){
+                    //TODO search all other pairings for this item and delete before adding new
+                    category.addItemToList(first.getDesc());
+                }
             }
         }
+    }
+
+    private boolean pairExists(LinkedList<Category.Item> itemList, String desc) {
+        for (Category.Item item : itemList) {
+            if (item.getName().equals(desc)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -3,4 +3,10 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_top_report">TopReportActivity</string>
     <string name="title_activity_select_category">SelectCategoryActivity</string>
+
+    <string name="take_photo_picture">Take Picture</string>
+    <string name="take_photo_intro_message">An Intro!</string>
+    <string name="take_photo_description_info">Info</string>
+    <string name="take_photo_request_permission">This sample needs camera permission.</string>
+    <string name="take_photo_camera_error">This device doesn\'t support Camera2 API.</string>
 </resources>

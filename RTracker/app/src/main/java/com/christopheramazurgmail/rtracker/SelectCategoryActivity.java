@@ -57,12 +57,10 @@ public class SelectCategoryActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    try {
+
                         categorizationEngine.addToDictionary(categorizationEngine.getUncategorizedItems().getFirst(), categorySpinner.getSelectedItem().toString());
                         finish();
-                    } catch (IOException ex) {
-                        System.out.println(ex);
-                    }
+
                 }
         });
 
