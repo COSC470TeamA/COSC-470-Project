@@ -10,6 +10,11 @@ import java.util.List;
  */
 public class ReceiptBridge {
 
+    /**
+     * The words which have 'item like' formats but are not items
+     * eg, GST 0.21 has the same format as an item we want to save
+     * but must be thrown out.
+     */
     List<String> nonItemDescriptors = new ArrayList();
 
     public ReceiptBridge() {
