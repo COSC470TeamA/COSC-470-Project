@@ -178,14 +178,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return testGet;
     }
 
-    public List<String> getAllReceiptID() {
+    public ArrayList<String> getAllReceiptID() {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<String> receipts = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_RECEIPT;
         Log.e(LOG, selectQuery);
         Cursor c = db.rawQuery(selectQuery, null);
         while (c.moveToNext()) {
-            String testGet = c.getString(c.getColumnIndex(COLUMN_USER_ID));
+            String testGet = c.getString(c.getColumnIndex(COLUMN_ID));
             receipts.add(testGet);
         }
         return receipts;
