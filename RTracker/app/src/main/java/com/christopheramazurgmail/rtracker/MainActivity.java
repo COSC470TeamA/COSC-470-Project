@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import com.christopheramazurgmail.rtracker.takephoto.TakePhotoActivity;
 import com.christopheramazurgmail.rtracker.tesseract.OCRActivity;
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         db = new MySQLiteHelper(getApplicationContext());
         String name = "test";
         int dat = 1;
+        ArrayList<String> receipts = new ArrayList<>();
+
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String currentDateandTime = sdf.format(new Date());
@@ -33,10 +36,14 @@ public class MainActivity extends AppCompatActivity {
         //The method below is a simple test for inserting a receipt to the database.
         //As both these fields are primary keys, an insert will fail unless
         //new values are specified beforehand.
-        //db.insertReceipt("red456", currentDateandTime);
+        db.insertReceipt("red459", currentDateandTime);
 
         //db.createUser(name, dat);
         //System.out.println("Retreiving from database user id: " + db.getUser(7));
+        receipts = db.getAllReceiptID();
+        for (String item : receipts) {
+            System.out.println(item);
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
