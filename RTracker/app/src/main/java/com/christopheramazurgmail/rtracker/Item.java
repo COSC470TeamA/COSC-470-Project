@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by haunter on 26/10/16.
  */
-public class Item implements Serializable{
+public class Item implements Serializable, Comparable{
     private String desc;
     private double price;
     private String cat;
@@ -53,5 +53,18 @@ public class Item implements Serializable{
 
     public void setCat(String cat) {
         this.cat = cat;
+    }
+
+    /**
+     * Determines if an Item is greater than or less than
+     * another Item.
+     * @param o
+     * @return
+     */
+    @Override
+    public int compareTo(Object o) {
+        Item i = (Item) o;
+        double r = this.getPriceD() - i.getPriceD();
+        return r < 0 ? -1 : 1;
     }
 }

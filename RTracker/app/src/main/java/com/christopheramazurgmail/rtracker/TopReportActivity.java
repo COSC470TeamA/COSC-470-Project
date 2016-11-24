@@ -24,9 +24,9 @@ import android.widget.Spinner;
  */
 public class TopReportActivity extends Activity {
 
-    List<String> categoryNames;
+    List<String> headerNames;
     ItemGroup childList;
-    Map<String, ItemGroup> allCategories;
+    Map<String, ItemGroup> expListViewMap;
     ExpandableListView expListView;
     ExpandableListAdapter expListAdapter;
     Spinner searchBySpinner, orderBySpinner;
@@ -45,7 +45,7 @@ public class TopReportActivity extends Activity {
 
         // Find the expandable list view
         expListView = (ExpandableListView) findViewById(R.id.expandableListView);
-        expListAdapter = new ExpandableListAdapter(this, categoryNames, allCategories);
+        expListAdapter = new ExpandableListAdapter(this, headerNames, expListViewMap);
         expListView.setAdapter(expListAdapter);
 
 
@@ -92,11 +92,14 @@ public class TopReportActivity extends Activity {
         orderBySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if (orderByValues[position].equals(orderByValues[0])) {
-                    handleOrderByRecent();
-                }
-                else if (orderByValues[position].equals(orderByValues[1])) {
-                    handleOrderByPrice();
+
+                switch (position) {
+                    case 0:
+                        handleOrderByRecent();
+                        break;
+                    case 1:
+                        handleOrderByPrice();
+                        break;
                 }
             }
             @Override
@@ -104,28 +107,34 @@ public class TopReportActivity extends Activity {
             }
         });
     }
-    Receipt testReceipt = new Receipt("Store Name AAA", "test1", "1.1", "test2", "2.2", "test3", "3.3");
+    Receipt testReceipt = new Receipt("Store Name AAA", "test1", "5.1", "test2", "8.2", "test3", "3.3");
     Receipt testReceipt2 = new Receipt("Store Name Bab", "best1", "11.1", "best2", "22.2", "best3", "33.3");
     Receipt testReceipt3 = new Receipt("Store Name Carlop", "vest1", "14.1", "vest2", "24.2", "vest3", "34.3");
 
     ArrayList<Receipt> allReceipts = new ArrayList<>();
 
+    /**
+     * Displays the Categories and their Items in the report.
+     *
+     * Clears all the current data and adds it back with the
+     * category names as headers and the items as children.
+     */
     public void handleSortByCategory() {
 
-        allCategories.clear();
-        categoryNames.clear();
+        expListViewMap.clear();
+        headerNames.clear();
         allReceipts.clear();
 
-        // TODO remove this test crap
+        // TODO remove this test crap and replace with DB calls
         allReceipts.add(testReceipt);
         allReceipts.add(testReceipt2);
         allReceipts.add(testReceipt3);
 
-        categoryNames.addAll(dictionary.getCategoryNames());
-        categoryNames.add("Uncategorized");
+        headerNames.addAll(dictionary.getCategoryNames());
+        headerNames.add("Uncategorized");
 
-        for (String catName : categoryNames) {
-            allCategories.put(catName, new ItemGroup());
+        for (String catName : headerNames) {
+            expListViewMap.put(catName, new ItemGroup());
         }
 
         for (Receipt rec : allReceipts) {
@@ -133,14 +142,21 @@ public class TopReportActivity extends Activity {
                 if (item.getCat() == null) {
                     item.setCat("Uncategorized");
                 }
-                allCategories.get(item.getCat()).add(item);
+                expListViewMap.get(item.getCat()).add(item);
             }
         }
         expListAdapter.notifyDataSetChanged();
     }
+
+    /**
+     * Dispalys the Receipts and their Items in the report.
+     *
+     * Clears all the current data and adds it back with the
+     * store name as headers and the items as children.
+     */
     public void handleSortByReceipt() {
-        allCategories.clear();
-        categoryNames.clear();
+        expListViewMap.clear();
+        headerNames.clear();
         allReceipts.clear();
 
         // TODO remove this test crap
@@ -149,27 +165,39 @@ public class TopReportActivity extends Activity {
         allReceipts.add(testReceipt3);
 
         for (Receipt receipt : allReceipts) {
-            allCategories.put(receipt.getStore(), receipt.getItems());
-            categoryNames.add(receipt.getStore());
+            expListViewMap.put(receipt.getStore(), receipt.getItems());
+            headerNames.add(receipt.getStore());
         }
 
-        expListAdapter.setNewItems(categoryNames, allCategories);
+        expListAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Reorganizes the children to be sorted by date
+     */
     public void handleOrderByRecent() {
 
     }
-    public void handleOrderByPrice() {
 
+    /**
+     * Reorganizes the childrens to be sorted by price
+     */
+    public void handleOrderByPrice() {
+        for (ItemGroup itemGroup : expListViewMap.values()) {
+
+                itemGroup.sortByPrice();System.out.println("sorting");
+
+        }
+        expListAdapter.notifyDataSetChanged();
     }
 
     /**
      * Create the category names.
      */
     private void createGroupList() {
-        categoryNames = new ArrayList<>();
+        headerNames = new ArrayList<>();
 
-        categoryNames.addAll(dictionary.getCategoryNames());
+        headerNames.addAll(dictionary.getCategoryNames());
     }
 
     /**
@@ -188,10 +216,10 @@ public class TopReportActivity extends Activity {
         ItemGroup boozeItems = itemBuilder.build("Beer", "20.50", "Moonshine", "35.75", "Cognac", "18.99");
 
 
-        allCategories = new LinkedHashMap<String, ItemGroup>();
+        expListViewMap = new LinkedHashMap<String, ItemGroup>();
 
         // @TODO This switch is not necessary.
-        for (String cat : categoryNames) {
+        for (String cat : headerNames) {
             // Put the list of items in the childList
             if (cat.equals("Gas"))
                 loadChild(gasItems);
@@ -205,8 +233,8 @@ public class TopReportActivity extends Activity {
                 loadChild(boozeItems);
 
                 // Attach the category name to the item list
-                // and store it in allCategories
-                allCategories.put(cat, childList);
+                // and store it in expListViewMap
+                expListViewMap.put(cat, childList);
             }
         }
 
