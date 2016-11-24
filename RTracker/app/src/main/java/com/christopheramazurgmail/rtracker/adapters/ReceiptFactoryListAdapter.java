@@ -1,13 +1,17 @@
 package com.christopheramazurgmail.rtracker.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.christopheramazurgmail.rtracker.Category;
 import com.christopheramazurgmail.rtracker.Item;
@@ -56,9 +60,83 @@ public class ReceiptFactoryListAdapter extends ArrayAdapter<Item> {
             holder.itemDesc.setText(getItem(i).getDesc());
         }
 
+        holder.itemDesc.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setTitle("Edit Field");
+                // Get the layout inflater
+                LayoutInflater inflater = (LayoutInflater) v.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                // Inflate and set the layout for the dialog
+                // Pass null as the parent view because its going in the dialog layout
+                View view = inflater.inflate(R.layout.edit_text_dialog, null);
+                builder.setView(view);
+                //Display text of calling text view in edit field
+                final TextView textToEdit = (TextView) v;
+                final EditText editText = (EditText) view.findViewById(R.id.text_to_edit);
+                editText.setText(textToEdit.getText());
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        getItem(item).setDesc(editText.getText().toString());
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+                //Get the AlertDialog from create()
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                return false;
+            }
+        });
+
         if(getItem(i).getPrice() != null) {
             holder.itemPrice.setText("$" + getItem(i).getPrice());
         }
+
+        holder.itemPrice.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setTitle("Edit Field");
+                // Get the layout inflater
+                LayoutInflater inflater = (LayoutInflater) v.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                // Inflate and set the layout for the dialog
+                // Pass null as the parent view because its going in the dialog layout
+                View view = inflater.inflate(R.layout.edit_text_dialog, null);
+                builder.setView(view);
+                //Display text of calling text view in edit field
+                final TextView textToEdit = (TextView) v;
+                final EditText editText = (EditText) view.findViewById(R.id.text_to_edit);
+                editText.setText(textToEdit.getText());
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        try {
+                            String editedPrice = editText.getText().toString().replace("$", "");
+                            double price = Double.parseDouble(editedPrice);
+                            getItem(item).setPrice(price);
+                            notifyDataSetChanged();
+                            dialog.dismiss();
+                        } catch (NumberFormatException nfe) {
+                            Toast toast = Toast.makeText(getContext(), "Not a Valid Price", Toast.LENGTH_LONG);
+                            toast.show();
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+                //Get the AlertDialog from create()
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                return false;
+            }
+        });
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, arraySpinner);
         holder.itemSpinner.setAdapter(adapter);
@@ -105,5 +183,10 @@ public class ReceiptFactoryListAdapter extends ArrayAdapter<Item> {
         TextView itemDesc;
         TextView itemPrice;
         Spinner itemSpinner;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 }

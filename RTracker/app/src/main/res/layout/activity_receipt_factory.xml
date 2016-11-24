@@ -11,7 +11,6 @@
     tools:context="com.christopheramazurgmail.rtracker.ReceiptFactory"
     android:orientation="vertical">
 
-
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,10 +21,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/store_name"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:layout_marginBottom="10dp"
-            android:layout_alignParentTop="true"
-            />
+            android:layout_alignParentTop="true" />
 
         <Spinner
             android:id="@+id/tag_all_spinner"
@@ -38,10 +36,10 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+"
-            android:id="@+id/add_items"
+            android:text="@string/add_item"
+            android:id="@+id/add_item_button"
             android:layout_marginBottom="2dp"
-            android:layout_toRightOf="@id/tag_all_spinner"
+            android:layout_toEndOf="@id/tag_all_spinner"
             android:layout_alignBottom="@+id/tag_all_spinner"
             />
     </RelativeLayout>
@@ -52,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/header"
-        android:layout_above="@+id/footer"/>
+        android:layout_above="@+id/footer" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -65,8 +63,8 @@
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="Total"
+            android:textSize="20sp"
+            android:text="@string/total_label"
             android:layout_alignParentTop="true"/>
 
         <TextView
@@ -76,13 +74,14 @@
             android:layout_below="@+id/total_label" />
 
         <Button
-            android:text="Save"
+            android:text="@string/save_button_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:id="@+id/save_button"
-            android:layout_marginEnd="11dp"
-            android:layout_below="@+id/total_price"
+            android:layout_marginStart="150dp"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/total_price"
             />
 
     </RelativeLayout>

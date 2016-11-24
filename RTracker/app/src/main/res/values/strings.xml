@@ -9,4 +9,10 @@
     <string name="take_photo_description_info">Info</string>
     <string name="take_photo_request_permission">This sample needs camera permission.</string>
     <string name="take_photo_camera_error">This device doesn\'t support Camera2 API.</string>
+    <string name="add_item">+</string>
+    <string name="total_label">Total</string>
+    <string name="save_button_text">Save</string>
+    <string name="store_name_label">Store Name</string>
+    <string name="item_name">Item Name</string>
+    <string name="item_price_label">Item Price</string>
 </resources>
