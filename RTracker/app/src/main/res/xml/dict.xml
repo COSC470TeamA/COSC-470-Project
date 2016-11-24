@@ -29,7 +29,19 @@
             <Item name="Bread"></Item>
             <Item name="Milk"></Item>
             <Item name="Cheese"></Item>
-            <Item name="Spaghetti"></Item>
+            <Item name="Sour Cream"></Item>
+            <Item name="Yogurt"></Item>
+            <Item name="Eggs"></Item>
+            <Item name="Bacon"></Item>
+            <Item name="Sausage"></Item>
+            <Item name="Fish"></Item>
+            <Item name="Bologna"></Item>
+            <Item name="Turkey"></Item>
+            <Item name="Chicken"></Item>
+            <Item name="Pork"></Item>
+            <Item name="Donut"></Item>
+            <Item name="Coffee"></Item>
+            <Item name="Muffin"></Item>
         </Items>
     </Category>
     <Category name="Electronics">
@@ -86,6 +98,48 @@
         <Items>
             <Item name="Beer"></Item>
             <Item name="Wine"></Item>
+        </Items>
+    </Category>
+    <Category name="Furniture">
+        <Items>
+            <Item name="Charie"></Item>
+            <Item name="Couch"></Item>
+            <Item name="Bed"></Item>
+            <Item name="Stool"></Item>
+            <Item name="Bar Stool"></Item>
+            <Item name="Desk"></Item>
+            <Item name="Table"></Item>
+            <Item name="Endtable"></Item>
+            <Item name="Hammok"></Item>
+            <Item name="Bookcase"></Item>
+        </Items>
+    </Category>
+    <Category name="Kitchen">
+        <Items>
+            <Item name="Knife"></Item>
+            <Item name="Spatula"></Item>
+            <Item name="Pan"></Item>
+            <Item name="Pot"></Item>
+            <Item name="Cutting Board"></Item>
+            <Item name="Ladel"></Item>
+            <Item name="Spoon"></Item>
+            <Item name="Wok"></Item>
+            <Item name="Collander"></Item>
+            <Item name="Dish Soap"></Item>
+        </Items>
+    </Category>
+    <Category name="Toiletries">
+        <Items>
+            <Item name="Tooshbrush"></Item>
+            <Item name="Floss"></Item>
+            <Item name="Razor"></Item>
+            <Item name="Comb"></Item>
+            <Item name="Hairbrush"></Item>
+            <Item name="Shampoo"></Item>
+            <Item name="Conditioner"></Item>
+            <Item name="Bar Soap"></Item>
+            <Item name="Deodorant"></Item>
+            <Item name="Nail Clippers"></Item>
         </Items>
     </Category>
 </Categories>
