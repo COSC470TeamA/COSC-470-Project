@@ -11,8 +11,10 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.Spinner;
 
 /**
  * Created by haunter on 26/10/16.
@@ -26,48 +28,148 @@ public class TopReportActivity extends Activity {
     ItemGroup childList;
     Map<String, ItemGroup> allCategories;
     ExpandableListView expListView;
+    ExpandableListAdapter expListAdapter;
+    Spinner searchBySpinner, orderBySpinner;
+
+    Dictionary dictionary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_report);
-
+        dictionary = new Dictionary(this);
         createGroupList();
 
         createCollection();
 
+
+        // Find the expandable list view
         expListView = (ExpandableListView) findViewById(R.id.expandableListView);
-        final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
-                this, categoryNames, allCategories);
+        expListAdapter = new ExpandableListAdapter(this, categoryNames, allCategories);
         expListView.setAdapter(expListAdapter);
 
 
-        expListView.setOnChildClickListener(new OnChildClickListener() {
+//        expListView.setOnChildClickListener(new OnChildClickListener() {
+//
+//            public boolean onChildClick(ExpandableListView parent, View v,
+//                                        int groupPosition, int childPosition, long id) {
+//                final String selected = (String) expListAdapter.getChild(
+//                        groupPosition, childPosition);
+//
+//                return true;
+//            }
+//        });
 
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                final String selected = (String) expListAdapter.getChild(
-                        groupPosition, childPosition);
-//                Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
-//                        .show();
+        // Find the search by spinner
+        final String[] searchByValues = {"Category", "Receipt"};
+        searchBySpinner = (Spinner) findViewById(R.id.searchBySpinner);
+        ArrayAdapter<String> searchByAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, searchByValues);
+        searchBySpinner.setAdapter(searchByAdapter);
+        searchBySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
-                return true;
+                switch (position) {
+                case 0:
+                    handleSortByCategory();
+                break;
+                case 1:
+
+                    handleSortByReceipt();
+                break;
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+            }
+        });
+
+        // Find the order by spinner
+        final String[] orderByValues = {"Most Recent", "Price"};
+        orderBySpinner = (Spinner) findViewById(R.id.orderBySpinner);
+        ArrayAdapter<String> orderByAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, orderByValues);
+        orderBySpinner.setAdapter(orderByAdapter);
+        orderBySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if (orderByValues[position].equals(orderByValues[0])) {
+                    handleOrderByRecent();
+                }
+                else if (orderByValues[position].equals(orderByValues[1])) {
+                    handleOrderByPrice();
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
             }
         });
     }
+    Receipt testReceipt = new Receipt("Store Name AAA", "test1", "1.1", "test2", "2.2", "test3", "3.3");
+    Receipt testReceipt2 = new Receipt("Store Name Bab", "best1", "11.1", "best2", "22.2", "best3", "33.3");
+    Receipt testReceipt3 = new Receipt("Store Name Carlop", "vest1", "14.1", "vest2", "24.2", "vest3", "34.3");
+
+    ArrayList<Receipt> allReceipts = new ArrayList<>();
+
+    public void handleSortByCategory() {
+
+        allCategories.clear();
+        categoryNames.clear();
+        allReceipts.clear();
+
+        // TODO remove this test crap
+        allReceipts.add(testReceipt);
+        allReceipts.add(testReceipt2);
+        allReceipts.add(testReceipt3);
+
+        categoryNames.addAll(dictionary.getCategoryNames());
+        categoryNames.add("Uncategorized");
+
+        for (String catName : categoryNames) {
+            allCategories.put(catName, new ItemGroup());
+        }
+
+        for (Receipt rec : allReceipts) {
+            for (Item item : rec.getItemList()) {
+                if (item.getCat() == null) {
+                    item.setCat("Uncategorized");
+                }
+                allCategories.get(item.getCat()).add(item);
+            }
+        }
+        expListAdapter.notifyDataSetChanged();
+    }
+    public void handleSortByReceipt() {
+        allCategories.clear();
+        categoryNames.clear();
+        allReceipts.clear();
+
+        // TODO remove this test crap
+        allReceipts.add(testReceipt);
+        allReceipts.add(testReceipt2);
+        allReceipts.add(testReceipt3);
+
+        for (Receipt receipt : allReceipts) {
+            allCategories.put(receipt.getStore(), receipt.getItems());
+            categoryNames.add(receipt.getStore());
+        }
+
+        expListAdapter.setNewItems(categoryNames, allCategories);
+    }
+
+    public void handleOrderByRecent() {
+
+    }
+    public void handleOrderByPrice() {
+
+    }
 
     /**
-     * TEST DATA
-     *
      * Create the category names.
      */
     private void createGroupList() {
         categoryNames = new ArrayList<>();
-        categoryNames.add("Gas");
-        categoryNames.add("Clothes");
-        categoryNames.add("Food");
-        categoryNames.add("Electronics");
-        categoryNames.add("Booze");
+
+        categoryNames.addAll(dictionary.getCategoryNames());
     }
 
     /**
@@ -116,6 +218,10 @@ public class TopReportActivity extends Activity {
 
         childList = items;
     }
+
+
+
+    ////////////////////////////////////////////////////////////////
 
     private void setGroupIndicatorToRight() {
         /* Get the screen width */

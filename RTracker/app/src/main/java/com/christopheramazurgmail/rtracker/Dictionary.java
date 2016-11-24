@@ -66,7 +66,6 @@ public class Dictionary {
                     if (xmlParser.getName().equals("Item")) {
                         currItemName = xmlParser.getAttributeValue(null, "name");
                         addToItemsList(currCategoryName, currItemName);
-                        System.out.println(currCategoryName + " " + currItemName);
                     }
                 }
 

@@ -1,6 +1,7 @@
 package com.christopheramazurgmail.rtracker;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,8 +49,13 @@ public class Receipt implements Serializable{
     }
 
     public String getStore() {
-
         return store;
+    }
+    public ItemGroup getItems() {
+        return items;
+    }
+    public ArrayList<Item> getItemList() {
+        return items.items;
     }
 
     public void setStore(String store) {

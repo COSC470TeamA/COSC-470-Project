@@ -1,5 +1,6 @@
 package com.christopheramazurgmail.rtracker.adapters;
         import java.util.ArrayList;
+        import java.util.HashMap;
         import java.util.List;
         import java.util.Map;
 
@@ -30,6 +31,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         this.context = context;
         this.allCategories = allCategories;
         this.items = items;
+    }
+
+    public void setNewItems(List<String> items, Map<String, ItemGroup> allCategories) {
+        this.items = items;
+        this.allCategories = allCategories;
+        notifyDataSetChanged();
     }
 
     public Object getChild(int groupPosition, int childPosition) {
@@ -89,6 +96,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
+
         String itemName = (String) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) context
@@ -101,17 +109,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         item.setText(itemName);
 
         ItemGroup cat = allCategories.get(itemName);
-        List<Item> category = cat.getItems();
+        //List<Item> category = cat.getItems();
         double runningTotal = 0; // @TODO make categories know about items instead of these stupid hacks
 
-        for (Item indItem : category) {
-            runningTotal += indItem.getPriceD();
-        }
-        TextView totalPriceText = (TextView) convertView.findViewById(R.id.totalPriceText);
-        totalPriceText.setTypeface(null, Typeface.BOLD);
-        totalPriceText.setText(String.format("%.2f", runningTotal));
+//        for (Item indItem : category) {
+//            runningTotal += indItem.getPriceD();
+//        }
+//        TextView totalPriceText = (TextView) convertView.findViewById(R.id.totalPriceText);
+//        totalPriceText.setTypeface(null, Typeface.BOLD);
+//        totalPriceText.setText(String.format("%.2f", runningTotal));
         return convertView;
     }
+
+
 
     public boolean hasStableIds() {
         return true;
