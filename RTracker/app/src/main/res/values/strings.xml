@@ -15,4 +15,5 @@
     <string name="store_name_label">Store Name</string>
     <string name="item_name">Item Name</string>
     <string name="item_price_label">Item Price</string>
+    <string name="remove_item_label">Remove</string>
 </resources>

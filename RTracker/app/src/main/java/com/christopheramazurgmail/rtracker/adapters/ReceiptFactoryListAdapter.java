@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -49,6 +50,7 @@ public class ReceiptFactoryListAdapter extends ArrayAdapter<Item> {
             holder.itemDesc = (TextView) view.findViewById(R.id.item_desc);
             holder.itemPrice = (TextView) view.findViewById(R.id.item_price);
             holder.itemSpinner = (Spinner) view.findViewById(R.id.item_spinner);
+            holder.removeItemButton = (Button) view.findViewById(R.id.remove_item_button);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -138,6 +140,14 @@ public class ReceiptFactoryListAdapter extends ArrayAdapter<Item> {
             }
         });
 
+        holder.removeItemButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                remove(getItem(item));
+                notifyDataSetChanged();
+            }
+        });
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, arraySpinner);
         holder.itemSpinner.setAdapter(adapter);
 
@@ -183,6 +193,7 @@ public class ReceiptFactoryListAdapter extends ArrayAdapter<Item> {
         TextView itemDesc;
         TextView itemPrice;
         Spinner itemSpinner;
+        Button removeItemButton;
     }
 
     @Override

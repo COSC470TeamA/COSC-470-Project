@@ -114,13 +114,11 @@ public class ReceiptFactory extends AppCompatActivity {
     }
 
     private void setAllCategories(String category) {
-        ListView listView = (ListView) findViewById(R.id.item_list);
-
         ArrayList<Item> modifiedItems = new ArrayList<>();
-        for(int i=0;i<listView.getCount();i++){
+        for(int i=0;i<adapter.getCount();i++){
             Item item = new Item();
-            item.setDesc(((Item) listView.getItemAtPosition(i)).getDesc());
-            item.setPrice(((Item) listView.getItemAtPosition(i)).getPriceD());
+            item.setDesc(((Item) adapter.getItem(i)).getDesc());
+            item.setPrice(((Item) adapter.getItem(i)).getPriceD());
             item.setCat(category);
             modifiedItems.add(item);
         }
@@ -140,13 +138,13 @@ public class ReceiptFactory extends AppCompatActivity {
                 updateTotal();
             }
         });
+
     }
 
     private ArrayList<Item> getModifiedReceiptItems() {
-        ListView listView = (ListView) findViewById(R.id.item_list);
         ArrayList<Item> modifiedItems = new ArrayList<>();
-        for(int i=0;i<listView.getCount();i++){
-            Item item = (Item) listView.getItemAtPosition(i);
+        for(int i=0;i<adapter.getCount();i++){
+            Item item = (Item) adapter.getItem(i);
             categorizationEngine.addToDictionary(item, item.getCat());
             modifiedItems.add(item);
         }
@@ -156,11 +154,9 @@ public class ReceiptFactory extends AppCompatActivity {
     private double getTotal(){
         double totalPrice = 0.00;
 
-        ListView listView = (ListView) findViewById(R.id.item_list);
-
         //add up total
-        for(int i=0;i<listView.getCount();i++){
-            Item item = (Item) listView.getItemAtPosition(i);
+        for(int i=0;i<adapter.getCount();i++){
+            Item item = adapter.getItem(i);
             totalPrice += Double.parseDouble(item.getPrice());
         }
 
