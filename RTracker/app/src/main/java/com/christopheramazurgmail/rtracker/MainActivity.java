@@ -28,18 +28,12 @@ public class MainActivity extends AppCompatActivity {
         String name = "test";
         int dat = 1;
         ArrayList<String> receipts = new ArrayList<>();
-
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String currentDateandTime = sdf.format(new Date());
 
-        //The method below is a simple test for inserting a receipt to the database.
-        //As both these fields are primary keys, an insert will fail unless
-        //new values are specified beforehand.
-        db.insertReceipt("red459", currentDateandTime);
-
-        //db.createUser(name, dat);
-        //System.out.println("Retreiving from database user id: " + db.getUser(7));
+        System.out.println("Testing the getCat methods: " + db.getCatID(1) + " " + db.getCatName(1));
+        System.out.println("Testing the getUser methods: " + db.getUser(1));
+        System.out.print("Testing the getAllReceiptID method: ");
         receipts = db.getAllReceiptID();
         for (String item : receipts) {
             System.out.println(item);
