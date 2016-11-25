@@ -148,6 +148,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.insert(TABLE_ITEM, null, values);
     }
 
+    // Insert method to create a new user
+    // Currently, entries in the user table do nothing
+    // E.G. db.createUser(UserNameHere, DatabaseNumberHere);
     public void createUser(String name, int data){
         System.out.println("Creating a new user");
         SQLiteDatabase db = this.getWritableDatabase();
@@ -166,6 +169,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         System.out.println("Retreiving from database user id: " + getUser(testSet));
     }
 
+    // Get method for the ID column of the user table
     public int getUser(int u_id) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT  * FROM " + TABLE_USER + " WHERE "
@@ -178,19 +182,35 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return testGet;
     }
 
-    public List<String> getAllReceiptID() {
+    // Get method for the ID column of the receipt table
+    public int getReceipt(int r_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_RECEIPT + " WHERE "
+                + COLUMN_ID + " = " + r_id;
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        if (c != null)
+            c.moveToFirst();
+        int testGet = c.getInt(c.getColumnIndex(COLUMN_ID));
+        return testGet;
+    }
+
+    // Get method that returns a list of all the ID's in the receipt table
+    public ArrayList<String> getAllReceiptID() {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<String> receipts = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_RECEIPT;
         Log.e(LOG, selectQuery);
         Cursor c = db.rawQuery(selectQuery, null);
         while (c.moveToNext()) {
-            String testGet = c.getString(c.getColumnIndex(COLUMN_USER_ID));
+            String testGet = c.getString(c.getColumnIndex(COLUMN_ID));
             receipts.add(testGet);
         }
         return receipts;
     }
 
+    // Isert method for the Receipt table
+    // E.G. db.insertReceipt(ReceiptIDHere, DateHere);
     public void insertReceipt(String r_id, String r_date){
         System.out.println("Creating a new receipt");
         SQLiteDatabase db = this.getWritableDatabase();
@@ -198,6 +218,51 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         values.put(COLUMN_ID, r_id);
         values.put(COLUMN_DATE, r_date);
         db.insert(TABLE_RECEIPT, null, values);
+    }
+
+    // Insert method for the Cat table
+    // E.G. db.insertCat(YourCatagoryHere);
+    public void insertCat(String c_name){
+        System.out.println("Creating a new catagory");
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = "SELECT COUNT(*) FROM " + TABLE_CAT;
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        c.moveToFirst();
+        int testSet = c.getInt(0);
+        if (testSet == 0){
+            testSet = 1;
+        } else {
+            testSet = testSet + 1;
+        }
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ID, testSet);
+        values.put(COLUMN_NAME, c_name);
+        db.insert(TABLE_CAT, null, values);
+    }
+
+    public int getCatID(int c_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_CAT + " WHERE "
+                + COLUMN_ID + " = " + c_id;
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        if (c != null)
+            c.moveToFirst();
+        int testGet = c.getInt(c.getColumnIndex(COLUMN_ID));
+        return testGet;
+    }
+
+    public String getCatName(int c_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_CAT + " WHERE "
+                + COLUMN_ID + " = " + c_id;
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        if (c != null)
+            c.moveToFirst();
+        String testGet = c.getString(c.getColumnIndex(COLUMN_NAME));
+        return testGet;
     }
 
     public void closeDB() {
