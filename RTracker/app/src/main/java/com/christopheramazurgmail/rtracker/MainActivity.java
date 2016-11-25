@@ -28,18 +28,7 @@ public class MainActivity extends AppCompatActivity {
         //Invokes the database
         db = new MySQLiteHelper(getApplicationContext());
         ArrayList<String> receipts = new ArrayList<>();
-
-        //Uncomment this line if you need a fresh database
-        //Tables are populated with some basic information upon creation
-        //db.danTestUpgrade();
-
-        //These are just some tests to see if the database is functioning properly
-        //All of them output to the terminal
-        //These can be commented out
-        System.out.println("Testing the getCat methods: " + db.getCatID(1) + " " + db.getCatName(1));
-        System.out.println("Testing the getUser methods: " + db.getUser(1));
-        System.out.println("Testing the getItem methods: " + db.getItemID("red681", "Coke")
-        + " " + db.getItemName("red681", "Coke") + " " + db.getItemPrice("red681", "Coke"));
+        
         System.out.print("Testing the getAllReceiptID method: ");
         receipts = db.getAllReceiptID();
         for (String item : receipts) {
