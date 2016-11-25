@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
         //Invokes the database
         db = new MySQLiteHelper(getApplicationContext());
 
+        //Uncomment this to reset and test the database
+        /*
+
         //Variables for the database tests
         ArrayList<String> receipts = new ArrayList<>();
         ArrayList<String> itemNames = new ArrayList<>();
@@ -37,14 +40,8 @@ public class MainActivity extends AppCompatActivity {
         rec.add(testItem1);
         rec.add(testItem2);
 
-        //Uncomment this line if you need a fresh database
-        //Tables are populated with some basic information upon creation
-        
-        //db.danTestUpgrade();
+        db.danTestUpgrade();
 
-        //These are just some tests to see if the database is functioning properly
-        //All of them output to the terminal
-        //These can be commented out
         System.out.println("Testing the getCat methods: " + db.getCatID(1) + " " + db.getCatName(1));
         System.out.println("Testing the getUser methods: " + db.getUser(1));
         System.out.println("Testing the getItem methods: " + db.getItemID("red681", "Coke")
@@ -60,11 +57,20 @@ public class MainActivity extends AppCompatActivity {
         receipt = db.getReceiptObject("red681");
         System.out.println("Inserting a receipt with ID red699");
         db.insertReceiptObject("red699", rec);
-        System.out.println("Testing the getAllItemNames method with ID red699: ");
-        itemNames = db.getAllItemNamesOnReceipt("red699");
+        System.out.println("Testing the getAllItemsInTable method: ");
+        itemNames = db.getAllItemsInTable();
         for (String listing : itemNames) {
             System.out.println(listing);
         }
+
+        System.out.println("Deleting a receipt with ID red699");
+        db.deleteReceipt("red699");
+        System.out.println("Testing the getAllItemsInTable method: ");
+        itemNames = db.getAllItemsInTable();
+        for (String listing : itemNames) {
+            System.out.println(listing);
+        }
+        */
         //End of database tests
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
