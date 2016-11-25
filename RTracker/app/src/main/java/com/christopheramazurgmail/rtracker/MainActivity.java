@@ -24,20 +24,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        db = new MySQLiteHelper(getApplicationContext());
-        String name = "test";
-        int dat = 1;
-        ArrayList<String> receipts = new ArrayList<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String currentDateandTime = sdf.format(new Date());
 
+        //Invokes the database
+        db = new MySQLiteHelper(getApplicationContext());
+        ArrayList<String> receipts = new ArrayList<>();
+
+        //Uncomment this line if you need a fresh database
+        //Tables are populated with some basic information upon creation
+        //db.danTestUpgrade();
+
+        //These are just some tests to see if the database is functioning properly
+        //All of them output to the terminal
+        //These can be commented out
         System.out.println("Testing the getCat methods: " + db.getCatID(1) + " " + db.getCatName(1));
         System.out.println("Testing the getUser methods: " + db.getUser(1));
+        System.out.println("Testing the getItem methods: " + db.getItemID("red681", "Coke")
+        + " " + db.getItemName("red681", "Coke") + " " + db.getItemPrice("red681", "Coke"));
         System.out.print("Testing the getAllReceiptID method: ");
         receipts = db.getAllReceiptID();
         for (String item : receipts) {
             System.out.println(item);
         }
+        System.out.println("Building a receipt");
+        Receipt receipt = new Receipt();
+        receipt = db.getReceiptObject("red681");
+        //End of database tests
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -80,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //Closes database connection on termination
         db.closeDB();
     }
 
