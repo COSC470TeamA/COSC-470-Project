@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String currentDateandTime = sdf.format(new Date());
 
-        //System.out.println("Testing the getCat methods: " + db.getCatID(1) + " " + db.getCatName(1));
-        //System.out.println("Testing the getUser methods: " + db.getUser(1));
         System.out.print("Testing the getAllReceiptID method: ");
         receipts = db.getAllReceiptID();
         for (String item : receipts) {
