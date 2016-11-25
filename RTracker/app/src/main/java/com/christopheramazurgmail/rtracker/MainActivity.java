@@ -29,14 +29,16 @@ public class MainActivity extends AppCompatActivity {
         db = new MySQLiteHelper(getApplicationContext());
 
         //Uncomment this to reset and test the database
-        /*
 
+        /*
         //Variables for the database tests
         ArrayList<String> receipts = new ArrayList<>();
         ArrayList<String> itemNames = new ArrayList<>();
+        ArrayList<String> storeNames = new ArrayList<>();
+        ArrayList<String> storeReceiptNames = new ArrayList<>();
         Item testItem1 = new Item("Potatoes", 23.45);
         Item testItem2 = new Item("Pizza", 18.33);
-        Receipt rec = new Receipt();
+        Receipt rec = new Receipt("Wal-Mart");
         rec.add(testItem1);
         rec.add(testItem2);
 
@@ -70,6 +72,19 @@ public class MainActivity extends AppCompatActivity {
         for (String listing : itemNames) {
             System.out.println(listing);
         }
+
+        System.out.println("Testing the getAllStoresInTable method: ");
+        storeNames = db.getAllStoresInTable();
+        for (String listing2 : storeNames) {
+            System.out.println(listing2);
+        }
+
+        System.out.println("Testing the getAllStoreReceiptsInTable method: ");
+        storeReceiptNames = db.getAllStoresReceiptsInTable();
+        for (String listing3 : storeReceiptNames) {
+            System.out.println(listing3);
+        }
+
         */
         //End of database tests
 

@@ -189,6 +189,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         int counter = 0;
         itemNames = receipt.items.getItems();
         insertReceipt(n_id, currentDateandTime);
+        String store = receipt.getStore();
+        String store_id;
+        if (store != null){
+            insertStore(store);
+            store_id = getStoreID(store);
+            insertReceiptStore(n_id, store_id);
+        }
         for (Item item : itemNames) {
             item = itemNames.get(counter);
             itemName = item.getDesc();
@@ -212,9 +219,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         if (testSet > 0){
             testSet = testSet + 1;
-            System.out.println("setting");
             values.put(COLUMN_ITEM_COUNT, testSet);
-            System.out.println("setter");
             db.update(TABLE_ITEM, values, COLUMN_ID + "=? " + "AND " +COLUMN_NAME + "=?", new String[] {i_id, i_name});
         } else {
             testSet = 1;
@@ -251,10 +256,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<String> items = new ArrayList<>();
         String ret;
-        String id;
-        String name;
-        Double price;
-        int count;
         String selectQuery = "SELECT  * FROM " + TABLE_ITEM;
         Log.e(LOG, selectQuery);
         Cursor c = db.rawQuery(selectQuery, null);
@@ -266,7 +267,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             items.add(ret);
         }
         return items;
-
     }
 
     public String getItemID(String i_id, String i_name) {
@@ -445,7 +445,112 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return testGet;
     }
 
+    //Methods for the Store table
+    //=========================================================================================
+    public void insertStore(String s_name){
+        System.out.println("Inserting a new store");
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = "SELECT COUNT(*) as test_column FROM " + TABLE_STORE + " WHERE "
+                + COLUMN_STORE_NAME + " =?";
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, new String[] {s_name});
+        c.moveToFirst();
+        int testSet = c.getInt(c.getColumnIndex("test_column"));
+        ContentValues values = new ContentValues();
+        if (testSet > 0){
+            System.out.println("Store already exists");
+        } else {
+            selectQuery = "SELECT MAX(" + COLUMN_STORE_ID +") as test_column FROM " + TABLE_STORE;
+            Log.e(LOG, selectQuery);
+            c = db.rawQuery(selectQuery, null);
+            c.moveToFirst();
+            testSet = c.getInt(c.getColumnIndex("test_column"));
+            if (testSet > 0){
+                testSet = testSet + 1;
+            } else {
+                testSet = 1;
+            }
+            values.put(COLUMN_STORE_ID, testSet);
+            values.put(COLUMN_STORE_NAME, s_name);
+            db.insert(TABLE_STORE, null, values);
+        }
+    }
 
+    public String getStoreID(String s_name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + TABLE_STORE + " WHERE " + COLUMN_STORE_NAME
+                + " =?";
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, new String[] {s_name});
+        if (c != null)
+            c.moveToFirst();
+        String testGet = c.getString(c.getColumnIndex(COLUMN_STORE_ID));
+        return testGet;
+    }
+
+    public String getStoreName(String s_name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + TABLE_STORE + " WHERE " + COLUMN_STORE_NAME
+                + " =?";
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, new String[] {s_name});
+        if (c != null)
+            c.moveToFirst();
+        String testGet = c.getString(c.getColumnIndex(COLUMN_STORE_NAME));
+        return testGet;
+    }
+
+    public ArrayList<String> getAllStoresInTable(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> items = new ArrayList<>();
+        String ret;
+        String selectQuery = "SELECT  * FROM " + TABLE_STORE;
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        while (c.moveToNext()) {
+            ret = c.getString(c.getColumnIndex(COLUMN_STORE_ID)) +
+                    " " + c.getString(c.getColumnIndex(COLUMN_STORE_NAME));
+            items.add(ret);
+        }
+        return items;
+    }
+    //End of methods for the Store table
+    //==========================================================================================
+
+
+    public void insertReceiptStore(String r_id, String s_id){
+        System.out.println("Inserting a new store bridge");
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = "SELECT COUNT(*) as test_column FROM " + TABLE_RECEIPT_STORE + " WHERE " + COLUMN_R_ID
+                + " =? AND " + COLUMN_STORE_ID + " =?";
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, new String[] {r_id, s_id});
+        c.moveToFirst();
+        int testSet = c.getInt(c.getColumnIndex("test_column"));
+        ContentValues values = new ContentValues();
+        if (testSet > 0){
+            System.out.println("Bridge already exists");
+        } else {
+            values.put(COLUMN_R_ID, r_id);
+            values.put(COLUMN_STORE_ID, s_id);
+            db.insert(TABLE_RECEIPT_STORE, null, values);
+        }
+    }
+
+    public ArrayList<String> getAllStoresReceiptsInTable(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> items = new ArrayList<>();
+        String ret;
+        String selectQuery = "SELECT  * FROM " + TABLE_RECEIPT_STORE;
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        while (c.moveToNext()) {
+            ret = c.getString(c.getColumnIndex(COLUMN_R_ID)) +
+                    " " + c.getString(c.getColumnIndex(COLUMN_STORE_ID));
+            items.add(ret);
+        }
+        return items;
+    }
 
     public void closeDB() {
         SQLiteDatabase db = this.getReadableDatabase();
