@@ -203,12 +203,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public void insertItem(String i_id, String i_name, double i_price){
         System.out.println("Creating a new item");
         SQLiteDatabase db = this.getWritableDatabase();
-        String selectQuery = "SELECT COUNT(*) FROM " + TABLE_ITEM + " WHERE " + COLUMN_ID
+        String selectQuery = "SELECT COUNT(*) as test_column FROM " + TABLE_ITEM + " WHERE " + COLUMN_ID
                 + " =? AND " + COLUMN_NAME + " =?";
         Log.e(LOG, selectQuery);
         Cursor c = db.rawQuery(selectQuery, new String[] {i_id, i_name});
         c.moveToFirst();
-        int testSet = c.getInt(0);
+        int testSet = c.getInt(c.getColumnIndex("test_column"));
         ContentValues values = new ContentValues();
         if (testSet > 0){
             testSet = testSet + 1;
@@ -226,6 +226,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void deleteReceiptItem(String i_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String deleteQuery = "id=?";
+        Log.e(LOG, deleteQuery);
+        db.delete(TABLE_ITEM, deleteQuery, new String[] {i_id});
+    }
+
     public ArrayList<String> getAllItemNamesOnReceipt(String i_id) {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<String> itemNames = new ArrayList<>();
@@ -238,6 +245,28 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             itemNames.add(testGet);
         }
         return itemNames;
+    }
+
+    public ArrayList<String> getAllItemsInTable(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> items = new ArrayList<>();
+        String ret;
+        String id;
+        String name;
+        Double price;
+        int count;
+        String selectQuery = "SELECT  * FROM " + TABLE_ITEM;
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        while (c.moveToNext()) {
+            ret = c.getString(c.getColumnIndex(COLUMN_ID)) +
+                    " " + c.getString(c.getColumnIndex(COLUMN_NAME)) +
+                    " " + c.getDouble(c.getColumnIndex(COLUMN_PRICE)) +
+                    " " + c.getInt(c.getColumnIndex(COLUMN_ITEM_COUNT));
+            items.add(ret);
+        }
+        return items;
+
     }
 
     public String getItemID(String i_id, String i_name) {
@@ -287,6 +316,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         int testGet = c.getInt(c.getColumnIndex(COLUMN_ITEM_COUNT));
         return testGet;
     }
+
     //End of methods for the Item table
     //============================================================================================
 
@@ -360,6 +390,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         values.put(COLUMN_ID, r_id);
         values.put(COLUMN_DATE, r_date);
         db.insert(TABLE_RECEIPT, null, values);
+    }
+
+    public void deleteReceipt(String r_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String deleteQuery = "id=?";
+        Log.e(LOG, deleteQuery);
+        db.delete(TABLE_RECEIPT, deleteQuery, new String[] {r_id});
+        deleteReceiptItem(r_id);
     }
 
     // Insert method for the Cat table
