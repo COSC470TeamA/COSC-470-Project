@@ -180,8 +180,26 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return receipt;
     }
 
+    public void insertReceiptObject(String n_id, Receipt receipt){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String currentDateandTime = sdf.format(new Date());
+        List<Item> itemNames = new ArrayList<>();
+        double itemPrice;
+        String itemName;
+        int counter = 0;
+        itemNames = receipt.items.getItems();
+        insertReceipt(n_id, currentDateandTime);
+        for (Item item : itemNames) {
+            item = itemNames.get(counter);
+            itemName = item.getDesc();
+            itemPrice = item.getPriceD();
+            insertItem(n_id, itemName, itemPrice);
+            counter++;
+        }
+    }
+
     //Methods for the Item Table
-    //=======================================================================================
+    //============================================================================================
     public void insertItem(String i_id, String i_name, double i_price){
         System.out.println("Creating a new item");
         SQLiteDatabase db = this.getWritableDatabase();
@@ -270,7 +288,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return testGet;
     }
     //End of methods for the Item table
-    //==================================================================================
+    //============================================================================================
 
     // Insert method to create a new user
     // Currently, entries in the user table do nothing

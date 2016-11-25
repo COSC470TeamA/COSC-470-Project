@@ -28,15 +28,39 @@ public class MainActivity extends AppCompatActivity {
         //Invokes the database
         db = new MySQLiteHelper(getApplicationContext());
         ArrayList<String> receipts = new ArrayList<>();
-        
-        System.out.print("Testing the getAllReceiptID method: ");
+        ArrayList<String> itemNames = new ArrayList<>();
+        Item testItem1 = new Item("Potatoes", 23.45);
+        Item testItem2 = new Item("Pizza", 18.33);
+        Receipt rec = new Receipt();
+        rec.add(testItem1);
+        rec.add(testItem2);
+        //Uncomment this line if you need a fresh database
+        //Tables are populated with some basic information upon creation
+        db.danTestUpgrade();
+
+        //These are just some tests to see if the database is functioning properly
+        //All of them output to the terminal
+        //These can be commented out
+        System.out.println("Testing the getCat methods: " + db.getCatID(1) + " " + db.getCatName(1));
+        System.out.println("Testing the getUser methods: " + db.getUser(1));
+        System.out.println("Testing the getItem methods: " + db.getItemID("red681", "Coke")
+                + " " + db.getItemName("red681", "Coke") + " " + db.getItemPrice("red681", "Coke"));
+        System.out.println("Testing the getAllReceiptID method: ");
         receipts = db.getAllReceiptID();
         for (String item : receipts) {
             System.out.println(item);
         }
+
         System.out.println("Building a receipt");
         Receipt receipt = new Receipt();
         receipt = db.getReceiptObject("red681");
+        System.out.println("Inserting a receipt with ID red699");
+        db.insertReceiptObject("red699", rec);
+        System.out.println("Testing the getAllItemNames method with ID red699: ");
+        itemNames = db.getAllItemNamesOnReceipt("red699");
+        for (String listing : itemNames) {
+            System.out.println(listing);
+        }
         //End of database tests
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
