@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Invokes the database
         db = new MySQLiteHelper(getApplicationContext());
+
+        //Variables for the database tests
         ArrayList<String> receipts = new ArrayList<>();
         ArrayList<String> itemNames = new ArrayList<>();
         Item testItem1 = new Item("Potatoes", 23.45);
@@ -34,9 +36,11 @@ public class MainActivity extends AppCompatActivity {
         Receipt rec = new Receipt();
         rec.add(testItem1);
         rec.add(testItem2);
+
         //Uncomment this line if you need a fresh database
         //Tables are populated with some basic information upon creation
-        db.danTestUpgrade();
+        
+        //db.danTestUpgrade();
 
         //These are just some tests to see if the database is functioning properly
         //All of them output to the terminal
