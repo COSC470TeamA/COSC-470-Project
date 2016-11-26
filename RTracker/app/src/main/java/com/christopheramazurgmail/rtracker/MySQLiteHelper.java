@@ -140,6 +140,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         ArrayList<String> storeReceiptNames = new ArrayList<>();
         ArrayList<String> itemReceiptNames = new ArrayList<>();
         ArrayList<Receipt> testReceiptList = new ArrayList<>();
+        ArrayList<Item> testItemList = new ArrayList<>();
+        ArrayList<Category> testCategoryList = new ArrayList<>();
         Item testItem1 = new Item("Potatoes", 23.45);
         Item testItem2 = new Item("Pizza", 18.33);
         Item testItem3 = new Item("Soup", 5.99);
@@ -249,6 +251,19 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             }
         }
 
+        System.out.println("Testing the getAllItems method: ");
+        testItemList = getAllItems();
+        for (Item listing5 : testItemList) {
+            System.out.println("Item Name: " + listing5.getDesc());
+            System.out.println("Item Price: " + listing5.getPrice());
+        }
+
+        System.out.println("Testing the getAllCategories method: ");
+        testCategoryList = getAllCategories();
+        for (Category listing5 : testCategoryList) {
+            System.out.println("Category Name: " + listing5.getName());
+        }
+
     }
 
     @Override
@@ -346,16 +361,29 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public ArrayList<Item> getAllItems(){
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Item> items = new ArrayList<>();
-        Item ret = new Item();
         String selectQuery = "SELECT  * FROM " + TABLE_ITEM;
         Log.e(LOG, selectQuery);
         Cursor c = db.rawQuery(selectQuery, null);
         while (c.moveToNext()) {
+            Item ret = new Item();
             ret.setDesc(c.getString(c.getColumnIndex(COLUMN_NAME)));
             ret.setPrice(c.getDouble(c.getColumnIndex(COLUMN_PRICE)));
             items.add(ret);
         }
         return items;
+    }
+
+    public ArrayList<Category> getAllCategories(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Category> categoriesList = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_CAT;
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        while (c.moveToNext()) {
+            Category category = new Category(c.getString(c.getColumnIndex(COLUMN_NAME)));
+            categoriesList.add(category);
+        }
+        return categoriesList;
     }
 
     //Methods for the Item Table
