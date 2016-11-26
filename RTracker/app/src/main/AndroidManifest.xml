@@ -45,9 +45,15 @@
         <activity
             android:name=".ReceiptFactory">
         </activity>
+
         <activity
             android:name=".takephoto.TakePhotoActivity"
             android:label="TakePhotoActivity">
+        </activity>
+
+        <activity
+            android:name=".takephoto.CropImageActivity"
+            android:label="CropImageActivity">
         </activity>
 
         <provider

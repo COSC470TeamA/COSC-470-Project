@@ -34,8 +34,7 @@ import android.provider.MediaStore;
  *
  * @since 1.0.1
  */
-// TODO: Circle Crop
-// TODO: Set Wallpaper
+
 public class CropImageIntentBuilder {
     private static final String EXTRA_ASPECT_X = "aspectX";
     private static final String EXTRA_ASPECT_Y = "aspectY";
@@ -55,14 +54,14 @@ public class CropImageIntentBuilder {
 
     private boolean scale = true;
     private boolean scaleUpIfNeeded = true;
-    private boolean doFaceDetection = true;
+    private boolean doFaceDetection = false;
     private boolean circleCrop = false;
     private String outputFormat = null;
     private int outputQuality = 100;
     private Uri sourceImage;
     private Bitmap bitmap;
-    private int outlineColor = HighlightView.DEFAULT_OUTLINE_COLOR;
-    private int outlineCircleColor = HighlightView.DEFAULT_OUTLINE_CIRCLE_COLOR;
+    private int outlineColor = RectangleOverlay.DEFAULT_OUTLINE_COLOR;
+    private int outlineCircleColor = RectangleOverlay.DEFAULT_OUTLINE_CIRCLE_COLOR;
 
     private final int aspectX;
     private final int aspectY;
@@ -118,7 +117,7 @@ public class CropImageIntentBuilder {
      * @since 1.0.1
      */
     public Intent getIntent(final Context context) {
-        final Intent intent = new Intent(context, CropImage.class);
+        final Intent intent = new Intent(context, CropImageActivity.class);
 
         //
         // Required Intent extras.

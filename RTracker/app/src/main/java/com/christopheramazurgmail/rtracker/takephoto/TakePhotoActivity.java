@@ -4,9 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+
 import com.christopheramazurgmail.rtracker.R;
 
 
@@ -25,34 +26,18 @@ public class TakePhotoActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_take_photo);
 
-        takePicture     = (Button)      findViewById(R.id.picture);
-
-        //Begin the activity in take-picture mode
-        //if (settings.startinpicturemodesetting) {}
-        if (savedInstanceState == null) {
-            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-                startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-            }
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
         }
-
-        //Button for taking pictures
-        takePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-                }
-            }
-        });
     }
 
 
-    protected void startCrop(Uri imageToCrop){
-        //Initialize CropImage intent with a 200x200 rectangle, outputting to imageToCrop URI
+    protected void startCrop(Uri imageToCrop) {
+        //Initialize CropImageActivity intent with a 200x200 rectangle, outputting to imageToCrop URI
         CropImageIntentBuilder cropImage = new CropImageIntentBuilder(200, 200, imageToCrop);
         //Todo: set in colors xml
         cropImage.setOutlineColor(0xFF03A9F4);
@@ -64,14 +49,14 @@ public class TakePhotoActivity extends Activity {
     }
 
     //TODO: Get both rectangles on one screen
-    protected void cropReceiptStoreName(Uri imageToPrecision){
+    protected void cropReceiptStoreName(Uri imageToPrecision) {
         CropImageIntentBuilder cropImage = new CropImageIntentBuilder(200, 100, receiptStoreName);
         cropImage.setOutlineColor(0xFF03A9F4);
         cropImage.setSourceImage(imageToPrecision);
         startActivityForResult(cropImage.getIntent(this), REQUEST_CROP_PICTURE);
     }
 
-    protected void cropReceiptItems(Uri imageToPrecision){
+    protected void cropReceiptItems(Uri imageToPrecision) {
         CropImageIntentBuilder cropImage = new CropImageIntentBuilder(200, 100, receiptItems);
         cropImage.setOutlineColor(0xFF03A9F4);
         cropImage.setSourceImage(imageToPrecision);
@@ -79,7 +64,7 @@ public class TakePhotoActivity extends Activity {
     }
 
 
-    protected void startPrecisionRectangles(Uri imageToPrecision){
+    protected void startPrecisionRectangles(Uri imageToPrecision) {
         cropReceiptStoreName(imageToPrecision);
         cropReceiptItems(imageToPrecision);
     }
@@ -90,21 +75,15 @@ public class TakePhotoActivity extends Activity {
                 imageUri = data.getData();
                 imagePreview.setImageURI(imageUri);
                 startCrop(imageUri);
-            }
-
-            else if (requestCode == REQUEST_CROP_PICTURE){
+            } else if (requestCode == REQUEST_CROP_PICTURE) {
                 imageUri = data.getData();
                 imagePreview.setImageURI(imageUri);
                 startPrecisionRectangles(imageUri);
-            }
-
-            else if (requestCode == REQUEST_CROP_STORE_NAME){
+            } else if (requestCode == REQUEST_CROP_STORE_NAME) {
                 imageUri = data.getData();
                 imagePreview.setImageURI(imageUri);
 
-            }
-
-            else if (requestCode == REQUEST_CROP_ITEMS){
+            } else if (requestCode == REQUEST_CROP_ITEMS) {
                 imageUri = data.getData();
                 imagePreview.setImageURI(imageUri);
             }

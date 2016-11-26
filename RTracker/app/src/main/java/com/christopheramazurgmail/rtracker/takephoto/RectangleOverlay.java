@@ -27,16 +27,17 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import com.christopheramazurgmail.rtracker.R;
 
-// This class is used by CropImage to display a highlighted cropping rectangle
+// This class is used by CropImageActivity to display a highlighted cropping rectangle
 // overlayed with the image. There are two coordinate spaces in use. One is
 // image, another is screen. computeLayout() uses mMatrix to map from image
 // space to screen space.
-class HighlightView {
+class RectangleOverlay {
     public static final int DEFAULT_OUTLINE_COLOR = 0xFFFF8A00;
     public static final int DEFAULT_OUTLINE_CIRCLE_COLOR = 0xFFEF04D6;
+    public static final boolean PRECISION_RECTANGLES = false;
 
     @SuppressWarnings("unused")
-    private static final String TAG = "HighlightView";
+    private static final String TAG = "RectangleOverlay";
     View mContext;  // The View displaying the image.
 
     public static final int GROW_NONE        = (1 << 0);
@@ -49,11 +50,11 @@ class HighlightView {
     private final int mOutlineColor;
     private final int mOutlineCircleColor;
 
-    public HighlightView(View ctx) {
+    public RectangleOverlay(View ctx) {
         this(ctx, DEFAULT_OUTLINE_COLOR, DEFAULT_OUTLINE_CIRCLE_COLOR);
     }
 
-    public HighlightView(View ctx, int outlineColor, int outlineCircleColor) {
+    public RectangleOverlay(View ctx, int outlineColor, int outlineCircleColor) {
         mContext = ctx;
         mOutlineColor = outlineColor;
         mOutlineCircleColor = outlineCircleColor;
@@ -95,6 +96,11 @@ class HighlightView {
             canvas.drawRect(mDrawRect, mOutlinePaint);
         } else {
             Rect viewDrawingRect = new Rect();
+            /*todo: second rectangle instead of extra call
+            if (PRECISION_RECTANGLES) {
+                Rect secondDrawingRect = new Rect();
+            }
+            */
             mContext.getDrawingRect(viewDrawingRect);
             if (mCircle) {
                 float width  = mDrawRect.width();

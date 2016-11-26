@@ -56,8 +56,8 @@ import java.util.concurrent.CountDownLatch;
 /**
  * The activity can crop specific region of interest from an image.
  */
-public class CropImage extends MonitoredActivity {
-    private static final String TAG = "CropImage";
+public class CropImageActivity extends MonitoredActivity {
+    private static final String TAG = "CropImageActivity";
 
     // These are various options can be specified in the intent.
     private Bitmap.CompressFormat mOutputFormat =
@@ -83,7 +83,7 @@ public class CropImage extends MonitoredActivity {
     private ContentResolver mContentResolver;
 
     private Bitmap mBitmap;
-    HighlightView mCrop;
+    RectangleOverlay mCrop;
 
     private IImageList mAllImages;
     private IImage mImage;
@@ -97,9 +97,9 @@ public class CropImage extends MonitoredActivity {
         mContentResolver = getContentResolver();
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.cropimage);
+        setContentView(R.layout.activity_take_photo);
 
-        mImageView = (CropImageView) findViewById(R.id.crop_image);
+        mImageView = (CropImageView) findViewById(R.id.previewImage);
 
         // Work-around for devices incapable of using hardware-accelerated clipPath.
         // (android.view.GLES20Canvas.clipPath)
@@ -138,8 +138,8 @@ public class CropImage extends MonitoredActivity {
             mAspectY = extras.getInt("aspectY");
             mOutputX = extras.getInt("outputX");
             mOutputY = extras.getInt("outputY");
-            mOutlineColor = extras.getInt("outlineColor", HighlightView.DEFAULT_OUTLINE_COLOR);
-            mOutlineCircleColor = extras.getInt("outlineCircleColor", HighlightView.DEFAULT_OUTLINE_CIRCLE_COLOR);
+            mOutlineColor = extras.getInt("outlineColor", RectangleOverlay.DEFAULT_OUTLINE_COLOR);
+            mOutlineCircleColor = extras.getInt("outlineCircleColor", RectangleOverlay.DEFAULT_OUTLINE_CIRCLE_COLOR);
             mScale = extras.getBoolean("scale", true);
             mScaleUp = extras.getBoolean("scaleUpIfNeeded", true);
             mDoFaceDetection = extras.containsKey("noFaceDetection")
@@ -227,9 +227,6 @@ public class CropImage extends MonitoredActivity {
     }
 
     private void onSaveClicked() {
-        // TODO this code needs to change to use the decode/crop/encode single
-        // step api so that we don't require that the whole (possibly large)
-        // bitmap doesn't have to be read into memory
         if (mCrop == null) {
             return;
         }
@@ -310,7 +307,7 @@ public class CropImage extends MonitoredActivity {
 
         mImageView.setImageBitmapResetBase(croppedImage, true);
         mImageView.center(true, true);
-        mImageView.mHighlightViews.clear();
+        mImageView.mRectangleOverlays.clear();
 
         // Return the cropped image directly or save it to the specified URI.
         Bundle myExtras = getIntent().getExtras();
@@ -449,7 +446,7 @@ public class CropImage extends MonitoredActivity {
             int midX = (int) midPoint.x;
             int midY = (int) midPoint.y;
 
-            HighlightView hv = new HighlightView(mImageView, mOutlineColor, mOutlineCircleColor);
+            RectangleOverlay hv = new RectangleOverlay(mImageView, mOutlineColor, mOutlineCircleColor);
 
             int width = mBitmap.getWidth();
             int height = mBitmap.getHeight();
@@ -484,7 +481,7 @@ public class CropImage extends MonitoredActivity {
 
         // Create a default HightlightView if we found no face in the picture.
         private void makeDefault() {
-            HighlightView hv = new HighlightView(mImageView, mOutlineColor, mOutlineCircleColor);
+            RectangleOverlay hv = new RectangleOverlay(mImageView, mOutlineColor, mOutlineCircleColor);
 
             int width = mBitmap.getWidth();
             int height = mBitmap.getHeight();
@@ -555,13 +552,13 @@ public class CropImage extends MonitoredActivity {
                         makeDefault();
                     }
                     mImageView.invalidate();
-                    if (mImageView.mHighlightViews.size() == 1) {
-                        mCrop = mImageView.mHighlightViews.get(0);
+                    if (mImageView.mRectangleOverlays.size() == 1) {
+                        mCrop = mImageView.mRectangleOverlays.get(0);
                         mCrop.setFocus(true);
                     }
 
                     if (mNumFaces > 1) {
-                        Toast t = Toast.makeText(CropImage.this,
+                        Toast t = Toast.makeText(CropImageActivity.this,
                                 R.string.multiface_crop_help,
                                 Toast.LENGTH_SHORT);
                         t.show();
@@ -573,8 +570,8 @@ public class CropImage extends MonitoredActivity {
 }
 
 class CropImageView extends ImageViewTouchBase {
-    ArrayList<HighlightView> mHighlightViews = new ArrayList<HighlightView>();
-    HighlightView mMotionHighlightView = null;
+    ArrayList<RectangleOverlay> mRectangleOverlays = new ArrayList<RectangleOverlay>();
+    RectangleOverlay mMotionRectangleOverlay = null;
     float mLastX, mLastY;
     int mMotionEdge;
 
@@ -583,11 +580,11 @@ class CropImageView extends ImageViewTouchBase {
                             int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         if (mBitmapDisplayed.getBitmap() != null) {
-            for (HighlightView hv : mHighlightViews) {
+            for (RectangleOverlay hv : mRectangleOverlays) {
                 hv.mMatrix.set(getImageMatrix());
                 hv.invalidate();
                 if (hv.mIsFocused) {
-                    centerBasedOnHighlightView(hv);
+                    centerBasedOnRectangleOverlay(hv);
                 }
             }
         }
@@ -600,7 +597,7 @@ class CropImageView extends ImageViewTouchBase {
     @Override
     protected void zoomTo(float scale, float centerX, float centerY) {
         super.zoomTo(scale, centerX, centerY);
-        for (HighlightView hv : mHighlightViews) {
+        for (RectangleOverlay hv : mRectangleOverlays) {
             hv.mMatrix.set(getImageMatrix());
             hv.invalidate();
         }
@@ -609,7 +606,7 @@ class CropImageView extends ImageViewTouchBase {
     @Override
     protected void zoomIn() {
         super.zoomIn();
-        for (HighlightView hv : mHighlightViews) {
+        for (RectangleOverlay hv : mRectangleOverlays) {
             hv.mMatrix.set(getImageMatrix());
             hv.invalidate();
         }
@@ -618,7 +615,7 @@ class CropImageView extends ImageViewTouchBase {
     @Override
     protected void zoomOut() {
         super.zoomOut();
-        for (HighlightView hv : mHighlightViews) {
+        for (RectangleOverlay hv : mRectangleOverlays) {
             hv.mMatrix.set(getImageMatrix());
             hv.invalidate();
         }
@@ -627,8 +624,8 @@ class CropImageView extends ImageViewTouchBase {
     @Override
     protected void postTranslate(float deltaX, float deltaY) {
         super.postTranslate(deltaX, deltaY);
-        for (int i = 0; i < mHighlightViews.size(); i++) {
-            HighlightView hv = mHighlightViews.get(i);
+        for (int i = 0; i < mRectangleOverlays.size(); i++) {
+            RectangleOverlay hv = mRectangleOverlays.get(i);
             hv.mMatrix.postTranslate(deltaX, deltaY);
             hv.invalidate();
         }
@@ -637,16 +634,16 @@ class CropImageView extends ImageViewTouchBase {
     // According to the event's position, change the focus to the first
     // hitting cropping rectangle.
     private void recomputeFocus(MotionEvent event) {
-        for (int i = 0; i < mHighlightViews.size(); i++) {
-            HighlightView hv = mHighlightViews.get(i);
+        for (int i = 0; i < mRectangleOverlays.size(); i++) {
+            RectangleOverlay hv = mRectangleOverlays.get(i);
             hv.setFocus(false);
             hv.invalidate();
         }
 
-        for (int i = 0; i < mHighlightViews.size(); i++) {
-            HighlightView hv = mHighlightViews.get(i);
+        for (int i = 0; i < mRectangleOverlays.size(); i++) {
+            RectangleOverlay hv = mRectangleOverlays.get(i);
             int edge = hv.getHit(event.getX(), event.getY());
-            if (edge != HighlightView.GROW_NONE) {
+            if (edge != RectangleOverlay.GROW_NONE) {
                 if (!hv.hasFocus()) {
                     hv.setFocus(true);
                     hv.invalidate();
@@ -659,62 +656,62 @@ class CropImageView extends ImageViewTouchBase {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        CropImage cropImage = (CropImage) this.getContext();
-        if (cropImage.mSaving) {
+        CropImageActivity cropImageActivity = (CropImageActivity) this.getContext();
+        if (cropImageActivity.mSaving) {
             return false;
         }
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (cropImage.mWaitingToPick) {
+                if (cropImageActivity.mWaitingToPick) {
                     recomputeFocus(event);
                 } else {
-                    for (int i = 0; i < mHighlightViews.size(); i++) {
-                        HighlightView hv = mHighlightViews.get(i);
+                    for (int i = 0; i < mRectangleOverlays.size(); i++) {
+                        RectangleOverlay hv = mRectangleOverlays.get(i);
                         int edge = hv.getHit(event.getX(), event.getY());
-                        if (edge != HighlightView.GROW_NONE) {
+                        if (edge != RectangleOverlay.GROW_NONE) {
                             mMotionEdge = edge;
-                            mMotionHighlightView = hv;
+                            mMotionRectangleOverlay = hv;
                             mLastX = event.getX();
                             mLastY = event.getY();
-                            mMotionHighlightView.setMode(
-                                    (edge == HighlightView.MOVE)
-                                    ? HighlightView.ModifyMode.Move
-                                    : HighlightView.ModifyMode.Grow);
+                            mMotionRectangleOverlay.setMode(
+                                    (edge == RectangleOverlay.MOVE)
+                                    ? RectangleOverlay.ModifyMode.Move
+                                    : RectangleOverlay.ModifyMode.Grow);
                             break;
                         }
                     }
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (cropImage.mWaitingToPick) {
-                    for (int i = 0; i < mHighlightViews.size(); i++) {
-                        HighlightView hv = mHighlightViews.get(i);
+                if (cropImageActivity.mWaitingToPick) {
+                    for (int i = 0; i < mRectangleOverlays.size(); i++) {
+                        RectangleOverlay hv = mRectangleOverlays.get(i);
                         if (hv.hasFocus()) {
-                            cropImage.mCrop = hv;
-                            for (int j = 0; j < mHighlightViews.size(); j++) {
+                            cropImageActivity.mCrop = hv;
+                            for (int j = 0; j < mRectangleOverlays.size(); j++) {
                                 if (j == i) {
                                     continue;
                                 }
-                                mHighlightViews.get(j).setHidden(true);
+                                mRectangleOverlays.get(j).setHidden(true);
                             }
-                            centerBasedOnHighlightView(hv);
-                            ((CropImage) this.getContext()).mWaitingToPick = false;
+                            centerBasedOnRectangleOverlay(hv);
+                            ((CropImageActivity) this.getContext()).mWaitingToPick = false;
                             return true;
                         }
                     }
-                } else if (mMotionHighlightView != null) {
-                    centerBasedOnHighlightView(mMotionHighlightView);
-                    mMotionHighlightView.setMode(
-                            HighlightView.ModifyMode.None);
+                } else if (mMotionRectangleOverlay != null) {
+                    centerBasedOnRectangleOverlay(mMotionRectangleOverlay);
+                    mMotionRectangleOverlay.setMode(
+                            RectangleOverlay.ModifyMode.None);
                 }
-                mMotionHighlightView = null;
+                mMotionRectangleOverlay = null;
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (cropImage.mWaitingToPick) {
+                if (cropImageActivity.mWaitingToPick) {
                     recomputeFocus(event);
-                } else if (mMotionHighlightView != null) {
-                    mMotionHighlightView.handleMotion(mMotionEdge,
+                } else if (mMotionRectangleOverlay != null) {
+                    mMotionRectangleOverlay.handleMotion(mMotionEdge,
                             event.getX() - mLastX,
                             event.getY() - mLastY);
                     mLastX = event.getX();
@@ -726,7 +723,7 @@ class CropImageView extends ImageViewTouchBase {
                         // the edge of the screen causes scrolling but it means
                         // that the crop rectangle is no longer fixed under
                         // the user's finger.
-                        ensureVisible(mMotionHighlightView);
+                        ensureVisible(mMotionRectangleOverlay);
                     }
                 }
                 break;
@@ -751,7 +748,7 @@ class CropImageView extends ImageViewTouchBase {
     }
 
     // Pan the displayed image to make sure the cropping rectangle is visible.
-    private void ensureVisible(HighlightView hv) {
+    private void ensureVisible(RectangleOverlay hv) {
         Rect r = hv.mDrawRect;
 
         int panDeltaX1 = Math.max(0, this.getLeft() - r.left);
@@ -770,7 +767,7 @@ class CropImageView extends ImageViewTouchBase {
 
     // If the cropping rectangle's size changed significantly, change the
     // view's center and scale according to the cropping rectangle.
-    private void centerBasedOnHighlightView(HighlightView hv) {
+    private void centerBasedOnRectangleOverlay(RectangleOverlay hv) {
         Rect drawRect = hv.mDrawRect;
 
         float width = drawRect.width();
@@ -799,13 +796,13 @@ class CropImageView extends ImageViewTouchBase {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        for (int i = 0; i < mHighlightViews.size(); i++) {
-            mHighlightViews.get(i).draw(canvas);
+        for (int i = 0; i < mRectangleOverlays.size(); i++) {
+            mRectangleOverlays.get(i).draw(canvas);
         }
     }
 
-    public void add(HighlightView hv) {
-        mHighlightViews.add(hv);
+    public void add(RectangleOverlay hv) {
+        mRectangleOverlays.add(hv);
         invalidate();
     }
 }

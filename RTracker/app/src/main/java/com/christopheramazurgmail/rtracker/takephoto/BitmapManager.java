@@ -120,7 +120,7 @@ public class BitmapManager {
         // Wake up threads in waiting list
         notifyAll();
 
-        // Since our cancel request can arrive MediaProvider earlier than getThumbnail request,
+        // Since our cancel request can arrive at MediaProvider earlier than getThumbnail request,
         // we use mThumbRequesting flag to make sure our request does cancel the request.
         try {
             synchronized (status) {
