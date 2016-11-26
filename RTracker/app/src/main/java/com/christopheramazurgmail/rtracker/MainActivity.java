@@ -24,20 +24,87 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Invokes the database
         db = new MySQLiteHelper(getApplicationContext());
-        String name = "test";
-        int dat = 1;
+
+        //Uncomment this to reset and test the database
+
+
+        //Variables for the database tests
         ArrayList<String> receipts = new ArrayList<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String currentDateandTime = sdf.format(new Date());
+        ArrayList<String> itemNames = new ArrayList<>();
+        ArrayList<String> storeNames = new ArrayList<>();
+        ArrayList<String> storeReceiptNames = new ArrayList<>();
+        Item testItem1 = new Item("Potatoes", 23.45);
+        Item testItem2 = new Item("Pizza", 18.33);
+        Item testItem3 = new Item("Soup", 5.99);
+        Item testItem4 = new Item("Crackers", 6.77);
+        Item testItem5 = new Item("Coke", 10.50);
+        Receipt rec = new Receipt("Wal-Mart");
+        rec.add(testItem1);
+        rec.add(testItem2);
+        Receipt rec2 = new Receipt("Wal-Mart");
+        rec2.add(testItem3);
+        rec2.add(testItem4);
+        rec2.add(testItem5);
+        rec2.add(testItem5);
+
+        db.danTestUpgrade();
 
         System.out.println("Testing the getCat methods: " + db.getCatID(1) + " " + db.getCatName(1));
         System.out.println("Testing the getUser methods: " + db.getUser(1));
-        System.out.print("Testing the getAllReceiptID method: ");
+        System.out.println("Inserting a receipt");
+        db.insertReceiptObject(rec);
+        System.out.println("Testing the getAllItemsInTable method: ");
+        itemNames = db.getAllItemsInTable();
+        for (String listing : itemNames) {
+            System.out.println(listing);
+        }
+
+        System.out.println("Testing the getAllReceiptID method: ");
         receipts = db.getAllReceiptID();
         for (String item : receipts) {
             System.out.println(item);
         }
+
+        System.out.println("Building a receipt");
+        Receipt receipt = new Receipt();
+        receipt = db.getReceiptObject("1");
+        System.out.println("Getting the name of the store");
+        System.out.println(receipt.getStore());
+
+        System.out.println("Inserting a receipt");
+        db.insertReceiptObject(rec2);
+        System.out.println("Testing the getAllItemsInTable method: ");
+        itemNames = db.getAllItemsInTable();
+        for (String listing : itemNames) {
+            System.out.println(listing);
+        }
+
+        System.out.println("Deleting a receipt with ID 1");
+        db.deleteReceipt("1");
+        System.out.println("Testing the getAllItemsInTable method: ");
+        itemNames = db.getAllItemsInTable();
+        for (String listing : itemNames) {
+            System.out.println(listing);
+        }
+
+        System.out.println("Testing the getAllStoresInTable method: ");
+        storeNames = db.getAllStoresInTable();
+        for (String listing2 : storeNames) {
+            System.out.println(listing2);
+        }
+
+        System.out.println("Testing the getAllStoreReceiptsInTable method: ");
+        storeReceiptNames = db.getAllStoresReceiptsInTable();
+        for (String listing3 : storeReceiptNames) {
+            System.out.println(listing3);
+        }
+
+
+        //End of database tests
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -80,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //Closes database connection on termination
         db.closeDB();
     }
 

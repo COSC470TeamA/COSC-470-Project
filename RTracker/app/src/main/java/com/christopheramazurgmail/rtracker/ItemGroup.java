@@ -1,6 +1,8 @@
 package com.christopheramazurgmail.rtracker;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -40,6 +42,30 @@ public class ItemGroup extends ArrayList{
         return items.get(position);
     }
 
+    public void sortByPrice() {
+        //this.add(0, getLowestPriced());
+        // Remove the old ones
+        Collections.sort(items);
+//        Collections.sort(items, new Comparator<Item>() {
+//            @Override
+//            public int compare(Item itemA, Item itemB) {
+//                return  itemB.getPriceD().compareTo(itemA.getPriceD());
+//            }
+//        });
+
+        System.out.println(this.toString());
+    }
+
+    private Item getLowestPriced() {
+        Item i = new Item();
+        i.setPrice(Double.MAX_VALUE);
+        for (Item item : items) {
+            if (item.getPriceD() < i.getPriceD()) {
+                i = item;
+            }
+        }
+        return i;
+    }
 
     public void add(Item item) {
         items.add(item);
@@ -47,6 +73,7 @@ public class ItemGroup extends ArrayList{
     public void setItems(ArrayList<Item> items) {
         this.items = items;
     }
+
 
 
 }
