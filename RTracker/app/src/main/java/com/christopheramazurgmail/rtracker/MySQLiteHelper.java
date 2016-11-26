@@ -288,16 +288,15 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public ArrayList<Receipt> getAllReceipts(){
         ArrayList<Receipt> receiptObjects = new ArrayList<>();
         ArrayList<Item> items = new ArrayList<>();
+        ArrayList<String> receiptID = new ArrayList<>();
         System.out.println("Getting receipt count");
-        int receiptCount = getReceiptCount();
-        System.out.println("Receipt count is: " + receiptCount);
-        for(int i=0;i<receiptCount; i++) {
+        receiptID = getAllReceiptID();
+        for (String recCount : receiptID){
             Receipt receipt = new Receipt();
-            String n_id = String.valueOf(i);
             System.out.println("Getting Store Name");
-            String store = getStoreName(n_id);
+            String store = getStoreName(recCount);
             System.out.println("Getting item names");
-            items = getAllItemForReceipt(n_id);
+            items = getAllItemForReceipt(recCount);
             for (Item item : items) {
                 System.out.println("Item name coming back is: " + item.getDesc());
                 receipt.add(item);
