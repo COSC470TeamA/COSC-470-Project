@@ -41,7 +41,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.christopheramazurgmail.rtracker.R;
 import com.christopheramazurgmail.rtracker.takephoto.gallery.IImage;
@@ -115,9 +114,10 @@ public class CropImageActivity extends MonitoredActivity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
+        //fuck circle crop y even
         if (extras != null) {
             if (extras.getBoolean("circleCrop", false)) {
-                mCircleCrop = true;
+                mCircleCrop = false;
                 mAspectX = 1;
                 mAspectY = 1;
                 mOutputFormat = Bitmap.CompressFormat.PNG;
@@ -146,6 +146,7 @@ public class CropImageActivity extends MonitoredActivity {
                     ? !extras.getBoolean("noFaceDetection")
                     : true;
         }
+        //fuckin circles
 
         if (mBitmap == null) {
             Uri target = intent.getData();
@@ -187,6 +188,7 @@ public class CropImageActivity extends MonitoredActivity {
         startFaceDetection();
     }
 
+    //TODO: Can probably delete this but not sure yet
     private void startFaceDetection() {
         if (isFinishing()) {
             return;
@@ -284,6 +286,7 @@ public class CropImageActivity extends MonitoredActivity {
             mImageView.clear();
             mBitmap.recycle();
 
+            //TODO: Can probably delete this
             if (mCircleCrop) {
                 // OK, so what's all this about?
                 // Bitmaps are inherently rectangular but we want to return
@@ -337,6 +340,7 @@ public class CropImageActivity extends MonitoredActivity {
         if (mSaveUri != null) {
             OutputStream outputStream = null;
             try {
+                grantUriPermission("com.christopheramazurgmail.rtracker.takephoto", mSaveUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 outputStream = mContentResolver.openOutputStream(mSaveUri);
                 if (outputStream != null) {
                     croppedImage.compress(mOutputFormat, mOutputQuality, outputStream);
@@ -358,7 +362,8 @@ public class CropImageActivity extends MonitoredActivity {
                 Log.e(TAG, "Failed to set wallpaper.", e);
                 setResult(RESULT_CANCELED);
             }
-        } else {
+        } else  {
+            //If filename exists, go to the directory and append a _number to the filename
             Bundle extras = new Bundle();
             extras.putString("rect", mCrop.getCropRect().toString());
 
@@ -380,7 +385,7 @@ public class CropImageActivity extends MonitoredActivity {
                     break;
                 }
             }
-
+            //add to the image manager
             try {
                 int[] degree = new int[1];
                 Uri newUri = ImageManager.addImage(
@@ -427,6 +432,7 @@ public class CropImageActivity extends MonitoredActivity {
         super.onDestroy();
     }
 
+    //don't need
     Runnable mRunFaceDetection = new Runnable() {
         @SuppressWarnings("hiding")
         float mScale = 1F;
@@ -479,6 +485,7 @@ public class CropImageActivity extends MonitoredActivity {
             mImageView.add(hv);
         }
 
+        //Default functionality
         // Create a default HightlightView if we found no face in the picture.
         private void makeDefault() {
             RectangleOverlay hv = new RectangleOverlay(mImageView, mOutlineColor, mOutlineCircleColor);
@@ -543,26 +550,26 @@ public class CropImageActivity extends MonitoredActivity {
 
             mHandler.post(new Runnable() {
                 public void run() {
-                    mWaitingToPick = mNumFaces > 1;
+  /*                  mWaitingToPick = mNumFaces > 1;
                     if (mNumFaces > 0) {
                         for (int i = 0; i < mNumFaces; i++) {
                             handleFace(mFaces[i]);
                         }
-                    } else {
+                    } else {*/
                         makeDefault();
-                    }
+                    //}
                     mImageView.invalidate();
                     if (mImageView.mRectangleOverlays.size() == 1) {
                         mCrop = mImageView.mRectangleOverlays.get(0);
                         mCrop.setFocus(true);
                     }
 
-                    if (mNumFaces > 1) {
+/*                    if (mNumFaces > 1) {
                         Toast t = Toast.makeText(CropImageActivity.this,
                                 R.string.multiface_crop_help,
                                 Toast.LENGTH_SHORT);
                         t.show();
-                    }
+                    }*/
                 }
             });
         }

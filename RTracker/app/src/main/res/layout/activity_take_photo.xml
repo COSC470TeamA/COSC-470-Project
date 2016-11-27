@@ -29,7 +29,8 @@
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true">
+                android:layout_centerHorizontal="true"
+            android:id="@+id/relativeLayout">
             <Button
                     android:id="@+id/save"
                     android:layout_width="@dimen/crop_button_width"
@@ -60,7 +61,8 @@
                 android:layout_x="0dip"
                 android:layout_y="0dip"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_above="@+id/relativeLayout" />
     </RelativeLayout>
 
 </FrameLayout>

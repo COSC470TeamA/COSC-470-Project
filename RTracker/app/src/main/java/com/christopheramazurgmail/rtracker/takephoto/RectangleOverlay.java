@@ -34,7 +34,7 @@ import com.christopheramazurgmail.rtracker.R;
 class RectangleOverlay {
     public static final int DEFAULT_OUTLINE_COLOR = 0xFFFF8A00;
     public static final int DEFAULT_OUTLINE_CIRCLE_COLOR = 0xFFEF04D6;
-    public static final boolean PRECISION_RECTANGLES = false;
+    //public static final boolean PRECISION_RECTANGLES = false;
 
     @SuppressWarnings("unused")
     private static final String TAG = "RectangleOverlay";

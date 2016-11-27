@@ -6,21 +6,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.christopheramazurgmail.rtracker.R;
 
 
 public class TakePhotoActivity extends Activity {
 
-    Button takePicture;
-    ImageView imagePreview;
-    int CAMERA_PIC_REQUEST = 1;
+    public static final String STORENAME = "storename";
+    public static final String ITEMS = "items";
+    Button save, takePhoto, discard;
+    CropImageView mImageView;
+    int REQUEST_IMAGE_CAPTURE = 1;
     int REQUEST_CROP_PICTURE = 2;
     int REQUEST_CROP_STORE_NAME = 3;
     int REQUEST_CROP_ITEMS = 4;
-    Uri imageUri, receiptStoreName, receiptItems;
-
+    Uri imageUri, croppedImage, receiptStoreName, receiptItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,16 +30,28 @@ public class TakePhotoActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_take_photo);
 
+        Bundle extras = getIntent().getExtras();
+        mImageView = (CropImageView) findViewById(R.id.previewImage);
+
+        if (extras != null) {
+            //we get an image from gallery that we want to crop
+            if (extras.containsKey("imageFromFile")) {
+                imageUri = extras.getParcelable("imageFromFile");
+                startCrop(imageUri);
+            }
+        }
+
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+            startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
 
 
     protected void startCrop(Uri imageToCrop) {
-        //Initialize CropImageActivity intent with a 200x200 rectangle, outputting to imageToCrop URI
-        CropImageIntentBuilder cropImage = new CropImageIntentBuilder(200, 200, imageToCrop);
+        //Initialize CropImageActivity intent with a 200w x 400h rectangle, outputting to the passed image's URI
+        //TODO: Figure out how to make rectangles not auto-scale w x h
+        CropImageIntentBuilder cropImage = new CropImageIntentBuilder(200, 400, imageToCrop);
         //Todo: set in colors xml
         cropImage.setOutlineColor(0xFF03A9F4);
         //Don't need face detection for cropping - it was set on by default
@@ -50,17 +63,17 @@ public class TakePhotoActivity extends Activity {
 
     //TODO: Get both rectangles on one screen
     protected void cropReceiptStoreName(Uri imageToPrecision) {
-        CropImageIntentBuilder cropImage = new CropImageIntentBuilder(200, 100, receiptStoreName);
+        CropImageIntentBuilder cropImage = new CropImageIntentBuilder(200, 100, imageToPrecision);
         cropImage.setOutlineColor(0xFF03A9F4);
-        cropImage.setSourceImage(imageToPrecision);
-        startActivityForResult(cropImage.getIntent(this), REQUEST_CROP_PICTURE);
+        cropImage.setSourceImage(croppedImage);
+        startActivityForResult(cropImage.getIntent(this), REQUEST_CROP_STORE_NAME);
     }
 
     protected void cropReceiptItems(Uri imageToPrecision) {
-        CropImageIntentBuilder cropImage = new CropImageIntentBuilder(200, 100, receiptItems);
+        CropImageIntentBuilder cropImage = new CropImageIntentBuilder(200, 400, imageToPrecision);
         cropImage.setOutlineColor(0xFF03A9F4);
-        cropImage.setSourceImage(imageToPrecision);
-        startActivityForResult(cropImage.getIntent(this), REQUEST_CROP_PICTURE);
+        cropImage.setSourceImage(croppedImage);
+        startActivityForResult(cropImage.getIntent(this), REQUEST_CROP_ITEMS);
     }
 
 
@@ -71,22 +84,61 @@ public class TakePhotoActivity extends Activity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            if (requestCode == CAMERA_PIC_REQUEST) {
+            //Original image from camera
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 imageUri = data.getData();
-                imagePreview.setImageURI(imageUri);
+                mImageView.setImageURI(imageUri);
                 startCrop(imageUri);
+
             } else if (requestCode == REQUEST_CROP_PICTURE) {
-                imageUri = data.getData();
-                imagePreview.setImageURI(imageUri);
-                startPrecisionRectangles(imageUri);
+                croppedImage = data.getData();
+                mImageView.setImageURI(croppedImage);
+                Toast t = Toast.makeText(this,
+                        "Image cropped and set!",
+                        Toast.LENGTH_SHORT);
+                t.show();
+
+                startPrecisionRectangles(croppedImage);
+
+                Intent i = this.getIntent();
+                if (receiptStoreName != null && receiptItems != null) {
+                    i.putExtra(STORENAME, receiptStoreName);
+                    i.putExtra(ITEMS, receiptItems);
+                }
+
             } else if (requestCode == REQUEST_CROP_STORE_NAME) {
-                imageUri = data.getData();
-                imagePreview.setImageURI(imageUri);
+                receiptStoreName = data.getData();
 
             } else if (requestCode == REQUEST_CROP_ITEMS) {
-                imageUri = data.getData();
-                imagePreview.setImageURI(imageUri);
+                receiptItems = data.getData();
+
+            } else {
+                if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                    Toast t = Toast.makeText(this,
+                            "Something went wrong taking a photo",
+                            Toast.LENGTH_SHORT);
+                    t.show();
+                }
+                if (requestCode == REQUEST_CROP_PICTURE) {
+                    Toast t = Toast.makeText(this,
+                            "Something went wrong while cropping the original photo",
+                            Toast.LENGTH_SHORT);
+                    t.show();
+                }
+                if (requestCode == REQUEST_CROP_STORE_NAME) {
+                    Toast t = Toast.makeText(this,
+                            "Something went wrong selecting the Store Name",
+                            Toast.LENGTH_SHORT);
+                    t.show();
+                }
+                if (requestCode == REQUEST_CROP_ITEMS) {
+                    Toast t = Toast.makeText(this,
+                            "Something went wrong selecting the Items",
+                            Toast.LENGTH_SHORT);
+                    t.show();
+                }
             }
+
 
         }
     }
