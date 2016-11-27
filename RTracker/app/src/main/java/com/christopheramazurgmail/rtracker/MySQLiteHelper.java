@@ -10,6 +10,7 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MySQLiteHelper extends SQLiteOpenHelper {
@@ -22,7 +23,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_CAT = "cat";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_ITEM_COUNT = "item_count";
 
     public static final String TABLE_ITEM = "item";
     public static final String COLUMN_PRICE = "price";
@@ -65,12 +65,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             = "create table " + TABLE_ITEM + "( " + COLUMN_ID
             + " text, " + COLUMN_NAME
             + " text not null, " + COLUMN_PRICE
-            + " real, " + COLUMN_ITEM_COUNT + " integer, primary key ("
+            + " real, primary key ("
             + COLUMN_ID + ", " + COLUMN_NAME +"));";
 
     private static final String TABLE_ITEM_CAT_CREATE
             = "create table " + TABLE_ITEM_CAT + "( " + COLUMN_ITEM_ID
-            + " integer, " + COLUMN_CAT_ID + "integer, primary key ("
+            + " text, " + COLUMN_CAT_ID + " integer, primary key ("
             + COLUMN_ITEM_ID + ", " + COLUMN_CAT_ID +"));";
 
     private static final String TABLE_LIBRARY_CREATE
@@ -119,7 +119,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         System.out.println("Creating table item");
         database.execSQL(TABLE_ITEM_CREATE);
         System.out.println("Creating table item_cat");
-        //database.execSQL(TABLE_ITEM_CAT_CREATE);
+        database.execSQL(TABLE_ITEM_CAT_CREATE);
         System.out.println("Creating table library");
         database.execSQL(TABLE_LIBRARY_CREATE);
         System.out.println("Creating table item_receipt");
@@ -134,8 +134,140 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         database.execSQL(TABLE_STORE_CREATE);
 
         createUser("test", 1);
-        insertCat("Pickles");
-        insertCat("Coke");
+        ArrayList<String> receipts = new ArrayList<>();
+        ArrayList<String> itemNames = new ArrayList<>();
+        ArrayList<String> storeNames = new ArrayList<>();
+        ArrayList<String> storeReceiptNames = new ArrayList<>();
+        ArrayList<String> itemReceiptNames = new ArrayList<>();
+        ArrayList<Receipt> testReceiptList = new ArrayList<>();
+        ArrayList<Item> testItemList = new ArrayList<>();
+        ArrayList<Category> testCategoryList = new ArrayList<>();
+        Item testItem1 = new Item("Potatoes", 23.45);
+        Item testItem2 = new Item("Pizza", 18.33);
+        Item testItem3 = new Item("Soup", 5.99);
+        Item testItem4 = new Item("Crackers", 6.77);
+        Item testItem5 = new Item("Coke", 10.50);
+        Receipt rec = new Receipt("Wal-Mart");
+        rec.add(testItem1);
+        rec.add(testItem2);
+        Receipt rec2 = new Receipt("Wal-Mart");
+        rec2.add(testItem3);
+        rec2.add(testItem4);
+        rec2.add(testItem5);
+        rec2.add(testItem5);
+        Receipt rec3 = new Receipt("Superstore");
+        rec3.add(testItem3);
+        rec3.add(testItem4);
+        rec3.add(testItem5);
+        rec3.add(testItem5);
+        rec3.add(testItem1);
+        rec3.add(testItem2);
+        rec3.add(testItem5);
+
+        System.out.println("Testing the getUser methods: " + getUser(1));
+        System.out.println("Inserting a receipt");
+        insertReceiptObject(rec);
+        System.out.println("Testing the getAllItemsInTable method: ");
+        itemNames = getAllItemsInTable();
+        for (String listing : itemNames) {
+            System.out.println(listing);
+        }
+
+        System.out.println("Testing the getAllReceiptID method: ");
+        receipts = getAllReceiptID();
+        for (String item : receipts) {
+            System.out.println(item);
+        }
+
+        System.out.println("Testing the getAllItemsReceiptsInTable method: ");
+        itemReceiptNames = getAllItemsReceiptsInTable();
+        for (String listing : itemReceiptNames) {
+            System.out.println(listing);
+        }
+
+        System.out.println("Building a receipt");
+        Receipt receipt = getReceiptObject("0");
+        System.out.println("Getting the name of the store");
+        System.out.println(receipt.getStore());
+
+        System.out.println("Inserting a receipt");
+        insertReceiptObject(rec2);
+        System.out.println("Testing the getAllItemsInTable method: ");
+        itemNames = getAllItemsInTable();
+        for (String listing : itemNames) {
+            System.out.println(listing);
+        }
+
+        System.out.println("Testing the getAllItemsReceiptsInTable method: ");
+        itemReceiptNames = getAllItemsReceiptsInTable();
+        for (String listing : itemReceiptNames) {
+            System.out.println(listing);
+        }
+
+        System.out.println("Deleting a receipt with ID 1");
+        deleteReceipt("1");
+        System.out.println("Testing the getAllItemsInTable method: ");
+        itemNames = getAllItemsInTable();
+        for (String listing : itemNames) {
+            System.out.println(listing);
+        }
+
+        System.out.println("Testing the getAllStoresInTable method: ");
+        storeNames = getAllStoresInTable();
+        for (String listing2 : storeNames) {
+            System.out.println(listing2);
+        }
+
+        System.out.println("Testing the getAllStoreReceiptsInTable method: ");
+        storeReceiptNames = getAllStoresReceiptsInTable();
+        for (String listing3 : storeReceiptNames) {
+            System.out.println(listing3);
+        }
+
+        System.out.println("Testing the getAllReceipts method: ");
+        testReceiptList = getAllReceipts();
+        for (Receipt listing4 : testReceiptList) {
+            System.out.println(listing4.getStore());
+            System.out.println("On receipt from: " + listing4.getStore());
+            for (Item testItem : listing4.items.getItems()) {
+                System.out.println(testItem.getDesc());
+            }
+        }
+
+        System.out.println("Inserting a receipt");
+        insertReceiptObject(rec3);
+        System.out.println("Testing the getAllItemsInTable method: ");
+        itemNames = getAllItemsInTable();
+        for (String listing : itemNames) {
+            System.out.println(listing);
+        }
+
+        System.out.println("Testing the getAllReceipts method: ");
+        testReceiptList = getAllReceipts();
+        for (Receipt listing5 : testReceiptList) {
+            System.out.println("On receipt from: " + listing5.getStore());
+            for (Item testItem : listing5.items.getItems()) {
+                System.out.println(testItem.getDesc());
+            }
+        }
+
+        System.out.println("Testing the getAllItems method: ");
+        testItemList = getAllItems();
+        for (Item listing5 : testItemList) {
+            System.out.println("Item Name: " + listing5.getDesc());
+            System.out.println("Item Price: " + listing5.getPrice());
+        }
+
+        System.out.println("Testing the getAllCategories method: ");
+        testCategoryList = getAllCategories();
+        for (Category listing5 : testCategoryList) {
+            System.out.println("Category Name: " + listing5.getName());
+            LinkedList<Category.Item> itemsCatListing = listing5.getItemList();
+            for (Category.Item newItem : itemsCatListing) {
+                System.out.println(newItem.getName());
+            }
+        }
+
     }
 
     @Override
@@ -155,29 +287,51 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    //Public methods
+    //===========================================================================================
+
     //Returns a receipt object of the corresponding receipt id
     public Receipt getReceiptObject(String n_id){
         Receipt receipt = new Receipt();
-        ArrayList<String> itemNames = new ArrayList<>();
-        double itemPrice;
-        int itemCount;
+        ArrayList<Item> items = new ArrayList<>();
+        String i_id;
         String store = getStoreName(n_id);
-        System.out.println("Getting all the names on the receipt");
-        itemNames = getAllItemNamesOnReceipt(n_id);
-        for (String itemName : itemNames) {
-            itemPrice = getItemPrice(n_id, itemName);
-            itemCount = getNumberOfItems(n_id, itemName);
-            Item item = new Item(itemName, itemPrice);
-            for (int i = 0; i < itemCount; i++) {
-                receipt.add(item);
-            }
-            if (store != null){
-                receipt.setStore(store);
-            }
+        items = getAllItemForReceipt(n_id);
+        for (Item item : items) {
+            receipt.add(item);
+        }
+        if (store != null) {
+            receipt.setStore(store);
         }
         return receipt;
     }
 
+    //Returns a list of all the receipt objects in the database
+    public ArrayList<Receipt> getAllReceipts(){
+        ArrayList<Receipt> receiptObjects = new ArrayList<>();
+        ArrayList<Item> items = new ArrayList<>();
+        ArrayList<String> receiptID = new ArrayList<>();
+        System.out.println("Getting receipt count");
+        receiptID = getAllReceiptID();
+        for (String recCount : receiptID){
+            Receipt receipt = new Receipt();
+            System.out.println("Getting Store Name");
+            String store = getStoreName(recCount);
+            System.out.println("Getting item names");
+            items = getAllItemForReceipt(recCount);
+            for (Item item : items) {
+                System.out.println("Item name coming back is: " + item.getDesc());
+                receipt.add(item);
+            }
+            if (store != null) {
+                receipt.setStore(store);
+            }
+            receiptObjects.add(receipt);
+        }
+        return receiptObjects;
+    }
+
+    //Inserts a receipt object into the database
     public void insertReceiptObject(Receipt receipt){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String currentDateandTime = sdf.format(new Date());
@@ -194,67 +348,173 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         String store = receipt.getStore();
         String store_id;
         if (store != null){
+            System.out.println("Inserting store");
             insertStore(store);
             store_id = getStoreID(store);
+            System.out.println("Inserting store Bridge");
             insertReceiptStore(n_id_string, store_id);
         }
         for (Item item : itemNames) {
             item = itemNames.get(counter);
             itemName = item.getDesc();
             itemPrice = item.getPriceD();
+            System.out.println("Inserting item");
             insertItem(n_id_string, itemName, itemPrice);
             counter++;
         }
     }
 
+    //Returns a list of items, of all the items in the database
+    public ArrayList<Item> getAllItems(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Item> items = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_ITEM;
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        while (c.moveToNext()) {
+            Item ret = new Item();
+            ret.setDesc(c.getString(c.getColumnIndex(COLUMN_NAME)));
+            ret.setPrice(c.getDouble(c.getColumnIndex(COLUMN_PRICE)));
+            items.add(ret);
+        }
+        return items;
+    }
+
+    //Returns a list of categories, of all categories in the database
+    public ArrayList<Category> getAllCategories(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Category> categoriesList = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_CAT;
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        while (c.moveToNext()) {
+            Category category = new Category(c.getString(c.getColumnIndex(COLUMN_NAME)));
+            ArrayList<Item> itemsList = getAllItemForCategory(c.getString(c.getColumnIndex(COLUMN_ID)));
+            for (Item item : itemsList) {
+                category.addItemToList(item.getDesc());
+            }
+            categoriesList.add(category);
+        }
+        return categoriesList;
+    }
+
+    //End of public methods
+    //============================================================================================
+
     //Methods for the Item Table
     //============================================================================================
-    private void insertItem(String i_id, String i_name, double i_price){
-        System.out.println("Creating a new item");
+    private void insertItem(String r_id, String i_name, double i_price){
         SQLiteDatabase db = this.getWritableDatabase();
-        String selectQuery = "SELECT COUNT(*) as test_column FROM " + TABLE_ITEM + " WHERE " + COLUMN_ID
-                + " =? AND " + COLUMN_NAME + " =?";
+        String selectQuery = "SELECT COUNT(*) as test_column FROM " + TABLE_ITEM;
         Log.e(LOG, selectQuery);
-        Cursor c = db.rawQuery(selectQuery, new String[] {i_id, i_name});
+        Cursor c = db.rawQuery(selectQuery, null);
         c.moveToFirst();
         int testSet = c.getInt(c.getColumnIndex("test_column"));
         ContentValues values = new ContentValues();
         if (testSet > 0){
-            testSet = testSet + 1;
-            values.put(COLUMN_ITEM_COUNT, testSet);
-            db.update(TABLE_ITEM, values, COLUMN_ID + "=? " + "AND " +COLUMN_NAME + "=?", new String[] {i_id, i_name});
+            selectQuery = "SELECT MAX(" + COLUMN_ID +") as test_column FROM " + TABLE_ITEM;
+            Log.e(LOG, selectQuery);
+            c = db.rawQuery(selectQuery, null);
+            c.moveToFirst();
+            testSet = c.getInt(c.getColumnIndex("test_column"));
+            if (testSet > 0){
+                testSet = testSet + 1;
+            } else {
+                testSet = 1;
+            }
         } else {
             testSet = 1;
-            values.put(COLUMN_ID, i_id);
-            values.put(COLUMN_NAME, i_name);
-            values.put(COLUMN_PRICE, i_price);
-            values.put(COLUMN_ITEM_COUNT, testSet);
-            db.insert(TABLE_ITEM, null, values);
         }
+        values.put(COLUMN_ID, testSet);
+        values.put(COLUMN_NAME, i_name);
+        values.put(COLUMN_PRICE, i_price);
+        db.insert(TABLE_ITEM, null, values);
+        System.out.println("Inserting Cat");
+        insertCat(i_name);
+        System.out.println("Getting Cat");
+        String cat_id = String.valueOf(getCatID(i_name));
+        String i_id = String.valueOf(testSet);
+        System.out.println("inserting ItemCatBridge");
+        insertItemCat(i_id, cat_id);
+        System.out.println("inserting ItemReceiptBridge");
+        insertReceiptItem(i_id, r_id);
     }
 
-    public void deleteReceiptItem(String i_id){
+    private void deleteReceiptItem(String i_id){
         SQLiteDatabase db = this.getWritableDatabase();
         String deleteQuery = "id=?";
         Log.e(LOG, deleteQuery);
         db.delete(TABLE_ITEM, deleteQuery, new String[] {i_id});
     }
 
-    public ArrayList<String> getAllItemNamesOnReceipt(String i_id) {
+    public ArrayList<Item> getAllItemForReceipt(String i_id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<String> itemNames = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_ITEM + " WHERE " + COLUMN_ID
+        ArrayList<Item> items = new ArrayList<>();
+        System.out.println("test");
+        String selectQuery = "SELECT * FROM " + TABLE_ITEM_RECEIPT + " WHERE " + COLUMN_R_ID
                 + " =?";
         Log.e(LOG, selectQuery);
         Cursor c = db.rawQuery(selectQuery, new String[] {i_id});
         while (c.moveToNext()) {
-            String testGet = c.getString(c.getColumnIndex(COLUMN_NAME));
+            String item_id = c.getString(c.getColumnIndex(COLUMN_ITEM_ID));
+            System.out.println("Current item id is: " + item_id);
+            String selectQuery2 = "SELECT * FROM " + TABLE_ITEM + " WHERE " + COLUMN_ID
+                    + " =?";
+            Log.e(LOG, selectQuery2);
+            Cursor d = db.rawQuery(selectQuery2, new String[] {item_id});
+            if (d != null)
+                d.moveToFirst();
+            Item item = new Item();
+            item.setDesc(d.getString(d.getColumnIndex(COLUMN_NAME)));
+            item.setPrice(d.getDouble(d.getColumnIndex(COLUMN_PRICE)));
+            items.add(item);
+        }
+        System.out.println("Returning item names");
+        return items;
+    }
+
+    private ArrayList<String> getAllItemNamesOnReceipt(String i_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> itemNames = new ArrayList<>();
+        System.out.println("test");
+        String selectQuery = "SELECT * FROM " + TABLE_ITEM_RECEIPT + " WHERE " + COLUMN_R_ID
+                + " =?";
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, new String[] {i_id});
+        while (c.moveToNext()) {
+            String item_id = c.getString(c.getColumnIndex(COLUMN_ITEM_ID));
+            System.out.println("Current item id is: " + item_id);
+            String selectQuery2 = "SELECT * FROM " + TABLE_ITEM + " WHERE " + COLUMN_ID
+                    + " =?";
+            Log.e(LOG, selectQuery2);
+            Cursor d = db.rawQuery(selectQuery2, new String[] {item_id});
+            if (d != null)
+                d.moveToFirst();
+            String testGet = d.getString(d.getColumnIndex(COLUMN_NAME));
             itemNames.add(testGet);
         }
+        System.out.println("Returning item names");
         return itemNames;
     }
 
-    public ArrayList<String> getAllItemsInTable(){
+    private ArrayList<String> getAllItemIDOnReceipt(String i_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> itemIDs = new ArrayList<>();
+        System.out.println("test");
+        String selectQuery = "SELECT * FROM " + TABLE_ITEM_RECEIPT + " WHERE " + COLUMN_R_ID
+                + " =?";
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, new String[] {i_id});
+        while (c.moveToNext()) {
+            String item_id = c.getString(c.getColumnIndex(COLUMN_ITEM_ID));
+            System.out.println("Current item id is: " + item_id);
+            itemIDs.add(item_id);
+        }
+        System.out.println("Returning item ids");
+        return itemIDs;
+    }
+
+    private ArrayList<String> getAllItemsInTable(){
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<String> items = new ArrayList<>();
         String ret;
@@ -264,8 +524,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         while (c.moveToNext()) {
             ret = c.getString(c.getColumnIndex(COLUMN_ID)) +
                     " " + c.getString(c.getColumnIndex(COLUMN_NAME)) +
-                    " " + c.getDouble(c.getColumnIndex(COLUMN_PRICE)) +
-                    " " + c.getInt(c.getColumnIndex(COLUMN_ITEM_COUNT));
+                    " " + c.getDouble(c.getColumnIndex(COLUMN_PRICE));
             items.add(ret);
         }
         return items;
@@ -307,18 +566,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return testGet;
     }
 
-    private int getNumberOfItems(String i_id, String i_name) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String selectQuery = "SELECT * FROM " + TABLE_ITEM + " WHERE " + COLUMN_ID
-                + " =? AND " + COLUMN_NAME + " =?";
-        Log.e(LOG, selectQuery);
-        Cursor c = db.rawQuery(selectQuery, new String[] {i_id, i_name});
-        if (c != null)
-            c.moveToFirst();
-        int testGet = c.getInt(c.getColumnIndex(COLUMN_ITEM_COUNT));
-        return testGet;
-    }
-
     //End of methods for the Item table
     //============================================================================================
 
@@ -357,7 +604,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     }
 
     // Get method for the ID column of the receipt table
-    public String getReceipt(String r_id) {
+    private String getReceipt(String r_id) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT  * FROM " + TABLE_RECEIPT + " WHERE "
                 + COLUMN_ID + " = " + r_id;
@@ -370,7 +617,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     }
 
     // Get method that returns a list of all the ID's in the receipt table
-    public ArrayList<String> getAllReceiptID() {
+    private ArrayList<String> getAllReceiptID() {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<String> receipts = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_RECEIPT;
@@ -385,7 +632,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     // Isert method for the Receipt table
     // E.G. db.insertReceipt(ReceiptIDHere, DateHere);
-    public void insertReceipt(int r_id, String r_date){
+    private void insertReceipt(int r_id, String r_date){
         System.out.println("Creating a new receipt");
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -394,16 +641,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.insert(TABLE_RECEIPT, null, values);
     }
 
-    public int getReceiptCount(){
+    private int getReceiptCount(){
         SQLiteDatabase db = this.getWritableDatabase();
         String selectQuery = "SELECT COUNT(*) as test_column FROM " + TABLE_RECEIPT;
         Log.e(LOG, selectQuery);
         Cursor c = db.rawQuery(selectQuery, null);
         c.moveToFirst();
         int testSet = c.getInt(c.getColumnIndex("test_column"));
-        if (testSet == 0){
-            testSet = 1;
-        } else {
+        if (testSet > 0){
             selectQuery = "SELECT MAX(" + COLUMN_ID +") as test_column FROM " + TABLE_RECEIPT;
             Log.e(LOG, selectQuery);
             c = db.rawQuery(selectQuery, null);
@@ -419,43 +664,77 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         String deleteQuery = "id=?";
         Log.e(LOG, deleteQuery);
         db.delete(TABLE_RECEIPT, deleteQuery, new String[] {r_id});
-        deleteReceiptItem(r_id);
+        String selectQuery = "SELECT " + COLUMN_ITEM_ID + " FROM " + TABLE_ITEM_RECEIPT +
+                " WHERE " + COLUMN_R_ID + " =?";
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, new String[] {r_id});
+        while (c.moveToNext()) {
+            String i_id = c.getString(c.getColumnIndex(COLUMN_ITEM_ID));
+            System.out.println(i_id);
+            deleteReceiptItem(i_id);
+        }
+        deleteStoreReceipt(r_id);
     }
 
     // Insert method for the Cat table
     // E.G. db.insertCat(YourCatagoryHere);
-    public void insertCat(String c_name){
-        System.out.println("Creating a new catagory");
+    private void insertCat(String c_name){
         SQLiteDatabase db = this.getWritableDatabase();
-        String selectQuery = "SELECT COUNT(*) FROM " + TABLE_CAT;
+        String selectQuery = "SELECT COUNT(*) as test_column FROM " + TABLE_CAT + " WHERE " + COLUMN_NAME
+                + " =?";
         Log.e(LOG, selectQuery);
-        Cursor c = db.rawQuery(selectQuery, null);
+        Cursor c = db.rawQuery(selectQuery, new String[] {c_name});
         c.moveToFirst();
-        int testSet = c.getInt(0);
-        if (testSet == 0){
-            testSet = 1;
-        } else {
-            testSet = testSet + 1;
-        }
+        int testSet = c.getInt(c.getColumnIndex("test_column"));
         ContentValues values = new ContentValues();
-        values.put(COLUMN_ID, testSet);
-        values.put(COLUMN_NAME, c_name);
-        db.insert(TABLE_CAT, null, values);
+        if (testSet > 0){
+            System.out.println("Catagory already exists");
+        } else {
+            selectQuery = "SELECT MAX(" + COLUMN_ID +") as test_column FROM " + TABLE_CAT;
+            Log.e(LOG, selectQuery);
+            c = db.rawQuery(selectQuery, null);
+            c.moveToFirst();
+            testSet = c.getInt(c.getColumnIndex("test_column"));
+            testSet = testSet + 1;
+            System.out.println(testSet);
+            System.out.println(c_name);
+            values.put(COLUMN_ID, testSet);
+            values.put(COLUMN_NAME, c_name);
+            db.insert(TABLE_CAT, null, values);
+        }
     }
 
-    public int getCatID(int c_id) {
+    private void insertItemCat(String i_id, String c_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = "SELECT COUNT(*) as test_column FROM " + TABLE_ITEM_CAT + " WHERE " + COLUMN_ITEM_ID
+                + " =? AND " + COLUMN_CAT_ID + " =?";
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, new String[] {i_id, c_id});
+        c.moveToFirst();
+        int testSet = c.getInt(c.getColumnIndex("test_column"));
+        ContentValues values = new ContentValues();
+        if (testSet > 0){
+            System.out.println("Catagory bridge already exists");
+        } else {
+            values.put(COLUMN_ITEM_ID, i_id);
+            values.put(COLUMN_CAT_ID, c_id);
+            db.insert(TABLE_ITEM_CAT, null, values);
+        }
+    }
+
+    private int getCatID(String c_name) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT  * FROM " + TABLE_CAT + " WHERE "
-                + COLUMN_ID + " = " + c_id;
+                + COLUMN_NAME + " =?";
         Log.e(LOG, selectQuery);
-        Cursor c = db.rawQuery(selectQuery, null);
+        Cursor c = db.rawQuery(selectQuery, new String[] {c_name});
         if (c != null)
             c.moveToFirst();
         int testGet = c.getInt(c.getColumnIndex(COLUMN_ID));
         return testGet;
     }
 
-    public String getCatName(int c_id) {
+    private String getCatName(int c_id) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT  * FROM " + TABLE_CAT + " WHERE "
                 + COLUMN_ID + " = " + c_id;
@@ -467,9 +746,35 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return testGet;
     }
 
+    public ArrayList<Item> getAllItemForCategory(String i_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Item> items = new ArrayList<>();
+        System.out.println("test");
+        String selectQuery = "SELECT * FROM " + TABLE_ITEM_CAT + " WHERE " + COLUMN_CAT_ID
+                + " =?";
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, new String[] {i_id});
+        while (c.moveToNext()) {
+            String item_id = c.getString(c.getColumnIndex(COLUMN_ITEM_ID));
+            System.out.println("Current item id is: " + item_id);
+            String selectQuery2 = "SELECT * FROM " + TABLE_ITEM + " WHERE " + COLUMN_ID
+                    + " =?";
+            Log.e(LOG, selectQuery2);
+            Cursor d = db.rawQuery(selectQuery2, new String[] {item_id});
+            if (d != null)
+                d.moveToFirst();
+            Item item = new Item();
+            item.setDesc(d.getString(d.getColumnIndex(COLUMN_NAME)));
+            item.setPrice(d.getDouble(d.getColumnIndex(COLUMN_PRICE)));
+            items.add(item);
+        }
+        System.out.println("Returning item names");
+        return items;
+    }
+
     //Methods for the Store table
     //=========================================================================================
-    public void insertStore(String s_name){
+    private void insertStore(String s_name){
         System.out.println("Inserting a new store");
         SQLiteDatabase db = this.getWritableDatabase();
         String selectQuery = "SELECT COUNT(*) as test_column FROM " + TABLE_STORE + " WHERE "
@@ -498,7 +803,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    public String getStoreID(String s_name) {
+    private String getStoreID(String s_name) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT * FROM " + TABLE_STORE + " WHERE " + COLUMN_STORE_NAME
                 + " =?";
@@ -510,7 +815,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return testGet;
     }
 
-    public String getStoreName(String rec_id) {
+    private String getStoreName(String rec_id) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT * FROM " + TABLE_RECEIPT_STORE + " WHERE " + COLUMN_R_ID
                 + " =?";
@@ -529,7 +834,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return testGet;
     }
 
-    public ArrayList<String> getAllStoresInTable(){
+    private ArrayList<String> getAllStoresInTable(){
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<String> items = new ArrayList<>();
         String ret;
@@ -547,7 +852,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     //==========================================================================================
 
 
-    public void insertReceiptStore(String r_id, String s_id){
+    private void insertReceiptStore(String r_id, String s_id){
         System.out.println("Inserting a new store bridge");
         SQLiteDatabase db = this.getWritableDatabase();
         String selectQuery = "SELECT COUNT(*) as test_column FROM " + TABLE_RECEIPT_STORE + " WHERE " + COLUMN_R_ID
@@ -566,7 +871,48 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    public ArrayList<String> getAllStoresReceiptsInTable(){
+    private void insertReceiptItem(String i_id, String r_id){
+        System.out.println("Inserting a new receipt bridge");
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = "SELECT COUNT(*) as test_column FROM " + TABLE_ITEM_RECEIPT + " WHERE " + COLUMN_ITEM_ID
+                + " =? AND " + COLUMN_R_ID + " =?";
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, new String[] {i_id, r_id});
+        c.moveToFirst();
+        int testSet = c.getInt(c.getColumnIndex("test_column"));
+        ContentValues values = new ContentValues();
+        if (testSet > 0){
+            System.out.println("Bridge already exists");
+        } else {
+            values.put(COLUMN_ITEM_ID, i_id);
+            values.put(COLUMN_R_ID, r_id);
+            db.insert(TABLE_ITEM_RECEIPT, null, values);
+        }
+    }
+
+    private ArrayList<String> getAllItemsReceiptsInTable(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> items = new ArrayList<>();
+        String ret;
+        String selectQuery = "SELECT  * FROM " + TABLE_ITEM_RECEIPT;
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        while (c.moveToNext()) {
+            ret = c.getString(c.getColumnIndex(COLUMN_ITEM_ID)) +
+                    " " + c.getString(c.getColumnIndex(COLUMN_R_ID));
+            items.add(ret);
+        }
+        return items;
+    }
+
+    private void deleteItemReceipt(String r_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String deleteQuery = "r_id=?";
+        Log.e(LOG, deleteQuery);
+        db.delete(TABLE_ITEM_RECEIPT, deleteQuery, new String[] {r_id});
+    }
+
+    private ArrayList<String> getAllStoresReceiptsInTable(){
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<String> items = new ArrayList<>();
         String ret;
@@ -579,6 +925,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             items.add(ret);
         }
         return items;
+    }
+
+    private void deleteStoreReceipt(String r_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String deleteQuery = "r_id=?";
+        Log.e(LOG, deleteQuery);
+        db.delete(TABLE_RECEIPT_STORE, deleteQuery, new String[] {r_id});
     }
 
     public void closeDB() {
