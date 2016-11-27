@@ -28,8 +28,8 @@ import android.view.View;
 import com.christopheramazurgmail.rtracker.R;
 
 // This class is used by CropImageActivity to display a highlighted cropping rectangle
-// overlayed with the image. There are two coordinate spaces in use. One is
-// image, another is screen. computeLayout() uses mMatrix to map from image
+// overlayed with the mBitmap. There are two coordinate spaces in use. One is
+// mBitmap, another is screen. computeLayout() uses mMatrix to map from mBitmap
 // space to screen space.
 class RectangleOverlay {
     public static final int DEFAULT_OUTLINE_COLOR = 0xFFFF8A00;
@@ -38,7 +38,7 @@ class RectangleOverlay {
 
     @SuppressWarnings("unused")
     private static final String TAG = "RectangleOverlay";
-    View mContext;  // The View displaying the image.
+    View mContext;  // The View displaying the mBitmap.
 
     public static final int GROW_NONE        = (1 << 0);
     public static final int GROW_LEFT_EDGE   = (1 << 1);
@@ -260,7 +260,7 @@ class RectangleOverlay {
         if (edge == GROW_NONE) {
             return;
         } else if (edge == MOVE) {
-            // Convert to image space before sending to moveBy().
+            // Convert to mBitmap space before sending to moveBy().
             moveBy(dx * (mCropRect.width() / r.width()),
                    dy * (mCropRect.height() / r.height()));
         } else {
@@ -272,7 +272,7 @@ class RectangleOverlay {
                 dy = 0;
             }
 
-            // Convert to image space before sending to growBy().
+            // Convert to mBitmap space before sending to growBy().
             float xDelta = dx * (mCropRect.width() / r.width());
             float yDelta = dy * (mCropRect.height() / r.height());
             growBy((((edge & GROW_LEFT_EDGE) != 0) ? -1 : 1) * xDelta,
@@ -280,13 +280,13 @@ class RectangleOverlay {
         }
     }
 
-    // Grows the cropping rectange by (dx, dy) in image space.
+    // Grows the cropping rectange by (dx, dy) in mBitmap space.
     void moveBy(float dx, float dy) {
         Rect invalRect = new Rect(mDrawRect);
 
         mCropRect.offset(dx, dy);
 
-        // Put the cropping rectangle inside image rectangle.
+        // Put the cropping rectangle inside mBitmap rectangle.
         mCropRect.offset(
                 Math.max(0, mImageRect.left - mCropRect.left),
                 Math.max(0, mImageRect.top  - mCropRect.top));
@@ -301,7 +301,7 @@ class RectangleOverlay {
         mContext.invalidate(invalRect);
     }
 
-    // Grows the cropping rectange by (dx, dy) in image space.
+    // Grows the cropping rectange by (dx, dy) in mBitmap space.
     void growBy(float dx, float dy) {
         if (mMaintainAspectRatio) {
             if (dx != 0) {
@@ -312,7 +312,7 @@ class RectangleOverlay {
         }
 
         // Don't let the cropping rectangle grow too fast.
-        // Grow at most half of the difference between the image rectangle and
+        // Grow at most half of the difference between the mBitmap rectangle and
         // the cropping rectangle.
         RectF r = new RectF(mCropRect);
         if (dx > 0F && r.width() + 2 * dx > mImageRect.width()) {
@@ -344,7 +344,7 @@ class RectangleOverlay {
             r.inset(0F, -(heightCap - r.height()) / 2F);
         }
 
-        // Put the cropping rectangle inside the image rectangle.
+        // Put the cropping rectangle inside the mBitmap rectangle.
         if (r.left < mImageRect.left) {
             r.offset(mImageRect.left - r.left, 0F);
         } else if (r.right > mImageRect.right) {
@@ -361,13 +361,13 @@ class RectangleOverlay {
         mContext.invalidate();
     }
 
-    // Returns the cropping rectangle in image space.
+    // Returns the cropping rectangle in mBitmap space.
     public Rect getCropRect() {
         return new Rect((int) mCropRect.left, (int) mCropRect.top,
                         (int) mCropRect.right, (int) mCropRect.bottom);
     }
 
-    // Maps the cropping rectangle from image space to screen space.
+    // Maps the cropping rectangle from mBitmap space to screen space.
     private Rect computeLayout() {
         RectF r = new RectF(mCropRect.left, mCropRect.top,
                             mCropRect.right, mCropRect.bottom);
@@ -382,14 +382,11 @@ class RectangleOverlay {
 
     public void setup(Matrix m, Rect imageRect, RectF cropRect, boolean circle,
                       boolean maintainAspectRatio) {
-        if (circle) {
-            maintainAspectRatio = true;
-        }
         mMatrix = new Matrix(m);
 
         mCropRect = cropRect;
         mImageRect = new RectF(imageRect);
-        mMaintainAspectRatio = maintainAspectRatio;
+        mMaintainAspectRatio = false;
         mCircle = circle;
 
         mInitialAspectRatio = mCropRect.width() / mCropRect.height();
@@ -410,8 +407,8 @@ class RectangleOverlay {
     private ModifyMode mMode = ModifyMode.None;
 
     Rect mDrawRect;  // in screen space
-    private RectF mImageRect;  // in image space
-    RectF mCropRect;  // in image space
+    private RectF mImageRect;  // in mBitmap space
+    RectF mCropRect;  // in mBitmap space
     Matrix mMatrix;
 
     private boolean mMaintainAspectRatio = false;

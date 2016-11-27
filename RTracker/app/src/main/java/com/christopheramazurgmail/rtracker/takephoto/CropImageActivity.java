@@ -53,7 +53,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * The activity can crop specific region of interest from an image.
+ * The activity can crop specific region of interest from an mBitmap.
  */
 public class CropImageActivity extends MonitoredActivity {
     private static final String TAG = "CropImageActivity";
@@ -69,7 +69,7 @@ public class CropImageActivity extends MonitoredActivity {
     private boolean mCircleCrop = false;
     private final Handler mHandler = new Handler();
 
-    // These options specifiy the output image size and whether we should
+    // These options specifiy the output mBitmap size and whether we should
     // scale the output to fit it (or just crop it).
     private int mOutputX, mOutputY;
     private boolean mScale;
@@ -238,10 +238,10 @@ public class CropImageActivity extends MonitoredActivity {
 
         Bitmap croppedImage;
 
-        // If the output is required to a specific size, create an new image
-        // with the cropped image in the center and the extra space filled.
+        // If the output is required to a specific size, create an new mBitmap
+        // with the cropped mBitmap in the center and the extra space filled.
         if (mOutputX != 0 && mOutputY != 0 && !mScale) {
-            // Don't scale the image but instead fill it so it's the
+            // Don't scale the mBitmap but instead fill it so it's the
             // required dimension
             croppedImage = Bitmap.createBitmap(mOutputX, mOutputY,
                     Bitmap.Config.RGB_565);
@@ -301,7 +301,7 @@ public class CropImageActivity extends MonitoredActivity {
                 c.drawColor(0x00000000, PorterDuff.Mode.CLEAR);
             }
 
-            // If the required dimension is specified, scale the image.
+            // If the required dimension is specified, scale the mBitmap.
             if (mOutputX != 0 && mOutputY != 0 && mScale) {
                 croppedImage = Util.transform(new Matrix(), croppedImage,
                         mOutputX, mOutputY, mScaleUp, Util.RECYCLE_INPUT);
@@ -312,7 +312,7 @@ public class CropImageActivity extends MonitoredActivity {
         mImageView.center(true, true);
         mImageView.mRectangleOverlays.clear();
 
-        // Return the cropped image directly or save it to the specified URI.
+        // Return the cropped mBitmap directly or save it to the specified URI.
         Bundle myExtras = getIntent().getExtras();
         if (myExtras != null && (myExtras.getParcelable("data") != null
                 || myExtras.getBoolean("return-data"))) {
@@ -385,7 +385,7 @@ public class CropImageActivity extends MonitoredActivity {
                     break;
                 }
             }
-            //add to the image manager
+            //add to the mBitmap manager
             try {
                 int[] degree = new int[1];
                 Uri newUri = ImageManager.addImage(
@@ -404,7 +404,7 @@ public class CropImageActivity extends MonitoredActivity {
             } catch (Exception ex) {
                 // basically ignore this or put up
                 // some ui saying we failed
-                Log.e(TAG, "store image fail, continue anyway", ex);
+                Log.e(TAG, "store mBitmap fail, continue anyway", ex);
             }
         }
 
@@ -516,7 +516,7 @@ public class CropImageActivity extends MonitoredActivity {
             mImageView.add(hv);
         }
 
-        // Scale the image down for faster face detection.
+        // Scale the mBitmap down for faster face detection.
         private Bitmap prepareBitmap() {
             if (mBitmap == null ||  mBitmap.isRecycled()) {
                 return null;
@@ -742,7 +742,7 @@ class CropImageView extends ImageViewTouchBase {
                 break;
             case MotionEvent.ACTION_MOVE:
                 // if we're not zoomed then there's no point in even allowing
-                // the user to move the image around.  This call to center puts
+                // the user to move the mBitmap around.  This call to center puts
                 // it back to the normalized location (with false meaning don't
                 // animate).
                 if (getScale() == 1F) {
@@ -754,7 +754,7 @@ class CropImageView extends ImageViewTouchBase {
         return true;
     }
 
-    // Pan the displayed image to make sure the cropping rectangle is visible.
+    // Pan the displayed mBitmap to make sure the cropping rectangle is visible.
     private void ensureVisible(RectangleOverlay hv) {
         Rect r = hv.mDrawRect;
 

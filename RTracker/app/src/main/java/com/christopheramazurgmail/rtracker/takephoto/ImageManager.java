@@ -63,7 +63,7 @@ public class ImageManager {
     private static final Uri VIDEO_STORAGE_URI =
             Uri.parse("content://media/external/video/media");
 
-    // ImageListParam specifies all the parameters we need to create an image
+    // ImageListParam specifies all the parameters we need to create an mBitmap
     // list (we also need a ContentResolver).
     public static class ImageListParam implements Parcelable {
         public DataLocation mLocation;
@@ -71,10 +71,10 @@ public class ImageManager {
         public int mSort;
         public String mBucketId;
 
-        // This is only used if we are creating a single image list.
+        // This is only used if we are creating a single mBitmap list.
         public Uri mSingleImageUri;
 
-        // This is only used if we are creating an empty image list.
+        // This is only used if we are creating an empty mBitmap list.
         public boolean mIsEmptyImageList;
 
         public ImageListParam() {}
@@ -159,10 +159,10 @@ public class ImageManager {
     }
 
     /**
-     * @return true if the mimetype is an image mimetype.
+     * @return true if the mimetype is an mBitmap mimetype.
      */
     public static boolean isImageMimeType(String mimeType) {
-        return mimeType.startsWith("image/");
+        return mimeType.startsWith("mBitmap/");
     }
 
     /**
@@ -175,18 +175,18 @@ public class ImageManager {
     */
 
     /**
-     * @return true if the image is an image.
+     * @return true if the mBitmap is an mBitmap.
      */
     public static boolean isImage(IImage image) {
         return isImageMimeType(image.getMimeType());
     }
 
     /**
-     * @return true if the image is a video.
+     * @return true if the mBitmap is a video.
      */
     public static boolean isVideo(IImage image) {
         // This is the right implementation, but we use instanceof for speed.
-        //return isVideoMimeType(image.getMimeType());
+        //return isVideoMimeType(mBitmap.getMimeType());
         return (image instanceof VideoObject);
     }
 
@@ -200,7 +200,7 @@ public class ImageManager {
     public static Uri addImage(ContentResolver cr, String title, long dateTaken,
             Location location, String directory, String filename,
             Bitmap source, byte[] jpegData, int[] degree) {
-        // We should store image data earlier than insert it to ContentProvider, otherwise
+        // We should store mBitmap data earlier than insert it to ContentProvider, otherwise
         // we may not be able to generate thumbnail in time.
         OutputStream outputStream = null;
         String filePath = directory + "/" + filename;
@@ -234,7 +234,7 @@ public class ImageManager {
         // "DISPLAY_NAME" field.
         values.put(Images.Media.DISPLAY_NAME, filename);
         values.put(Images.Media.DATE_TAKEN, dateTaken);
-        values.put(Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(Images.Media.MIME_TYPE, "mBitmap/jpeg");
         values.put(Images.Media.ORIENTATION, degree[0]);
         values.put(Images.Media.DATA, filePath);
 
@@ -276,7 +276,7 @@ public class ImageManager {
         return degree;
     }
 
-    // This is the factory function to create an image list.
+    // This is the factory function to create an mBitmap list.
     public static IImageList makeImageList(ContentResolver cr,
             ImageListParam param) {
         DataLocation location = param.mLocation;
@@ -336,7 +336,7 @@ public class ImageManager {
         return uber;
     }
 
-    // This is a convenience function to create an image list from a Uri.
+    // This is a convenience function to create an mBitmap list from a Uri.
     public static IImageList makeImageList(ContentResolver cr, Uri uri,
             int sort) {
         String uriString = (uri != null) ? uri.toString() : "";

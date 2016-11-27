@@ -48,6 +48,11 @@
         </activity>
 
         <activity
+            android:name=".takephoto.TakePhotoActivityOLD"
+            android:label="TakePhotoActivity">
+        </activity>
+
+        <activity
             android:name=".takephoto.TakePhotoActivity"
             android:label="TakePhotoActivity">
         </activity>

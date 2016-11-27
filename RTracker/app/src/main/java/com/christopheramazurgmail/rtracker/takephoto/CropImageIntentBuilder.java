@@ -65,8 +65,8 @@ public class CropImageIntentBuilder {
 
     private final int aspectX;
     private final int aspectY;
-    private final int outputX;
-    private final int outputY;
+    int outputX;
+    int outputY;
     private final Uri saveUri;
 
     /**
@@ -172,7 +172,7 @@ public class CropImageIntentBuilder {
      * Scales down the picture.
      *
      * @param scale
-     *        Whether to scale down the image.
+     *        Whether to scale down the mBitmap.
      * @return This Builder object to allow for chaining of calls to set methods.
      * @since 1.0.1
      */
@@ -183,10 +183,10 @@ public class CropImageIntentBuilder {
     }
 
     /**
-     * Whether to scale up the image if the cropped region is smaller than the output size.
+     * Whether to scale up the mBitmap if the cropped region is smaller than the output size.
      *
      * @param scaleUpIfNeeded
-     *        Whether to scale up the image.
+     *        Whether to scale up the mBitmap.
      * @return This Builder object to allow for chaining of calls to set methods.
      * @since 1.0.1
      */
@@ -197,7 +197,7 @@ public class CropImageIntentBuilder {
     }
 
     /**
-     * Performs face detection before allowing users to crop the image.
+     * Performs face detection before allowing users to crop the mBitmap.
      *
      * @param doFaceDetection
      *        Whether to perform face detection.
@@ -211,7 +211,7 @@ public class CropImageIntentBuilder {
     }
 
     /**
-     * Sets bitmap data to crop. Please note that this method overrides any source image set by
+     * Sets bitmap data to crop. Please note that this method overrides any source mBitmap set by
      * {@link #setSourceImage(Uri)}.
      *
      * @param bitmap
@@ -226,10 +226,10 @@ public class CropImageIntentBuilder {
     }
 
     /**
-     * Sets the Uri of the image to crop. It must be accessible to the calling application/activity.
+     * Sets the Uri of the mBitmap to crop. It must be accessible to the calling application/activity.
      *
      * @param sourceImage
-     *        Uri of the image to crop.
+     *        Uri of the mBitmap to crop.
      * @return This Builder object to allow for chaining of calls to set methods.
      * @since 1.0.1
      */
@@ -240,10 +240,10 @@ public class CropImageIntentBuilder {
     }
 
     /**
-     * Whether to crop the image as circle
+     * Whether to crop the mBitmap as circle
      *
      * @param circleCrop
-     *        Whether to crop the image as circle.
+     *        Whether to crop the mBitmap as circle.
      * @return This Builder object to allow for chaining of calls to set methods.
      * @since 1.0.1
      */
@@ -254,10 +254,10 @@ public class CropImageIntentBuilder {
     }
 
     /**
-     * Set output format of the image to crop. If not set, JPEG will be used.
+     * Set output format of the mBitmap to crop. If not set, JPEG will be used.
      *
      * @param outputFormat
-     *        Output format of the image to crop, such as JPEG, PNG or WEBP.
+     *        Output format of the mBitmap to crop, such as JPEG, PNG or WEBP.
      * @return This Builder object to allow for chaining of calls to set methods.
      * @since 1.0.1
      */
