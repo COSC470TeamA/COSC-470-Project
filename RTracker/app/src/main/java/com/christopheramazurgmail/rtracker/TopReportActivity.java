@@ -92,21 +92,19 @@ public class TopReportActivity extends Activity {
         orderBySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-
-                switch (position) {
-                    case 0:
-                        handleOrderByRecent();
-                        break;
-                    case 1:
-                        handleOrderByPrice();
-                        break;
-                }
+                orderItems(position);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
             }
         });
+
+        //TODO remove this test stuff
+        for (Item i : testReceipt.getItemList()) {
+            i.setCat("Booze");
+        }
     }
+    // TODO remove test stuff when we can implement live DB calls
     Receipt testReceipt = new Receipt("Store Name AAA", "test1", "5.1", "test2", "8.2", "test3", "3.3");
     Receipt testReceipt2 = new Receipt("Store Name Bab", "best1", "11.1", "best2", "22.2", "best3", "33.3");
     Receipt testReceipt3 = new Receipt("Store Name Carlop", "vest1", "14.1", "vest2", "24.2", "vest3", "34.3");
@@ -170,6 +168,22 @@ public class TopReportActivity extends Activity {
         }
 
         expListAdapter.notifyDataSetChanged();
+        orderItems();
+    }
+
+    public void orderItems() {
+        int selectedPosition = orderBySpinner.getSelectedItemPosition();
+        orderItems(selectedPosition);
+    }
+    public void orderItems(int selectedPosition) {
+        switch (selectedPosition) {
+            case 0:
+                handleOrderByRecent();
+                break;
+            case 1:
+                handleOrderByPrice();
+                break;
+        }
     }
 
     /**
@@ -177,6 +191,8 @@ public class TopReportActivity extends Activity {
      */
     public void handleOrderByRecent() {
 
+        // TODO bc there is no date yet items appear in the order they were put into the list
+        expListAdapter.notifyDataSetChanged();
     }
 
     /**
