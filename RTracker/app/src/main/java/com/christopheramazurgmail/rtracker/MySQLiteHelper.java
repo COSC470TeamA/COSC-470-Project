@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -226,11 +227,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             System.out.println(listing3);
         }
 
-        System.out.println("Testing the getAllReceipts method: ");
+        System.out.println("Testing the getAllReceipts method changed: ");
         testReceiptList = getAllReceipts();
         for (Receipt listing4 : testReceiptList) {
             System.out.println(listing4.getStore());
-            System.out.println("On receipt from: " + listing4.getStore());
+            System.out.println("On receipt from: " + listing4.getStore()
+            + " listed on: " + listing4.getDateCreated() + " with ID: " + listing4.getId());
             for (Item testItem : listing4.items.getItems()) {
                 System.out.println(testItem.getDesc());
             }
@@ -260,7 +262,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             System.out.println("Item Price: " + listing5.getPrice());
         }
 
-        System.out.println("Testing the getAllCategories method: ");
+        //System.out.println("Testing the getAllCategories method: ");
+
+        /*
         testCategoryList = getAllCategories();
         for (Category listing5 : testCategoryList) {
             System.out.println("Category Name: " + listing5.getName());
@@ -268,7 +272,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             for (Category.Item newItem : itemsCatListing) {
                 System.out.println(newItem.getName());
             }
+
         }
+        */
 
         System.out.println("Testing the getItemObject method: ");
         testItem6 = getItem("1");
@@ -321,12 +327,15 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         receiptID = getAllReceiptID();
         for (String recCount : receiptID){
             Receipt receipt = new Receipt();
+            System.out.println("Getting Receipt Date");
+            Date r_date = getReceiptDate(recCount);
             System.out.println("Getting Store Name");
             String store = getStoreName(recCount);
             System.out.println("Getting item names");
+            receipt.setId(recCount);
+            receipt.setDateCreated(r_date);
             items = getAllItemForReceipt(recCount);
             for (Item item : items) {
-                System.out.println("Item name coming back is: " + item.getDesc());
                 receipt.add(item);
             }
             if (store != null) {
@@ -400,19 +409,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             insertItemCat(i_id, cat_id);
             System.out.println("inserting ItemReceiptBridge");
             insertReceiptItem(i_id, r_id);
-        }
-        /*else {
-            System.out.println("Inserting Cat");
-            insertCat(item.getDesc());
-            System.out.println("Getting Cat");
-            String cat_id = String.valueOf(getCatID(item.getDesc()));
-            String i_id = String.valueOf(testSet);
-            System.out.println("inserting ItemCatBridge");
-            insertItemCat(i_id, cat_id);
+        } else
+        {
             System.out.println("inserting ItemReceiptBridge");
+            String i_id = String.valueOf(testSet);
             insertReceiptItem(i_id, r_id);
         }
-        */
+
     }
 
     //Returns a specific item object
@@ -711,6 +714,24 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return testGet;
     }
 
+    private Date getReceiptDate(String r_id) {
+        Date testGet = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_RECEIPT + " WHERE "
+                + COLUMN_ID + " = " + r_id;
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        if (c != null)
+            c.moveToFirst();
+        try {
+            testGet = sdf.parse(c.getString(c.getColumnIndex(COLUMN_DATE)));
+        } catch  (ParseException e) {
+            e.printStackTrace();
+        }
+        return testGet;
+    }
+
     // Get method that returns a list of all the ID's in the receipt table
     private ArrayList<String> getAllReceiptID() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -765,7 +786,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(selectQuery, new String[] {r_id});
         while (c.moveToNext()) {
             String i_id = c.getString(c.getColumnIndex(COLUMN_ITEM_ID));
-            System.out.println(i_id);
+            System.out.println("Deleting item with item id: " + i_id);
             deleteReceiptItem(i_id);
         }
         deleteStoreReceipt(r_id);
