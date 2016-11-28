@@ -164,8 +164,8 @@ public class TopReportActivity extends Activity {
         allReceipts.add(testReceipt3);
         MySQLiteHelper m = new MySQLiteHelper(this);
         SQLiteDatabase sql = m.getReadableDatabase();
-        m.danTestUpgrade();
-        m.insertReceiptObject(testReceipt);
+        //m.danTestUpgrade();
+        //m.insertReceiptObject(testReceipt);
         ArrayList<Receipt> r = m.getAllReceipts();
 
         for (Receipt receipt : r) {

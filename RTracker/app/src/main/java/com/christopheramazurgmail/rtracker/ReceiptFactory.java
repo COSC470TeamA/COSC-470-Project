@@ -167,7 +167,11 @@ public class ReceiptFactory extends AppCompatActivity {
         TextView storeName = (TextView) findViewById(R.id.store_name);
         this.receipt.setStore(storeName.getText().toString());
         this.receipt.items.setItems(getModifiedReceiptItems());
-        //TODO write to DB
+
+        MySQLiteHelper db = new MySQLiteHelper(this);
+        db.insertReceiptObject(this.receipt);
+
+        ArrayList<Receipt> receipts = db.getAllReceipts();
     }
 
     public Receipt getReceipt() {
