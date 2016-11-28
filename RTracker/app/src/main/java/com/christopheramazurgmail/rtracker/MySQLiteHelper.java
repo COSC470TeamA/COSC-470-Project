@@ -381,7 +381,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         int testSet = c.getInt(c.getColumnIndex("test_column"));
         ContentValues values = new ContentValues();
         if (testSet > 0){
-            selectQuery = "SELECT MAX(" + COLUMN_ID +") as test_column FROM " + TABLE_ITEM;
+            selectQuery = "SELECT COUNT(" + COLUMN_ID +") as test_column FROM " + TABLE_ITEM;
             Log.e(LOG, selectQuery);
             c = db.rawQuery(selectQuery, null);
             c.moveToFirst();
