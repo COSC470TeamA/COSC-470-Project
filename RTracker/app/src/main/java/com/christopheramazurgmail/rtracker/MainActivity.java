@@ -24,18 +24,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        db = new MySQLiteHelper(getApplicationContext());
-        String name = "test";
-        int dat = 1;
-        ArrayList<String> receipts = new ArrayList<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String currentDateandTime = sdf.format(new Date());
 
-        System.out.print("Testing the getAllReceiptID method: ");
-        receipts = db.getAllReceiptID();
-        for (String item : receipts) {
-            System.out.println(item);
-        }
+        //Invokes the database
+        db = new MySQLiteHelper(getApplicationContext());
+
+        //Uncomment this to reset and test the database
+        //db.danTestUpgrade();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -78,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //Closes database connection on termination
         db.closeDB();
     }
 
