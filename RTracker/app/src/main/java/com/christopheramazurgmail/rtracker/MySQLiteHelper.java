@@ -143,6 +143,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         ArrayList<Item> testItemList = new ArrayList<>();
         ArrayList<Category> testCategoryList = new ArrayList<>();
         Item testItem1 = new Item("Potatoes", 23.45);
+        testItem1.setCat("Yukon Gold potatoes");
         Item testItem2 = new Item("Pizza", 18.33);
         Item testItem3 = new Item("Soup", 5.99);
         Item testItem4 = new Item("Crackers", 6.77);
@@ -382,19 +383,32 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         } else {
             testSet = 1;
         }
+        String testCat = item.getCat();
         values.put(COLUMN_ID, testSet);
         values.put(COLUMN_NAME, item.getDesc());
         values.put(COLUMN_PRICE, item.getPrice());
         db.insert(TABLE_ITEM, null, values);
-        System.out.println("Inserting Cat");
-        insertCat(item.getDesc());
-        System.out.println("Getting Cat");
-        String cat_id = String.valueOf(getCatID(item.getDesc()));
-        String i_id = String.valueOf(testSet);
-        System.out.println("inserting ItemCatBridge");
-        insertItemCat(i_id, cat_id);
-        System.out.println("inserting ItemReceiptBridge");
-        insertReceiptItem(i_id, r_id);
+        if (testCat != null){
+            System.out.println("Inserting Cat");
+            insertCat(testCat);
+            System.out.println("Getting Cat");
+            String cat_id = String.valueOf(getCatID(testCat));
+            String i_id = String.valueOf(testSet);
+            System.out.println("inserting ItemCatBridge");
+            insertItemCat(i_id, cat_id);
+            System.out.println("inserting ItemReceiptBridge");
+            insertReceiptItem(i_id, r_id);
+        } else {
+            System.out.println("Inserting Cat");
+            insertCat(item.getDesc());
+            System.out.println("Getting Cat");
+            String cat_id = String.valueOf(getCatID(item.getDesc()));
+            String i_id = String.valueOf(testSet);
+            System.out.println("inserting ItemCatBridge");
+            insertItemCat(i_id, cat_id);
+            System.out.println("inserting ItemReceiptBridge");
+            insertReceiptItem(i_id, r_id);
+        }
     }
 
     //Returns a specific item object
