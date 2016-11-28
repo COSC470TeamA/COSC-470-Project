@@ -398,7 +398,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             insertItemCat(i_id, cat_id);
             System.out.println("inserting ItemReceiptBridge");
             insertReceiptItem(i_id, r_id);
-        } else {
+        }
+        /*else {
             System.out.println("Inserting Cat");
             insertCat(item.getDesc());
             System.out.println("Getting Cat");
@@ -409,6 +410,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             System.out.println("inserting ItemReceiptBridge");
             insertReceiptItem(i_id, r_id);
         }
+        */
     }
 
     //Returns a specific item object
