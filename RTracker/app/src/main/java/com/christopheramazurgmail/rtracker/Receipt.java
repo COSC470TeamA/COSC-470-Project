@@ -2,14 +2,17 @@ package com.christopheramazurgmail.rtracker;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by haunter on 27/10/16.
  */
-public class Receipt implements Serializable{
+public class Receipt implements Serializable {
     String store;
     public ItemGroup items;
+    Date dateCreated;
+    String id;
 
     public Receipt() {
         items = new ItemGroup();

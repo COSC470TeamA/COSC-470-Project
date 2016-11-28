@@ -307,6 +307,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         if (store != null) {
             receipt.setStore(store);
         }
+        //
+        // set date and id too
         return receipt;
     }
 

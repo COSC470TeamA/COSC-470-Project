@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.christopheramazurgmail.rtracker.adapters.ExpandableListAdapter;
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
@@ -92,24 +93,22 @@ public class TopReportActivity extends Activity {
         orderBySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-
-                switch (position) {
-                    case 0:
-                        handleOrderByRecent();
-                        break;
-                    case 1:
-                        handleOrderByPrice();
-                        break;
-                }
+                orderItems(position);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
             }
         });
+
+        //TODO remove this test stuff
+        for (Item i : testReceipt.getItemList()) {
+            i.setCat("Booze");
+        }
     }
-    Receipt testReceipt = new Receipt("Store Name AAA", "test1", "5.1", "test2", "8.2", "test3", "3.3");
-    Receipt testReceipt2 = new Receipt("Store Name Bab", "best1", "11.1", "best2", "22.2", "best3", "33.3");
-    Receipt testReceipt3 = new Receipt("Store Name Carlop", "vest1", "14.1", "vest2", "24.2", "vest3", "34.3");
+    // TODO remove test stuff when we can implement live DB calls
+    Receipt testReceipt = new Receipt("Store Name AAA", "test1", "5.1", "test2", "8.2", "test3", "3.3", "baguette", "0.99", "roast ox", "93.13");
+    Receipt testReceipt2 = new Receipt("Store Name Bab", "best1", "11.1", "best2", "22.2", "best3", "3.3");
+    Receipt testReceipt3 = new Receipt("Store Name Carlop", "vest1", "1.19", "vest2", "24.2", "vest3", "8.54");
 
     ArrayList<Receipt> allReceipts = new ArrayList<>();
 
@@ -163,13 +162,41 @@ public class TopReportActivity extends Activity {
         allReceipts.add(testReceipt);
         allReceipts.add(testReceipt2);
         allReceipts.add(testReceipt3);
+        MySQLiteHelper m = new MySQLiteHelper(this);
+        SQLiteDatabase sql = m.getReadableDatabase();
+        m.danTestUpgrade();
+        m.insertReceiptObject(testReceipt);
+        ArrayList<Receipt> r = m.getAllReceipts();
 
-        for (Receipt receipt : allReceipts) {
+        for (Receipt receipt : r) {
             expListViewMap.put(receipt.getStore(), receipt.getItems());
             headerNames.add(receipt.getStore());
         }
 
         expListAdapter.notifyDataSetChanged();
+        orderItems();
+
+        for (Receipt e : r) {
+            System.out.println("RECEIPT" + " " + e.getStore());
+        }
+    }
+
+    /**
+     * Orders all child items by whatever is specified in the order by spinner
+     */
+    public void orderItems() {
+        int selectedPosition = orderBySpinner.getSelectedItemPosition();
+        orderItems(selectedPosition);
+    }
+    public void orderItems(int selectedPosition) {
+        switch (selectedPosition) {
+            case 0:
+                handleOrderByRecent();
+                break;
+            case 1:
+                handleOrderByPrice();
+                break;
+        }
     }
 
     /**
@@ -177,6 +204,8 @@ public class TopReportActivity extends Activity {
      */
     public void handleOrderByRecent() {
 
+        // TODO bc there is no date yet items appear in the order they were put into the list
+        expListAdapter.notifyDataSetChanged();
     }
 
     /**
