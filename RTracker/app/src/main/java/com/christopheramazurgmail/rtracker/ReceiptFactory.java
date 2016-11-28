@@ -168,6 +168,10 @@ public class ReceiptFactory extends AppCompatActivity {
         this.receipt.setStore(storeName.getText().toString());
         this.receipt.items.setItems(getModifiedReceiptItems());
         //TODO write to DB
+        MySQLiteHelper db = new MySQLiteHelper(this);
+        db.insertReceiptObject(this.receipt);
+
+        ArrayList<Receipt> r = db.getAllReceipts();
     }
 
     public Receipt getReceipt() {

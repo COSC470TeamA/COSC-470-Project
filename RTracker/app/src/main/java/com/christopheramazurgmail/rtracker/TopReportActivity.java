@@ -160,13 +160,14 @@ public class TopReportActivity extends Activity {
 
         // TODO remove this test crap
         allReceipts.add(testReceipt);
-        allReceipts.add(testReceipt2);
-        allReceipts.add(testReceipt3);
         MySQLiteHelper m = new MySQLiteHelper(this);
-        SQLiteDatabase sql = m.getReadableDatabase();
-        m.danTestUpgrade();
-        m.insertReceiptObject(testReceipt);
+        //SQLiteDatabase sql = m.getReadableDatabase();
+        //m.danTestUpgrade();
+        m.insertReceiptObject(testReceipt, testReceipt2, testReceipt3);
+//        m.insertReceiptObject(testReceipt2);
+//        m.insertReceiptObject(testReceipt3);
         ArrayList<Receipt> r = m.getAllReceipts();
+
 
         for (Receipt receipt : r) {
             expListViewMap.put(receipt.getStore(), receipt.getItems());

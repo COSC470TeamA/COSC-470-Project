@@ -337,6 +337,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return receiptObjects;
     }
 
+    /**
+     * Inserts any number of Receipts.
+     * @param receipts varargs Receipt list
+     */
+    public void insertReceiptObject(Receipt... receipts) {
+        for (Receipt rec : receipts) insertReceiptObject(rec);
+    }
+
     //Inserts a receipt object into the database
     public void insertReceiptObject(Receipt receipt){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
