@@ -3,6 +3,7 @@ package com.christopheramazurgmail.rtracker.adapters;
         import java.util.HashMap;
         import java.util.List;
         import java.util.Map;
+        import java.util.Set;
 
         import com.christopheramazurgmail.rtracker.Item;
         import com.christopheramazurgmail.rtracker.ItemGroup;
@@ -76,7 +77,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         String categoryName = items.get(groupPosition);
 
         ItemGroup category = allCategories.get(categoryName);
-
+        if (category == null) return 0;
         int categorySize = category.size();
 
         return categorySize;
@@ -109,15 +110,18 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         item.setText(itemName);
 
         ItemGroup cat = allCategories.get(itemName);
-        //List<Item> category = cat.getItems();
-        double runningTotal = 0; // @TODO make categories know about items instead of these stupid hacks
+        if (cat != null) {
+            List<Item> category = cat.getItems();
+            double runningTotal = 0; // @TODO make categories know about items instead of these stupid hacks
 
-//        for (Item indItem : category) {
-//            runningTotal += indItem.getPriceD();
-//        }
-//        TextView totalPriceText = (TextView) convertView.findViewById(R.id.totalPriceText);
-//        totalPriceText.setTypeface(null, Typeface.BOLD);
-//        totalPriceText.setText(String.format("%.2f", runningTotal));
+            for (Item indItem : category) {
+                runningTotal += indItem.getPriceD();
+            }
+
+            TextView totalPriceText = (TextView) convertView.findViewById(R.id.totalPriceText);
+            totalPriceText.setTypeface(null, Typeface.BOLD);
+            totalPriceText.setText(String.format("%.2f", runningTotal));
+        }
         return convertView;
     }
 
