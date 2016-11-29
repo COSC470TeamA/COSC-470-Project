@@ -23,6 +23,7 @@ import java.io.Reader;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,47 +32,31 @@ import java.util.List;
  */
 
 public class CategorizationEngine implements Serializable{
-    private transient Context context;
-    private LinkedList<Category> categories;
+    private ArrayList<Category> categories;
     private LinkedList<Item> uncategorizedItems = new LinkedList<Item>();
-    private String datapath;
+    private transient MySQLiteHelper db;
 
     public CategorizationEngine(Context context) {
-        this.context = context;
-
-        datapath = context.getFilesDir() + "/dictionary/";
-        checkDictionaryFile(new File(datapath), context);
-
-        try {
-            this.categories =  buildCategoryList();
-        } catch (XmlPullParserException e){
-
-        } catch (IOException e) {
-
-        }
+        this.db = new MySQLiteHelper(context);
+        this.categories =  db.getAllCategories();
     }
 
     public Receipt categorizeReceipt(Receipt receipt) {
+        this.categories =  db.getAllCategories();
+
         if (receipt.items != null) {
             List<Item> itemsList = receipt.items.getItems();
             if (itemsList != null)
                 //for each item in receipt check if it exists in a category
                 for (Item item : itemsList) {
-                    Boolean foundCategory = false;
                     for (Category category : categories) {
-                        if (foundCategory) break;
                         //go through each item in category to see if it matches current receipt item
-                        for (Category.Item catItem : category.getItemList()) {
-                            if (foundCategory) break;
+                        for (String catItem : db.getCatItemPairsLibrary(category.getName())) {
                             //if category item matches receipt item set item category
-                            if (catItem.getName().equals(item.getDesc())) {
+                            if (catItem.equals(item.getDesc())) {
                                 item.setCat(category.getName());
-                                foundCategory = true;
                             }
                         }
-                    }
-                    if (!foundCategory) {
-                        uncategorizedItems.add(item);
                     }
                 }
         }
@@ -79,106 +64,8 @@ public class CategorizationEngine implements Serializable{
         return receipt;
     }
 
-
-    @NonNull
-    private LinkedList<Category> buildCategoryList() throws XmlPullParserException, IOException{
-        //XmlResourceParser dict = context.getAssets().open("/dictionary/dict.xml");
-
-        XmlPullParserFactory xmlPullParserFactory = XmlPullParserFactory.newInstance();
-        xmlPullParserFactory.setNamespaceAware(true);
-        XmlPullParser dict = xmlPullParserFactory.newPullParser();
-        InputStream input = new FileInputStream(new File(datapath + "dict.xml"));
-        Reader reader = new InputStreamReader(input, "UTF-8");
-        dict.setInput(reader);
-
-        //StringBuffer stringBuffer = new StringBuffer();
-        LinkedList<Category> categoriesList = new LinkedList<Category>();
-        dict.next();
-        int eventType = dict.getEventType();
-
-        while (eventType != XmlPullParser.END_DOCUMENT)
-        {
-            if(eventType == XmlPullParser.START_TAG)
-            {
-                if(dict.getName().equals("Category")) {
-
-                    Category category = new Category(dict.getAttributeValue(null, "name"));System.out.println(dict.getAttributeValue(null, "name"));
-
-                    //go through each of sub elements until Category end tag
-                    Boolean foundEndTag = false;
-                    while (!foundEndTag) {
-                        if (eventType == XmlPullParser.END_TAG && dict.getName().equals("Category")){
-                            foundEndTag = true;
-                        }
-
-                        //add all items to list
-                        if (eventType == XmlPullParser.START_TAG && dict.getName().equals("Item")){
-                            category.addItemToList(dict.getAttributeValue(null, "name"));
-                        }
-
-                        eventType = dict.next();
-                    }
-
-                    categoriesList.add(category);
-                }
-            }
-            eventType = dict.next();
-        }
-        return categoriesList;
-    }
-
-    public LinkedList<Item> getUncategorizedItems() {
-        return uncategorizedItems;
-    }
-    public LinkedList<Category> getCategories() {
+    public ArrayList<Category> getCategories() {
         return categories;
-    }
-
-    private void checkDictionaryFile(File dir, Context context) {
-        if (!dir.exists() && dir.mkdirs()) {
-            copyDictionaryFile(context);
-        }
-        if (dir.exists()) {
-            String datafilepath = datapath + "dict.xml";
-            File datafile = new File(datafilepath);
-
-            if (!datafile.exists()) {
-                copyDictionaryFile(context);
-            }
-            else {
-                // TODO The datafile has to be unpacked from Assets and copied into a useful directory
-                // TODO but it should be replaced only once, on install.
-                datafile.delete();
-                copyDictionaryFile(context);
-            }
-        }
-    }
-
-    private void copyDictionaryFile(Context context) {
-        try {
-            String filepath = datapath + "dict.xml";
-            AssetManager assetManager = context.getAssets();
-
-            InputStream instream = assetManager.open("dictionary/dict.xml");
-            OutputStream outstream = new FileOutputStream(filepath);
-
-            byte[] buffer = new byte[1024];
-            int read;
-            while ((read = instream.read(buffer)) != -1) {
-                outstream.write(buffer, 0, read);
-            }
-
-            outstream.flush();
-            outstream.close();
-            instream.close();
-
-            File file = new File(filepath);
-            if (!file.exists()) {
-                throw new FileNotFoundException();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void addToDictionary(Item first, String categoryName) {
