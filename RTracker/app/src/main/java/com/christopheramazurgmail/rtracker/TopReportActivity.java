@@ -68,18 +68,6 @@ public class TopReportActivity extends AppCompatActivity {
         expListAdapter = new ExpandableListAdapter(this, headerNames, expListViewMap);
         expListView.setAdapter(expListAdapter);
 
-
-//        expListView.setOnChildClickListener(new OnChildClickListener() {
-//
-//            public boolean onChildClick(ExpandableListView parent, View v,
-//                                        int groupPosition, int childPosition, long id) {
-//                final String selected = (String) expListAdapter.getChild(
-//                        groupPosition, childPosition);
-//
-//                return true;
-//            }
-//        });
-
         // Find the search by spinner
         final String[] searchByValues = {"Category", "Receipt"};
         searchBySpinner = (Spinner) findViewById(R.id.searchBySpinner);
@@ -119,7 +107,7 @@ public class TopReportActivity extends AppCompatActivity {
             }
         });
 
-        //TODO remove this test stuff
+        //TODO remove this test stuff -- tests category separators
         for (Item i : testReceipt.getItemList()) {
             i.setCat("Booze");
         }
@@ -249,7 +237,7 @@ System.out.println("ATTEMPTING TO SORT BY DATE");
     }
 
     /**
-     * Reorganizes the children to be sorted by price
+     * Reorganizes the parents and children to be sorted by price
      */
     public void handleOrderByPrice() {
         // Sort either the category names or the receipt names by price
