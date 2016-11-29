@@ -1,13 +1,21 @@
 package com.christopheramazurgmail.rtracker;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.christopheramazurgmail.rtracker.adapters.ExpandableListAdapter;
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.View;
@@ -22,9 +30,9 @@ import android.widget.Spinner;
  * Item Categories are the parent collapsible views in the List View.
  * Items are the child view in the List View.
  */
-public class TopReportActivity extends Activity {
+public class TopReportActivity extends AppCompatActivity {
 
-    List<String> headerNames;
+    ArrayList<String> headerNames;
     ItemGroup childList;
     Map<String, ItemGroup> expListViewMap;
     ExpandableListView expListView;
@@ -37,6 +45,10 @@ public class TopReportActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_report);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         dictionary = new Dictionary(this);
         createGroupList();
 
@@ -92,24 +104,22 @@ public class TopReportActivity extends Activity {
         orderBySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-
-                switch (position) {
-                    case 0:
-                        handleOrderByRecent();
-                        break;
-                    case 1:
-                        handleOrderByPrice();
-                        break;
-                }
+                orderItems(position);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
             }
         });
+
+        //TODO remove this test stuff
+        for (Item i : testReceipt.getItemList()) {
+            i.setCat("Booze");
+        }
     }
-    Receipt testReceipt = new Receipt("Store Name AAA", "test1", "5.1", "test2", "8.2", "test3", "3.3");
-    Receipt testReceipt2 = new Receipt("Store Name Bab", "best1", "11.1", "best2", "22.2", "best3", "33.3");
-    Receipt testReceipt3 = new Receipt("Store Name Carlop", "vest1", "14.1", "vest2", "24.2", "vest3", "34.3");
+    // TODO remove test stuff when we can implement live DB calls
+    Receipt testReceipt = new Receipt("Store Name AAA", "test1", "5.1", "test2", "8.2", "test3", "3.3", "xaguette", "9.99", "roast ox", "93.13");
+    Receipt testReceipt2 = new Receipt("Store Name Bab", "best1", "11.1", "best2", "22.2", "best3", "3.3");
+    Receipt testReceipt3 = new Receipt("Store Name Carlop", "vest1", "1.19", "vest2", "24.2", "vest3", "8.54");
 
     ArrayList<Receipt> allReceipts = new ArrayList<>();
 
@@ -145,6 +155,19 @@ public class TopReportActivity extends Activity {
                 expListViewMap.get(item.getCat()).add(item);
             }
         }
+
+        // Removes categories with no items
+        Iterator it = expListViewMap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, ItemGroup> i = (Map.Entry) it.next();
+            if (i.getValue().isEmpty()) {
+                headerNames.remove(i.getKey());
+                it.remove();
+            }
+
+        }
+
+
         expListAdapter.notifyDataSetChanged();
     }
 
@@ -161,15 +184,39 @@ public class TopReportActivity extends Activity {
 
         // TODO remove this test crap
         allReceipts.add(testReceipt);
-        allReceipts.add(testReceipt2);
-        allReceipts.add(testReceipt3);
+        MySQLiteHelper m = new MySQLiteHelper(this);
 
-        for (Receipt receipt : allReceipts) {
+        m.insertReceiptObject(testReceipt, testReceipt2, testReceipt3);
+
+        ArrayList<Receipt> r = m.getAllReceipts();
+
+
+        for (Receipt receipt : r) {
             expListViewMap.put(receipt.getStore(), receipt.getItems());
             headerNames.add(receipt.getStore());
         }
 
         expListAdapter.notifyDataSetChanged();
+        orderItems();
+
+    }
+
+    /**
+     * Orders all child items by whatever is specified in the order by spinner
+     */
+    public void orderItems() {
+        int selectedPosition = orderBySpinner.getSelectedItemPosition();
+        orderItems(selectedPosition);
+    }
+    public void orderItems(int selectedPosition) {
+        switch (selectedPosition) {
+            case 0:
+                handleOrderByRecent();
+                break;
+            case 1:
+                handleOrderByPrice();
+                break;
+        }
     }
 
     /**
@@ -177,17 +224,32 @@ public class TopReportActivity extends Activity {
      */
     public void handleOrderByRecent() {
 
+        // @TODO sort parents by receipt date
+        for (ItemGroup itemGroup : expListViewMap.values()) {
+//            Comparator<Item> dateOrder =  new Comparator<Item>() {
+//                public int compare(Item s1, Item e2) {
+//                    return s1.getDate() - s2.getDate();
+//                }
+//            };
+//            Collections.sort(itemGroup, dateOrder);
+        }
+        expListAdapter.notifyDataSetChanged();
     }
 
     /**
-     * Reorganizes the childrens to be sorted by price
+     * Reorganizes the children to be sorted by price
      */
     public void handleOrderByPrice() {
-        for (ItemGroup itemGroup : expListViewMap.values()) {
-
-                itemGroup.sortByPrice();System.out.println("sorting");
+        // Sort either the category names or the receipt names by price
+        for (String parentName : expListViewMap.keySet()) {
+            // Sort the children by price
+            ItemGroup itemGroup = expListViewMap.get(parentName);
+            itemGroup.sortByPrice();
 
         }
+
+        //@TODO sort parents by price too
+
         expListAdapter.notifyDataSetChanged();
     }
 
@@ -216,7 +278,7 @@ public class TopReportActivity extends Activity {
         ItemGroup boozeItems = itemBuilder.build("Beer", "20.50", "Moonshine", "35.75", "Cognac", "18.99");
 
 
-        expListViewMap = new LinkedHashMap<String, ItemGroup>();
+        expListViewMap = new TreeMap<String, ItemGroup>();
 
         // @TODO This switch is not necessary.
         for (String cat : headerNames) {

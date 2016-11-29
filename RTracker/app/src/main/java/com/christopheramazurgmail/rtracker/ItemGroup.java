@@ -10,7 +10,7 @@ import java.util.List;
  *
  * Handles building collections of Items.
  */
-public class ItemGroup extends ArrayList{
+public class ItemGroup extends ArrayList implements Comparable {
 
     ArrayList<Item> items = new ArrayList<>();
 
@@ -41,30 +41,19 @@ public class ItemGroup extends ArrayList{
     public Item get(int position) {
         return items.get(position);
     }
+    @Override
+    public boolean isEmpty() { return items.size() == 0; }
 
     public void sortByPrice() {
-        //this.add(0, getLowestPriced());
-        // Remove the old ones
         Collections.sort(items);
-//        Collections.sort(items, new Comparator<Item>() {
-//            @Override
-//            public int compare(Item itemA, Item itemB) {
-//                return  itemB.getPriceD().compareTo(itemA.getPriceD());
-//            }
-//        });
-
-        System.out.println(this.toString());
     }
 
-    private Item getLowestPriced() {
-        Item i = new Item();
-        i.setPrice(Double.MAX_VALUE);
-        for (Item item : items) {
-            if (item.getPriceD() < i.getPriceD()) {
-                i = item;
-            }
+    public Double getTotalPrice() {
+        double runningTotal = 0;
+        for (Item i : this.getItems()) {
+            runningTotal += i.getPriceD();
         }
-        return i;
+        return runningTotal;
     }
 
     public void add(Item item) {
@@ -75,5 +64,10 @@ public class ItemGroup extends ArrayList{
     }
 
 
-
+    @Override
+    public int compareTo(Object o) {
+        ItemGroup i = (ItemGroup) o;
+        double r = this.getTotalPrice() - i.getTotalPrice();
+        return r < 0 ? -1 : 1;
+    }
 }
