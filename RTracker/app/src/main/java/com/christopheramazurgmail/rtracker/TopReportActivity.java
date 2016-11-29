@@ -179,8 +179,9 @@ public class TopReportActivity extends Activity {
         // TODO remove this test crap
         allReceipts.add(testReceipt);
         MySQLiteHelper m = new MySQLiteHelper(this);
-        //m.danTestUpgrade();
+
         m.insertReceiptObject(testReceipt, testReceipt2, testReceipt3);
+
         ArrayList<Receipt> r = m.getAllReceipts();
 
 
