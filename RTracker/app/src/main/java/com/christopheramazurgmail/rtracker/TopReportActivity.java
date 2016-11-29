@@ -38,6 +38,14 @@ public class TopReportActivity extends Activity {
     Spinner searchBySpinner, orderBySpinner;
 
     Dictionary dictionary;
+    MySQLiteHelper db = new MySQLiteHelper(this);
+
+    // TODO remove test stuff when we can implement live DB calls
+    Receipt testReceipt = new Receipt("Store Name AAA", "test1", "5.1", "test2", "8.2", "test3", "3.3", "xaguette", "9.99", "roast ox", "93.13");
+    Receipt testReceipt2 = new Receipt("Store Name Bab", "best1", "11.1", "best2", "22.2", "best3", "3.3");
+    Receipt testReceipt3 = new Receipt("Store Name Carlop", "vest1", "1.19", "vest2", "24.2", "vest3", "8.54");
+
+    ArrayList<Receipt> allReceipts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,12 +118,7 @@ public class TopReportActivity extends Activity {
             i.setCat("Booze");
         }
     }
-    // TODO remove test stuff when we can implement live DB calls
-    Receipt testReceipt = new Receipt("Store Name AAA", "test1", "5.1", "test2", "8.2", "test3", "3.3", "xaguette", "9.99", "roast ox", "93.13");
-    Receipt testReceipt2 = new Receipt("Store Name Bab", "best1", "11.1", "best2", "22.2", "best3", "3.3");
-    Receipt testReceipt3 = new Receipt("Store Name Carlop", "vest1", "1.19", "vest2", "24.2", "vest3", "8.54");
 
-    ArrayList<Receipt> allReceipts = new ArrayList<>();
 
     /**
      * Displays the Categories and their Items in the report.
@@ -129,6 +132,7 @@ public class TopReportActivity extends Activity {
         headerNames.clear();
         allReceipts.clear();
 
+        allReceipts = db.getAllReceipts();
         // TODO remove this test crap and replace with DB calls
         allReceipts.add(testReceipt);
         allReceipts.add(testReceipt2);
@@ -178,12 +182,10 @@ public class TopReportActivity extends Activity {
 
         // TODO remove this test crap
         allReceipts.add(testReceipt);
-        MySQLiteHelper m = new MySQLiteHelper(this);
 
-        m.insertReceiptObject(testReceipt, testReceipt2, testReceipt3);
+        db.insertReceiptObject(testReceipt, testReceipt2, testReceipt3);
 
-        ArrayList<Receipt> r = m.getAllReceipts();
-
+        ArrayList<Receipt> r = db.getAllReceipts();
 
         for (Receipt receipt : r) {
             expListViewMap.put(receipt.getStore(), receipt.getItems());
@@ -214,19 +216,29 @@ public class TopReportActivity extends Activity {
     }
 
     /**
-     * Reorganizes the children to be sorted by date
+     * Reorganizes the list items to be sorted by date
      */
     public void handleOrderByRecent() {
 
         // @TODO sort parents by receipt date
-        for (ItemGroup itemGroup : expListViewMap.values()) {
-//            Comparator<Item> dateOrder =  new Comparator<Item>() {
-//                public int compare(Item s1, Item e2) {
-//                    return s1.getDate() - s2.getDate();
-//                }
-//            };
-//            Collections.sort(itemGroup, dateOrder);
+        // @TODO if category view, sort children by receipt date
+        allReceipts = db.getAllReceipts();
+        // @TODO REMOVE
+        System.out.println(searchBySpinner.getSelectedItemPosition());
+        if (searchBySpinner.getSelectedItemPosition() == 1) { // IF RECEIPT HEADERS
+System.out.println("ATTEMPTING TO SORT BY DATE");
+            ItemGroup parentItemGroup = new ItemGroup();
+
+            for (Receipt rec : allReceipts) {
+                parentItemGroup.add(new Item(rec.getStore(), (Long) rec.getDateCreated().getTime()));
+            }
+            // Put the headers into a fake item group to sort it by price
+            parentItemGroup.sortByPrice();
+            headerNames.clear();
+            headerNames.addAll(parentItemGroup.getItemNames());
+
         }
+
         expListAdapter.notifyDataSetChanged();
     }
 
@@ -242,8 +254,16 @@ public class TopReportActivity extends Activity {
 
         }
 
-        //@TODO sort parents by price too
+        ItemGroup parentItemGroup = new ItemGroup();
 
+        for (Map.Entry entry : expListViewMap.entrySet()) {
+            ItemGroup i = (ItemGroup) entry.getValue();
+            parentItemGroup.add(new Item((String) entry.getKey(), i.getTotalPrice()));
+        }
+        // Put the headers into a fake item group to sort it by price
+        parentItemGroup.sortByPrice();
+        headerNames.clear();
+        headerNames.addAll(parentItemGroup.getItemNames());
         expListAdapter.notifyDataSetChanged();
     }
 

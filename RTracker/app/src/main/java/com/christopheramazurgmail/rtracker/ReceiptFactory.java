@@ -171,7 +171,6 @@ public class ReceiptFactory extends AppCompatActivity {
         MySQLiteHelper db = new MySQLiteHelper(this);
         db.insertReceiptObject(this.receipt);
 
-        ArrayList<Receipt> receipts = db.getAllReceipts();
 
     }
 
