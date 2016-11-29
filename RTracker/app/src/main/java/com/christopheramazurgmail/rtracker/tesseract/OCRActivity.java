@@ -1,13 +1,6 @@
 package com.christopheramazurgmail.rtracker.tesseract;
 
 
-import com.christopheramazurgmail.rtracker.CategorizationEngine;
-import com.christopheramazurgmail.rtracker.Dictionary;
-import com.christopheramazurgmail.rtracker.R;
-import com.christopheramazurgmail.rtracker.Receipt;
-import com.christopheramazurgmail.rtracker.ReceiptBridge;
-import com.christopheramazurgmail.rtracker.ReceiptFactory;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
@@ -15,7 +8,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,9 +16,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.christopheramazurgmail.rtracker.CategorizationEngine;
+import com.christopheramazurgmail.rtracker.R;
+import com.christopheramazurgmail.rtracker.Receipt;
+import com.christopheramazurgmail.rtracker.ReceiptBridge;
+import com.christopheramazurgmail.rtracker.ReceiptFactory;
 
 import java.io.InputStream;
-import java.util.Iterator;
 
 
 /**
@@ -44,6 +40,7 @@ public class OCRActivity extends Activity {
     ImageView imageToProcess;
     CategorizationEngine categorizationEngine;
     ReceiptFactory receiptFactory = new ReceiptFactory();
+    RotateBitmap rb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,7 +167,11 @@ public class OCRActivity extends Activity {
         } catch (java.io.IOException e) {
             e.printStackTrace();
         }
-        image = rotateImage(image);
+
+        //This should fix rotation issues.
+        rb.setBitmap(image);
+        rb.setRotation(0);
+
         imageToProcess.setImageBitmap(image);
     }
 
@@ -183,16 +184,10 @@ public class OCRActivity extends Activity {
         } catch (java.io.IOException e) {
             e.printStackTrace();
         }
-        image = rotateImage(image);
+        rb.setBitmap(image);
+        rb.setRotation(0);
         imageToProcess.setImageBitmap(image);
     }
-
-    private Bitmap rotateImage(Bitmap toRotate){
-        Matrix matrix = new Matrix();
-        matrix.postRotate(90);
-        return Bitmap.createBitmap(toRotate, 0, 0, toRotate.getWidth(), toRotate.getHeight(), matrix, true);
-    }
-
 
     /**
      * Invoked on click of the Image View.

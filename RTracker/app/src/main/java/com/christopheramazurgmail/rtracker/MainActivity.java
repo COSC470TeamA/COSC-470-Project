@@ -1,12 +1,15 @@
 package com.christopheramazurgmail.rtracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+<<<<<<< HEAD
+import android.view.View;
+=======
 import android.content.Intent;
 import android.widget.ListView;
 
@@ -16,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+>>>>>>> refs/remotes/origin/master
 
 import com.christopheramazurgmail.rtracker.takephoto.TakePhotoActivity;
 import com.christopheramazurgmail.rtracker.tesseract.OCRActivity;
