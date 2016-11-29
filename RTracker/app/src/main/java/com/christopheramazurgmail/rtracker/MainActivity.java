@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         db = new MySQLiteHelper(getApplicationContext());
 
         //Uncomment this to reset and test the database
-        //db.danTestUpgrade();
+        db.danTestUpgrade();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

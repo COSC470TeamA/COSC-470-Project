@@ -19,6 +19,7 @@ import com.christopheramazurgmail.rtracker.Item;
 import com.christopheramazurgmail.rtracker.R;
 import com.christopheramazurgmail.rtracker.ReceiptFactory;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,13 +28,13 @@ import java.util.List;
  */
 
 public class ReceiptFactoryListAdapter extends ArrayAdapter<Item> {
-    private LinkedList<Category> categories;
+    private ArrayList<Category> categories;
 
     public ReceiptFactoryListAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
     }
 
-    public ReceiptFactoryListAdapter(Context context, int resource, List<Item> items, LinkedList<Category> categories) {
+    public ReceiptFactoryListAdapter(Context context, int resource, List<Item> items, ArrayList<Category> categories) {
         super(context, resource, items);
         this.categories = categories;
     }

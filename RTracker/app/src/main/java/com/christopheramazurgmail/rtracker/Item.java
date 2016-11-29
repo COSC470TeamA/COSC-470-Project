@@ -52,7 +52,11 @@ public class Item implements Serializable, Comparable {
     }
 
     public void setCat(String cat) {
-        this.cat = cat;
+        if (cat == null) {
+            this.cat = null;
+        } else {
+            this.cat = cat;
+        }
     }
 
     /**
