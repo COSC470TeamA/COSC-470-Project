@@ -172,6 +172,7 @@ public class ReceiptFactory extends AppCompatActivity {
         db.insertReceiptObject(this.receipt);
 
         ArrayList<Receipt> receipts = db.getAllReceipts();
+
     }
 
     public Receipt getReceipt() {
