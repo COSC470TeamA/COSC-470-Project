@@ -9,6 +9,8 @@ import com.christopheramazurgmail.rtracker.adapters.ExpandableListAdapter;
 import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.View;
@@ -23,7 +25,7 @@ import android.widget.Spinner;
  * Item Categories are the parent collapsible views in the List View.
  * Items are the child view in the List View.
  */
-public class TopReportActivity extends Activity {
+public class TopReportActivity extends AppCompatActivity {
 
     List<String> headerNames;
     ItemGroup childList;
@@ -38,6 +40,10 @@ public class TopReportActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_report);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         dictionary = new Dictionary(this);
         createGroupList();
 
