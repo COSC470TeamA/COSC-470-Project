@@ -5,4 +5,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="edit_text_dialog_margin">10dp</dimen>
     <dimen name="text_dialog_margin">10dp</dimen>
+    <dimen name="menu_bar">10dp</dimen>
+    <dimen name="feed_item_padding">3dp</dimen>
 </resources>

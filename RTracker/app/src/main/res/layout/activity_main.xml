@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
@@ -8,14 +8,12 @@
     android:fitsSystemWindows="true"
     tools:context="com.christopheramazurgmail.rtracker.MainActivity">
 
-
-
-
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
         android:layout_gravity="top"
+        android:id="@+id/appBar"
         >
 
         <android.support.v7.widget.Toolbar
@@ -23,37 +21,87 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+
+
+
+            />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main"/>
+    <ListView
+        android:id="@+id/feed_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appBar"
+        android:layout_above="@+id/menu_bar"
+        />
 
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom">
+        android:layout_gravity="bottom|center_horizontal|fill_horizontal"
+        android:background="@color/colorPrimary"
+        android:padding="@dimen/fab_margin"
+        android:elevation="@dimen/menu_bar"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/menu_bar"
+        >
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/OCRFAB"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"
-            android:layout_gravity="start" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/takePhotoFAB"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"
-            android:layout_gravity="center" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/demo_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/ic_dialog_email" />
+            android:src="@android:drawable/ic_media_play"
+            />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/take_photo_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src = "@drawable/ic_camera"
+            />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/gallery_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_gallery"
+            />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/report_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_report"
+            />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1" />
 
     </GridLayout>
 
-</LinearLayout>
+
+</RelativeLayout>
