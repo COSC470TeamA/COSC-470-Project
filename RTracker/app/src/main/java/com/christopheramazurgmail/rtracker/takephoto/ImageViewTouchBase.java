@@ -31,20 +31,20 @@ abstract class ImageViewTouchBase extends ImageView {
     @SuppressWarnings("unused")
     private static final String TAG = "ImageViewTouchBase";
 
-    // This is the base transformation which is used to show the mBitmap
-    // initially.  The current computation for this shows the mBitmap in
+    // This is the base transformation which is used to show the mImage
+    // initially.  The current computation for this shows the mImage in
     // it's entirety, letterboxing as needed.  One could choose to
-    // show the mBitmap as cropped instead.
+    // show the mImage as cropped instead.
     //
-    // This matrix is recomputed when we go from the thumbnail mBitmap to
-    // the full size mBitmap.
+    // This matrix is recomputed when we go from the thumbnail mImage to
+    // the full size mImage.
     protected Matrix mBaseMatrix = new Matrix();
 
     // This is the supplementary transformation which reflects what
     // the user has done in terms of zooming and panning.
     //
-    // This matrix remains the same when we go from the thumbnail mBitmap
-    // to the full size mBitmap.
+    // This matrix remains the same when we go from the thumbnail mImage
+    // to the full size mImage.
     protected Matrix mSuppMatrix = new Matrix();
 
     // This is the final matrix which is computed as the concatentation
@@ -106,7 +106,7 @@ abstract class ImageViewTouchBase extends ImageView {
                 && !event.isCanceled()) {
             if (getScale() > 1.0f) {
                 // If we're zoomed in, pressing Back jumps out to show the
-                // entire mBitmap, otherwise Back returns the user to the gallery.
+                // entire mImage, otherwise Back returns the user to the gallery.
                 zoomTo(1.0f);
                 return true;
             }
@@ -179,8 +179,8 @@ abstract class ImageViewTouchBase extends ImageView {
     }
 
     // Center as much as possible in one or both axis.  Centering is
-    // defined as follows:  if the mBitmap is scaled down below the
-    // view's dimensions then center it (literally).  If the mBitmap
+    // defined as follows:  if the mImage is scaled down below the
+    // view's dimensions then center it (literally).  If the mImage
     // is scaled larger than the view and is translated out of view
     // then translate it back into view (i.e. eliminate black bars).
     protected void center(boolean horizontal, boolean vertical) {
@@ -255,7 +255,7 @@ abstract class ImageViewTouchBase extends ImageView {
         return getScale(mSuppMatrix);
     }
 
-    // Setup the base matrix so that the mBitmap is centered and scaled properly.
+    // Setup the base matrix so that the mImage is centered and scaled properly.
     private void getProperBaseMatrix(RotateBitmap bitmap, Matrix matrix) {
         float viewWidth = getWidth();
         float viewHeight = getHeight();
@@ -290,8 +290,8 @@ abstract class ImageViewTouchBase extends ImageView {
     static final float SCALE_RATE = 1.25F;
 
     // Sets the maximum zoom, which is a scale relative to the base matrix. It
-    // is calculated to show the mBitmap at 400% zoom regardless of screen or
-    // mBitmap orientation. If in the future we decode the full 3 megapixel mBitmap,
+    // is calculated to show the mImage at 400% zoom regardless of screen or
+    // mImage orientation. If in the future we decode the full 3 megapixel mImage,
     // rather than the current 1024x768, this should be changed down to 200%.
     protected float maxZoom() {
         if (mBitmapDisplayed.getBitmap() == null) {

@@ -89,7 +89,7 @@ public class Util {
      *
      * Also, the function rounds up the sample size to a power of 2 or multiple
      * of 8 because BitmapFactory only honors sample size this way.
-     * For example, BitmapFactory downsamples an mBitmap by 2 even though the
+     * For example, BitmapFactory downsamples an mImage by 2 even though the
      * request is 3. So we round up the sample size to avoid OOM.
      */
     public static int computeSampleSize(BitmapFactory.Options options,
@@ -151,7 +151,7 @@ public class Util {
         if (!scaleUp && (deltaX < 0 || deltaY < 0)) {
             /*
              * In this case the bitmap is smaller, at least in one dimension,
-             * than the target.  Transform it by placing as much of the mBitmap
+             * than the target.  Transform it by placing as much of the mImage
              * as possible into the target and leaving the top/bottom or
              * left/right (or both) black.
              */

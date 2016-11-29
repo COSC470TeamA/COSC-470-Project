@@ -1,3 +1,4 @@
+/*
 package com.christopheramazurgmail.rtracker.takephoto;
 
 import android.app.Activity;
@@ -18,7 +19,7 @@ public class TakePhotoActivityOLD extends Activity {
     public static final String ITEMS = "items";
     public static final String CROPPED_IMAGE = "croppedImage";
     Button save, takePhoto, discard;
-    CropImageView mImageView;
+    OLDCropImageView mImageView;
     int REQUEST_IMAGE_CAPTURE = 1;
     int REQUEST_CROP_PICTURE = 2;
     int REQUEST_CROP_STORE_NAME = 3;
@@ -35,7 +36,7 @@ public class TakePhotoActivityOLD extends Activity {
         setContentView(R.layout.activity_take_photo);
 
         Bundle extras = getIntent().getExtras();
-        mImageView = (CropImageView) findViewById(R.id.previewImage);
+        mImageView = (OLDCropImageView) findViewById(R.id.previewImage);
 
         if (extras != null) {
             //we get an mBitmap from gallery that we want to crop
@@ -63,7 +64,7 @@ public class TakePhotoActivityOLD extends Activity {
                 Toast.LENGTH_SHORT);
         t.show();
 
-        //Initialize CropImageActivity intent with a 200w x 400h rectangle, outputting to the passed mBitmap's URI
+        //Initialize OLDCropImageActivity intent with a 200w x 400h rectangle, outputting to the passed mBitmap's URI
         //TODO: Figure out how to make rectangles not auto-scale w x h
         cropImage = new CropImageIntentBuilder(200, 400, croppedImage);
         //Todo: set in colors xml
@@ -160,3 +161,4 @@ public class TakePhotoActivityOLD extends Activity {
     }
 
 }
+*/

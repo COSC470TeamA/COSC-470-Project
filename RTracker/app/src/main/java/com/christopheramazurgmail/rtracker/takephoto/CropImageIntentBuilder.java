@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package com.christopheramazurgmail.rtracker.takephoto;
 
@@ -22,6 +23,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+*/
 /**
  * By default the following features are enabled, unless you override them by calling setters in the
  * builder:
@@ -33,7 +35,8 @@ import android.provider.MediaStore;
  * </ul>
  *
  * @since 1.0.1
- */
+ *//*
+
 
 public class CropImageIntentBuilder {
     private static final String EXTRA_ASPECT_X = "aspectX";
@@ -69,7 +72,8 @@ public class CropImageIntentBuilder {
     int outputY;
     private final Uri saveUri;
 
-    /**
+    */
+/**
      * Constructor.
      *
      * @param outputX
@@ -79,12 +83,14 @@ public class CropImageIntentBuilder {
      * @param saveUri
      *        Output file URI.
      * @since 1.0.1
-     */
+     *//*
+
     public CropImageIntentBuilder(final int outputX, final int outputY, final Uri saveUri) {
         this(DEFAULT_SCALE, DEFAULT_SCALE, outputX, outputY, saveUri);
     }
 
-    /**
+    */
+/**
      * Constructor.
      *
      * @param aspectX
@@ -98,7 +104,8 @@ public class CropImageIntentBuilder {
      * @param saveUri
      *        Output file URI.
      * @since 1.0.1
-     */
+     *//*
+
     public CropImageIntentBuilder(final int aspectX, final int aspectY, final int outputX,
             final int outputY, final Uri saveUri) {
         this.aspectX = aspectX;
@@ -108,16 +115,18 @@ public class CropImageIntentBuilder {
         this.saveUri = saveUri;
     }
 
-    /**
+    */
+/**
      * Builds the Intent.
      *
      * @param context
      *        The application context.
      * @return The newly created intent.
      * @since 1.0.1
-     */
+     *//*
+
     public Intent getIntent(final Context context) {
-        final Intent intent = new Intent(context, CropImageActivity.class);
+        final Intent intent = new Intent(context, OLDCropImageActivity.class);
 
         //
         // Required Intent extras.
@@ -153,7 +162,8 @@ public class CropImageIntentBuilder {
         return intent;
     }
 
-    /**
+    */
+/**
      * Set the quality for the output file when applicable. This is used for JPEG output
      * format for example.
      *
@@ -161,135 +171,155 @@ public class CropImageIntentBuilder {
      *        The quality (0 is smallest file size, 100 is best quality)
      * @return This Builder object to allow for chaining of calls to set methods.
      * @since 1.0.1
-     */
+     *//*
+
     public CropImageIntentBuilder setOutputQuality(final int outputQuality) {
         this.outputQuality = outputQuality;
 
         return this;
     }
 
-    /**
+    */
+/**
      * Scales down the picture.
      *
      * @param scale
-     *        Whether to scale down the mBitmap.
+     *        Whether to scale down the mImage.
      * @return This Builder object to allow for chaining of calls to set methods.
      * @since 1.0.1
-     */
+     *//*
+
     public CropImageIntentBuilder setScale(final boolean scale) {
         this.scale = scale;
 
         return this;
     }
 
-    /**
-     * Whether to scale up the mBitmap if the cropped region is smaller than the output size.
+    */
+/**
+     * Whether to scale up the mImage if the cropped region is smaller than the output size.
      *
      * @param scaleUpIfNeeded
-     *        Whether to scale up the mBitmap.
+     *        Whether to scale up the mImage.
      * @return This Builder object to allow for chaining of calls to set methods.
      * @since 1.0.1
-     */
+     *//*
+
     public CropImageIntentBuilder setScaleUpIfNeeded(final boolean scaleUpIfNeeded) {
         this.scaleUpIfNeeded = scaleUpIfNeeded;
 
         return this;
     }
 
-    /**
-     * Performs face detection before allowing users to crop the mBitmap.
+    */
+/**
+     * Performs face detection before allowing users to crop the mImage.
      *
      * @param doFaceDetection
      *        Whether to perform face detection.
      * @return This Builder object to allow for chaining of calls to set methods.
      * @since 1.0.1
-     */
+     *//*
+
     public CropImageIntentBuilder setDoFaceDetection(final boolean doFaceDetection) {
         this.doFaceDetection = doFaceDetection;
 
         return this;
     }
 
-    /**
-     * Sets bitmap data to crop. Please note that this method overrides any source mBitmap set by
+    */
+/**
+     * Sets bitmap data to crop. Please note that this method overrides any source mImage set by
      * {@link #setSourceImage(Uri)}.
      *
      * @param bitmap
      *        The {@link Bitmap} to crop.
      * @return This Builder object to allow for chaining of calls to set methods.
      * @since 1.0.1
-     */
+     *//*
+
     public CropImageIntentBuilder setBitmap(final Bitmap bitmap) {
         this.bitmap = bitmap;
 
         return this;
     }
 
-    /**
-     * Sets the Uri of the mBitmap to crop. It must be accessible to the calling application/activity.
+    */
+/**
+     * Sets the Uri of the mImage to crop. It must be accessible to the calling application/activity.
      *
      * @param sourceImage
-     *        Uri of the mBitmap to crop.
+     *        Uri of the mImage to crop.
      * @return This Builder object to allow for chaining of calls to set methods.
      * @since 1.0.1
-     */
+     *//*
+
     public CropImageIntentBuilder setSourceImage(final Uri sourceImage) {
         this.sourceImage = sourceImage;
 
         return this;
     }
 
-    /**
-     * Whether to crop the mBitmap as circle
+    */
+/**
+     * Whether to crop the mImage as circle
      *
      * @param circleCrop
-     *        Whether to crop the mBitmap as circle.
+     *        Whether to crop the mImage as circle.
      * @return This Builder object to allow for chaining of calls to set methods.
      * @since 1.0.1
-     */
+     *//*
+
     public CropImageIntentBuilder setCircleCrop(final boolean circleCrop) {
         this.circleCrop = circleCrop;
 
         return this;
     }
 
-    /**
-     * Set output format of the mBitmap to crop. If not set, JPEG will be used.
+    */
+/**
+     * Set output format of the mImage to crop. If not set, JPEG will be used.
      *
      * @param outputFormat
-     *        Output format of the mBitmap to crop, such as JPEG, PNG or WEBP.
+     *        Output format of the mImage to crop, such as JPEG, PNG or WEBP.
      * @return This Builder object to allow for chaining of calls to set methods.
      * @since 1.0.1
-     */
+     *//*
+
     public CropImageIntentBuilder setOutputFormat(final String outputFormat) {
         this.outputFormat = outputFormat;
 
         return this;
     }
 
-    /**
+    */
+/**
      * Set the color for the standard outline.
      *
      * @param color The color to use.
      * @return This Builder object to allow for chaining of calls to set methods.
      * @since 1.1.0
-     */
+     *//*
+
     public CropImageIntentBuilder setOutlineColor(int color) {
         this.outlineColor = color;
 
         return this;
     }
 
-    /**
+    */
+/**
      * Set the color for the face detection outline.
      *
      * @param color The color to use.
      * @return This Builder object to allow for chaining of calls to set methods.
      * @since 1.1.0
-     */
+     *//*
+
     public CropImageIntentBuilder setOutlineCircleColor(int color) {
         this.outlineCircleColor = color;
 
         return this;
     }
 }
+*/
