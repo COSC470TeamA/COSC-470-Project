@@ -1,5 +1,6 @@
 package com.christopheramazurgmail.rtracker.takephoto;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -127,7 +128,7 @@ public class TakePhotoActivity extends MonitoredActivity {
             mImageView.setImageRotateBitmapResetBase(new RotateBitmap(mImage, 90), true);
 
             //mutex waits for latch
-            Util.startBackgroundJob(this, null,
+            startBackgroundJob(this, null,
                     "Beginning Crop",
                     new Runnable() {
                         public void run() {
@@ -229,6 +230,66 @@ public class TakePhotoActivity extends MonitoredActivity {
                 startActivity(OCR);*/
             }
         }
+    }
+
+    public static void startBackgroundJob(MonitoredActivity activity,
+                                          String title, String message, Runnable job, Handler handler) {
+        // Make the progress dialog uncancelable, so that we can gurantee
+        // the thread will be done before the activity getting destroyed.
+        ProgressDialog dialog = ProgressDialog.show(
+                activity, title, message, true, false);
+        new Thread(new BackgroundJob(activity, job, dialog, handler)).start();
+    }
+}
+
+class BackgroundJob
+        extends MonitoredActivity.LifeCycleAdapter implements Runnable {
+
+    private final MonitoredActivity mActivity;
+    private final ProgressDialog mDialog;
+    private final Runnable mJob;
+    private final Handler mHandler;
+    private final Runnable mCleanupRunner = new Runnable() {
+        public void run() {
+            mActivity.removeLifeCycleListener(BackgroundJob.this);
+            if (mDialog.getWindow() != null) mDialog.dismiss();
+        }
+    };
+
+    public BackgroundJob(MonitoredActivity activity, Runnable job,
+                         ProgressDialog dialog, Handler handler) {
+        mActivity = activity;
+        mDialog = dialog;
+        mJob = job;
+        mActivity.addLifeCycleListener(this);
+        mHandler = handler;
+    }
+
+    public void run() {
+        try {
+            mJob.run();
+        } finally {
+            mHandler.post(mCleanupRunner);
+        }
+    }
+
+
+    @Override
+    public void onActivityDestroyed(MonitoredActivity activity) {
+        // We get here only when the onDestroyed being called before
+        // the mCleanupRunner. So, run it now and remove it from the queue
+        mCleanupRunner.run();
+        mHandler.removeCallbacks(mCleanupRunner);
+    }
+
+    @Override
+    public void onActivityStopped(MonitoredActivity activity) {
+        mDialog.hide();
+    }
+
+    @Override
+    public void onActivityStarted(MonitoredActivity activity) {
+        mDialog.show();
     }
 }
 
