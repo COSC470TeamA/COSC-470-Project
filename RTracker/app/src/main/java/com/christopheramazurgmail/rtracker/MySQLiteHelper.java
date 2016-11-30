@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
 import android.util.Log;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +22,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     //These strings represent the names of the tables and columns making up the database
     //they are used in methods that incorperate SQL statements
     private static final String LOG = MySQLiteHelper.class.getName();
+    private Context context;
 
     public static final String TABLE_COMMENTS = "comments";
     public static final String TABLE_CAT = "cat";
@@ -107,6 +111,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     //This method creates the database and populates the tables when invoked
@@ -143,8 +148,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         ArrayList<Receipt> testReceiptList = new ArrayList<>();
         ArrayList<Item> testItemList = new ArrayList<>();
         ArrayList<Category> testCategoryList = new ArrayList<>();
-        Item testItem1 = new Item("Potatoes", 23.45);
-        testItem1.setCat("Yukon Gold potatoes");
+        Item testItem1 = new Item("Yukon Gold potatoes", 23.45);
+        testItem1.setCat("Potatoes");
         Item testItem2 = new Item("Pizza", 18.33);
         Item testItem3 = new Item("Soup", 5.99);
         Item testItem4 = new Item("Crackers", 6.77);
@@ -167,8 +172,19 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         rec3.add(testItem2);
         rec3.add(testItem5);
 
-        // System.out.println("Testing the getUser methods: " + getUser(1));
-        // System.out.println("Inserting a receipt");
+
+        //------Populate Library Table-----//
+        DictionaryBuilder dictionaryBuilder = new DictionaryBuilder(this.context);
+
+        try {
+            ArrayList<Category> categories = dictionaryBuilder.buildCategoryList();
+            insertCatListLibrary(categories);
+        } catch (IOException ioe) {
+
+        } catch (XmlPullParserException ppe) {
+
+        }
+
         insertReceiptObject(rec);
         // System.out.println("Testing the getAllItemsInTable method: ");
         itemNames = getAllItemsInTable();
@@ -415,7 +431,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             String i_id = String.valueOf(testSet);
             // System.out.println("inserting ItemCatBridge");
             insertItemCat(i_id, cat_id);
-            // System.out.println("inserting ItemReceiptBridge");
+
+            insertCatItemPairLibrary(testCat, item.getDesc());
+
             insertReceiptItem(i_id, r_id);
         } else
         {
@@ -981,6 +999,68 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     //End of methods for the Store table
     //==========================================================================================
 
+    //Methods for Library Table
+    //==========================================================================================
+    private void insertCatListLibrary(ArrayList<Category> categories) {
+        System.out.println("Inserting a category library");
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        for (Category category : categories) {
+            //insert category to category table
+            insertCat(category.getName());
+
+            //insert items to library table
+            for(Category.Item item : category.getItemList()){
+                ContentValues values = new ContentValues();
+                insertCatItemPairLibrary(category.getName(), item.getName());
+            }
+        }
+    }
+
+    private void insertCatItemPairLibrary(String cat_name, String item_name){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = "SELECT COUNT(*) as test_column FROM " + TABLE_LIBRARY + " WHERE " + COLUMN_CAT_NAME
+                + " =? and " + COLUMN_ITEM_NAME + " =?";
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, new String[] {cat_name, item_name});
+        c.moveToFirst();
+        int testSet = c.getInt(c.getColumnIndex("test_column"));
+        ContentValues values = new ContentValues();
+        if (testSet > 0){
+            System.out.println("Category Item pair already exists");
+        } else {
+            values.put(COLUMN_CAT_NAME, cat_name);
+            values.put(COLUMN_ITEM_NAME, item_name);
+            db.insert(TABLE_LIBRARY, null, values);
+        }
+
+        c.close();
+    }
+
+    //returns all items in the library for a category
+    public ArrayList<String> getCatItemPairsLibrary(String cat_name) {
+        ArrayList<String> items = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + TABLE_LIBRARY + " WHERE " + COLUMN_CAT_NAME
+                + " =?";
+        Log.e(LOG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, new String[] {cat_name});
+
+        if (c != null)
+            c.moveToFirst();
+
+        while (c.moveToNext()) {
+            String item_name = c.getString(c.getColumnIndex(COLUMN_ITEM_NAME));
+            items.add(item_name);
+        }
+
+        c.close();
+        return items;
+    }
+
+    //End of methods for the Library table
+    //==========================================================================================
 
     private void insertReceiptStore(String r_id, String s_id){
         // System.out.println("Inserting a new store bridge");
@@ -1087,4 +1167,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_STORE);
         onCreate(db);
     }
+
+
 }
