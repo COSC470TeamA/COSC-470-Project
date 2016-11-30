@@ -24,6 +24,13 @@ public class ItemGroup extends ArrayList implements Comparable {
     public List<Item> getItems() {
         return items;
     }
+    public List<String> getItemNames() {
+        List<String> l = new ArrayList<String>();
+        for (Item i : items) {
+            l.add(i.getDesc());
+        }
+        return l;
+    }
 
     @Override
     public String toString() {

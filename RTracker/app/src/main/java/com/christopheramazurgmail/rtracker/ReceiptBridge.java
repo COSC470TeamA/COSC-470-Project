@@ -7,6 +7,9 @@ import java.util.List;
 
 /**
  * Created by haunter on 27/10/16.
+ *
+ * The Receipt Bridge attempts to use OCR output of receipts
+ * and create digital representations for manipulation.
  */
 public class ReceiptBridge {
 
@@ -23,14 +26,19 @@ public class ReceiptBridge {
     /**
      * Uses the output of the OCR to build a Receipt.
      *
-     * @param longString
-     * @return
+     * @param longString The string output of an OCR.
+     * @return           The newly built Receipt.
      */
     public Receipt makeReceipt(String longString) {
-
         String[] lines = longString.split("\n");
         // Assuming the store name is at the top
         Receipt rec = new Receipt(lines[0]);
+        return makeReceipt(rec, longString);
+    }
+
+    private Receipt makeReceipt(Receipt rec, String longString) {
+        String[] lines = longString.split("\n");
+
 
         // Assuming the last line is reserved for the total
         for (int i = 1; i < lines.length - 1; i++) {
@@ -68,6 +76,15 @@ public class ReceiptBridge {
             }
         }
         return rec;
+    }
+
+    public Receipt makeReceipt(String items, String storeName, String total) {
+        Receipt rec = new Receipt(storeName);
+        return makeReceipt(rec, items);
+    }
+
+    public Receipt makeReceipt(String items, String storeName) {
+        return makeReceipt(items, storeName, null);
     }
 
     /**

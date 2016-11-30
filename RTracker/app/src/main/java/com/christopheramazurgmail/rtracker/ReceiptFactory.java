@@ -179,6 +179,7 @@ public class ReceiptFactory extends AppCompatActivity {
 
         MySQLiteHelper db = new MySQLiteHelper(this);
         db.insertReceiptObject(this.receipt);
+
     }
 
     public Receipt getReceipt() {
