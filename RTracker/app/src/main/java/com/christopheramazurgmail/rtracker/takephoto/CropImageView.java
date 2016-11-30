@@ -10,9 +10,10 @@ import java.util.ArrayList;
 
 /**
  * Created by Bre on 2016-11-29.
+ * Updated by Chris slightly later : >
  */
 
-public class CropImageView extends ImageViewTouchBase {
+class CropImageView extends ImageViewTouchBase {
     ArrayList<RectangleOverlay> mRectangleOverlays = new ArrayList<RectangleOverlay>();
     RectangleOverlay mMotionRectangleOverlay = null;
     float mLastX, mLastY;
@@ -106,7 +107,6 @@ public class CropImageView extends ImageViewTouchBase {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                recomputeFocus(event);
                 for (int i = 0; i < mRectangleOverlays.size(); i++) {
                     RectangleOverlay ro = mRectangleOverlays.get(i);
                     int edge = ro.getHit(event.getX(), event.getY());
@@ -126,7 +126,6 @@ public class CropImageView extends ImageViewTouchBase {
                 break;
 
             case MotionEvent.ACTION_UP:
-                recomputeFocus(event);
                 for (int i = 0; i < mRectangleOverlays.size(); i++) {
                     RectangleOverlay ro = mRectangleOverlays.get(i);
                     if (ro.hasFocus()) {
@@ -151,7 +150,6 @@ public class CropImageView extends ImageViewTouchBase {
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                recomputeFocus(event);
                 if (mMotionRectangleOverlay != null) {
                     mMotionRectangleOverlay.handleMotion(mMotionEdge,
                             event.getX() - mLastX,
@@ -217,7 +215,7 @@ public class CropImageView extends ImageViewTouchBase {
         zoom = zoom * this.getScale();
         zoom = Math.max(1F, zoom);
 
-        if ((Math.abs(zoom - getScale()) / zoom) > .1) {
+        if ((Math.abs(zoom - getScale()) / zoom) > .2) {
             float[] coordinates = new float[]{ro.mCropRect.centerX(),
                     ro.mCropRect.centerY()};
             getImageMatrix().mapPoints(coordinates);

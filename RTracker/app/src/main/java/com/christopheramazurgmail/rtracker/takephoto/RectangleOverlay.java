@@ -40,12 +40,12 @@ class RectangleOverlay {
     private static final String TAG = "RectangleOverlay";
     View mContext;  // The View displaying the mImage.
 
-    public static final int GROW_NONE        = (1 << 0);
-    public static final int GROW_LEFT_EDGE   = (1 << 1);
-    public static final int GROW_RIGHT_EDGE  = (1 << 2);
-    public static final int GROW_TOP_EDGE    = (1 << 3);
-    public static final int GROW_BOTTOM_EDGE = (1 << 4);
-    public static final int MOVE             = (1 << 5);
+    public static final int GROW_NONE        = (1 << 0); //1
+    public static final int GROW_LEFT_EDGE   = (1 << 1); //2
+    public static final int GROW_RIGHT_EDGE  = (1 << 2); //4
+    public static final int GROW_TOP_EDGE    = (1 << 3); //8
+    public static final int GROW_BOTTOM_EDGE = (1 << 4); //16
+    public static final int MOVE             = (1 << 5); //32
 
     private final int mOutlineColor;
     private final int mOutlineCircleColor;
@@ -96,13 +96,7 @@ class RectangleOverlay {
             canvas.drawRect(mDrawRect, mOutlinePaint);
         } else {
             Rect viewDrawingRect = new Rect();
-            /*todo: second rectangle instead of extra call
-            if (PRECISION_RECTANGLES) {
-                Rect secondDrawingRect = new Rect();
-            }
-            */
             mContext.getDrawingRect(viewDrawingRect);
-
             path.addRect(new RectF(mDrawRect), Path.Direction.CW);
             mOutlinePaint.setColor(mOutlineColor);
             canvas.clipPath(path, Region.Op.DIFFERENCE);
@@ -113,7 +107,6 @@ class RectangleOverlay {
             canvas.drawPath(path, mOutlinePaint);
 
             if (mMode == ModifyMode.Grow) {
-
                     int left    = mDrawRect.left   + 1;
                     int right   = mDrawRect.right  + 1;
                     int top     = mDrawRect.top    + 4;
@@ -134,27 +127,27 @@ class RectangleOverlay {
                             + ((mDrawRect.bottom - mDrawRect.top) / 2);
 
                     mResizeDrawableWidth.setBounds(left - widthWidth,
-                                                   yMiddle - widthHeight,
-                                                   left + widthWidth,
-                                                   yMiddle + widthHeight);
+                            yMiddle - widthHeight,
+                            left + widthWidth,
+                            yMiddle + widthHeight);
                     mResizeDrawableWidth.draw(canvas);
 
                     mResizeDrawableWidth.setBounds(right - widthWidth,
-                                                   yMiddle - widthHeight,
-                                                   right + widthWidth,
-                                                   yMiddle + widthHeight);
+                            yMiddle - widthHeight,
+                            right + widthWidth,
+                            yMiddle + widthHeight);
                     mResizeDrawableWidth.draw(canvas);
 
                     mResizeDrawableHeight.setBounds(xMiddle - heightWidth,
-                                                    top - heightHeight,
-                                                    xMiddle + heightWidth,
-                                                    top + heightHeight);
+                            top - heightHeight,
+                            xMiddle + heightWidth,
+                            top + heightHeight);
                     mResizeDrawableHeight.draw(canvas);
 
                     mResizeDrawableHeight.setBounds(xMiddle - heightWidth,
-                                                    bottom - heightHeight,
-                                                    xMiddle + heightWidth,
-                                                    bottom + heightHeight);
+                            bottom - heightHeight,
+                            xMiddle + heightWidth,
+                            bottom + heightHeight);
                     mResizeDrawableHeight.draw(canvas);
 
             }
@@ -171,7 +164,7 @@ class RectangleOverlay {
     // Determines which edges are hit by touching at (x, y).
     public int getHit(float x, float y) {
         Rect r = computeLayout();
-        final float hysteresis = 40F;
+        final float hysteresis = 25F;
         int retval = GROW_NONE;
 
             // verticalCheck makes sure the position is between the top and
@@ -194,11 +187,11 @@ class RectangleOverlay {
             if ((Math.abs(r.bottom - y)   < hysteresis)  &&  horizCheck) {
                 retval |= GROW_BOTTOM_EDGE;
             }
-
             // Not near any edge but inside the rectangle: move.
             if (retval == GROW_NONE && r.contains((int) x, (int) y)) {
                 retval = MOVE;
             }
+
         return retval;
     }
 
@@ -209,9 +202,9 @@ class RectangleOverlay {
         if (edge == GROW_NONE) {
             return;
         } else if (edge == MOVE) {
-            // Convert to mImage space before sending to moveBy().
-            moveBy(dx * (mCropRect.width() / r.width()),
-                   dy * (mCropRect.height() / r.height()));
+            // Convert to image space before sending to moveBy().
+            moveBy(dy * (mCropRect.width() / r.width()),
+                    (-1 * dx * (mCropRect.height() / r.height())));
         } else {
             if (((GROW_LEFT_EDGE | GROW_RIGHT_EDGE) & edge) == 0) {
                 dx = 0;
@@ -221,7 +214,7 @@ class RectangleOverlay {
                 dy = 0;
             }
 
-            // Convert to mImage space before sending to growBy().
+            // Convert to image space before sending to growBy().
             float xDelta = dx * (mCropRect.width() / r.width());
             float yDelta = dy * (mCropRect.height() / r.height());
             growBy((((edge & GROW_LEFT_EDGE) != 0) ? -1 : 1) * xDelta,
@@ -229,11 +222,13 @@ class RectangleOverlay {
         }
     }
 
-    // Grows the cropping rectange by (dx, dy) in mImage space.
+    // Grows the cropping rectange by (dx, dy) in image space.
     void moveBy(float dx, float dy) {
         Rect invalRect = new Rect(mDrawRect);
+
         mCropRect.offset(dx, dy);
-        // Put the cropping rectangle inside mImage rectangle.
+
+        // Put the cropping rectangle inside image rectangle.
         mCropRect.offset(
                 Math.max(0, mImageRect.left - mCropRect.left),
                 Math.max(0, mImageRect.top  - mCropRect.top));
@@ -248,18 +243,10 @@ class RectangleOverlay {
         mContext.invalidate(invalRect);
     }
 
-    // Grows the cropping rectange by (dx, dy) in mImage space.
-    void growBy(float dx, float dy) {
-        if (mMaintainAspectRatio) {
-            if (dx != 0) {
-                dy = dx / mInitialAspectRatio;
-            } else if (dy != 0) {
-                dx = dy * mInitialAspectRatio;
-            }
-        }
-
+    // Grows the cropping rectange by (dx, dy) in image space.
+    void growBy(float dy, float dx) {
         // Don't let the cropping rectangle grow too fast.
-        // Grow at most half of the difference between the mImage rectangle and
+        // Grow at most half of the difference between the image rectangle and
         // the cropping rectangle.
         RectF r = new RectF(mCropRect);
         if (dx > 0F && r.width() + 2 * dx > mImageRect.width()) {
@@ -276,7 +263,6 @@ class RectangleOverlay {
                 dx = dy * mInitialAspectRatio;
             }
         }
-
         r.inset(-dx, -dy);
 
         // Don't let the cropping rectangle shrink too fast.
@@ -291,7 +277,7 @@ class RectangleOverlay {
             r.inset(0F, -(heightCap - r.height()) / 2F);
         }
 
-        // Put the cropping rectangle inside the mImage rectangle.
+        // Put the cropping rectangle inside the image rectangle.
         if (r.left < mImageRect.left) {
             r.offset(mImageRect.left - r.left, 0F);
         } else if (r.right > mImageRect.right) {
@@ -308,20 +294,19 @@ class RectangleOverlay {
         mContext.invalidate();
     }
 
-    // Returns the cropping rectangle in mImage space.
+    // Returns the cropping rectangle in image space.
     public Rect getCropRect() {
         return new Rect((int) mCropRect.left, (int) mCropRect.top,
-                        (int) mCropRect.right, (int) mCropRect.bottom);
+                (int) mCropRect.right, (int) mCropRect.bottom);
     }
 
-    // Maps the cropping rectangle from mImage space to screen space.
+    // Maps the cropping rectangle from image space to screen space.
     private Rect computeLayout() {
         RectF r = new RectF(mCropRect.left, mCropRect.top,
-                            mCropRect.right, mCropRect.bottom);
-        mMatrix.setRotate(0);
+                mCropRect.right, mCropRect.bottom);
         mMatrix.mapRect(r);
         return new Rect(Math.round(r.left), Math.round(r.top),
-                        Math.round(r.right), Math.round(r.bottom));
+                Math.round(r.right), Math.round(r.bottom));
     }
 
     public void invalidate() {
@@ -334,7 +319,7 @@ class RectangleOverlay {
         mCropRect = cropRect;
         mImageRect = new RectF(imageRect);
         mMaintainAspectRatio = false;
-        mCircle = circle;
+        mCircle = false;
 
         mInitialAspectRatio = mCropRect.width() / mCropRect.height();
         mDrawRect = computeLayout();
@@ -354,8 +339,8 @@ class RectangleOverlay {
     private ModifyMode mMode = ModifyMode.None;
 
     Rect mDrawRect;  // in screen space
-    private RectF mImageRect;  // in mImage space
-    RectF mCropRect;  // in mImage space
+    private RectF mImageRect;  // in image space
+    RectF mCropRect;  // in image space
     Matrix mMatrix;
 
     private boolean mMaintainAspectRatio = false;
