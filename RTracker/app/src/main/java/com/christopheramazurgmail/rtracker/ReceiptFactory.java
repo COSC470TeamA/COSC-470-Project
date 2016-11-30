@@ -151,7 +151,10 @@ public class ReceiptFactory extends AppCompatActivity {
         ArrayList<Item> modifiedItems = new ArrayList<>();
         for(int i=0;i<adapter.getCount();i++){
             Item item = (Item) adapter.getItem(i);
-            categorizationEngine.addToDictionary(item, item.getCat());
+            if (item.getCat().equals("None")) {
+                item.setCat(null);
+            }
+            //categorizationEngine.addToDictionary(item, item.getCat());
             modifiedItems.add(item);
         }
         return modifiedItems;
@@ -177,15 +180,13 @@ public class ReceiptFactory extends AppCompatActivity {
         MySQLiteHelper db = new MySQLiteHelper(this);
         db.insertReceiptObject(this.receipt);
 
-        ArrayList<Receipt> receipts = db.getAllReceipts();
-
     }
 
     public Receipt getReceipt() {
         return this.receipt;
     }
 
-    public static String[] populateSpinner(LinkedList<Category> categories, String defaultOption) {
+    public static String[] populateSpinner(ArrayList<Category> categories, String defaultOption) {
         String[] arraySpinner = new String[categories.size() + 1];
 
         arraySpinner[0] = defaultOption;

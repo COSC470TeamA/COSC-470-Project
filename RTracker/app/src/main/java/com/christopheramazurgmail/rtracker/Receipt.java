@@ -2,31 +2,15 @@ package com.christopheramazurgmail.rtracker;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by haunter on 27/10/16.
  */
-public class Receipt implements Serializable {
+public class Receipt implements Serializable, Comparable {
     String store;
-
-    public Date getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public ItemGroup items;
     Date dateCreated;
     String id;
@@ -80,5 +64,31 @@ public class Receipt implements Serializable {
 
     public void setStore(String store) {
         this.store = store;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void sortByDate(List<Receipt> receipts) {
+        Collections.sort(receipts);
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Receipt r = (Receipt) o;
+        return this.getDateCreated().compareTo(r.getDateCreated());
     }
 }
