@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by Bre on 2016-11-29.
  */
 
-class CropImageView extends ImageViewTouchBase {
+public class CropImageView extends ImageViewTouchBase {
     ArrayList<RectangleOverlay> mRectangleOverlays = new ArrayList<RectangleOverlay>();
     RectangleOverlay mMotionRectangleOverlay = null;
     float mLastX, mLastY;
