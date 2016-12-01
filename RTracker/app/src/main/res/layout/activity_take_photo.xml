@@ -54,7 +54,7 @@
             />
         </RelativeLayout>
 
-        <view class="com.christopheramazurgmail.rtracker.takephoto.CropImageView" android:id="@+id/previewImage"
+        <view class="com.ateam.rtracker.takephoto.CropImageView" android:id="@+id/previewImage"
                 android:background="#55000000"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
