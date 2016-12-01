@@ -8,11 +8,28 @@ import java.util.List;
 
 /**
  * Created by haunter on 27/10/16.
+ *
+ * A store receipt.
+ *
+ * Receipts come from a single store and contain one or many items.
+ * The date of a receipt is the datetime when it was enetered into the program.
  */
 public class Receipt implements Serializable, Comparable {
-    String store;
+
+    /**
+     * The name of the store that produced the receipt.
+     * All items in a receipt are from this store.
+     */
+    private String store;
+
+    // @TODO Change scope to private. Seek and destroy all Receipt.items usage.
+    /** The collection of items in a receipt. */
     public ItemGroup items;
+
+    /** The date the receipt was entered into the program. */
     Date dateCreated;
+
+    /** The unique id that is returned from the database. */
     String id;
 
     public Receipt() {
@@ -23,17 +40,26 @@ public class Receipt implements Serializable, Comparable {
         this.store = store;
         items = new ItemGroup();
     }
+
     public Receipt(String store, String... things) {
         this.store = store;
         ItemBuilder ib = new ItemBuilder();
-
         this.items = ib.build(things);
     }
 
+    /**
+     * Add a singular item to a receipt.
+     * @param item The item to add.
+     */
     public void add(Item item) {
         items.add(item);
     }
 
+    /**
+     * The textual representation of a receipt.
+     * @return  The text.
+     */
+    @Override
     public String toString() {
         String out;
         out = store + "\n";
