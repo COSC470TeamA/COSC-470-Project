@@ -1,6 +1,6 @@
 node {
     // Just some echoes to show the timestamps.
-    stage "First echo"
+    stage "First echo 470"
     echo "Hey, look, I'm echoing with a timestamp!"
 
     // A sleep to make sure we actually get a real difference!
